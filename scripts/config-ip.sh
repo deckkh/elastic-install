@@ -1,3 +1,4 @@
+#
 nmcli con show "eth0"
 nmcli con mod "eth0" ipv4.dns 8.8.8.8
 nmcli con mod "eth0" +ipv4.dns 8.8.4.4
