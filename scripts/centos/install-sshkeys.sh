@@ -1,8 +1,6 @@
 set -e
 
 ##### VARS #####
-MY_USERNAME=`whoami`
-MY_PUB_KEY=`cat ~/.ssh/id_rsa.pub`
 MY_KNOWN_HOSTS=~/.ssh/known_hosts
 ################
 
