@@ -1,0 +1,8 @@
+---
+- hosts: elastic
+  roles:
+     - elastic/requirements
+     - elastic/disk
+     - elastic/install
+
+
