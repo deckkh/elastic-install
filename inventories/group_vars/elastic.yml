@@ -1,3 +1,5 @@
 volume_group: 'vg_data'
 logical_volume: 'lv_data'
 data_disk: '/dev/sdb'
+mount_logical_volume: "/data"
+data_path: "/data/elastic"
