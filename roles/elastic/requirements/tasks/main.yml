@@ -10,3 +10,8 @@
 - rpm_key:
     state: present
     key: "{{ remote_install_dir}}/GPG-KEY-elasticsearch"
+
+- name: Remove file
+  file:
+    path: "{{ remote_install_dir}}/GPG-KEY-elasticsearch"
+    state: absent         
