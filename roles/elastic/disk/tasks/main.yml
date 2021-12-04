@@ -4,7 +4,7 @@
 - name: task for creating volume group
   lvg:
       vg: "{ volume_group }"
-      pvs: { data_disk}
+      pvs: "{ data_disk}"
       pesize: 4
 
 - name: Install lvm2 dependency
