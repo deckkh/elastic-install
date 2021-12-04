@@ -19,3 +19,7 @@
     name: repository-s3
     state: present
     src: "file://{{ remote_install_dir}}/repository-s3-{{elastic_version}}.zip"
+
+- name: issue daemon-reload to pick up config changes
+  systemd:
+    daemon_reload: yes
