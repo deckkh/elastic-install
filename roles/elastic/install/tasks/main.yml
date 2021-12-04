@@ -1,2 +1,17 @@
 ---
 # tasks file for install
+
+- name: Copy file 
+  copy:
+    src: "{{ local_install_dir}}/elasticsearch-{{ elastic_version }}-x86_64.rpm"
+    dest: "{{ remote_install_dir}}/elasticsearch-{{ elastic_version }}-x86_64.rpm"
+
+- name: stop service 
+  service: 
+    name=elasticsearch
+    state=stopped 
+
+- name: Install package.
+  yum:
+     name: "{{ remote_install_dir}}/elasticsearch-{{ elastic_version }}-x86_64.rpm"
+     state: present    
