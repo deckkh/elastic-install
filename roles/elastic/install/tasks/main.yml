@@ -19,3 +19,12 @@
   yum:
      name: "{{ remote_install_dir}}/elasticsearch-{{ elastic_version }}-x86_64.rpm"
      state: present        
+
+- name: issue daemon-reload to pick up config changes
+  systemd:
+    daemon_reload: yes
+
+- name: Remove file
+  file:
+    path: "{{ remote_install_dir}}/elasticsearch-{{ elastic_version }}-x86_64.rpm"
+    state: absent     

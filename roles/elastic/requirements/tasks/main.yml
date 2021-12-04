@@ -1,2 +1,12 @@
 ---
 # tasks file for requirements
+
+
+- name: Copy file 
+  copy:
+    src: "{{ local_install_dir}}/GPG-KEY-elasticsearch"
+    dest: "{{ remote_install_dir}}/GPG-KEY-elasticsearch"
+
+- rpm_key:
+    state: present
+    key: "{{ remote_install_dir}}/GPG-KEY-elasticsearch"
