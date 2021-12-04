@@ -18,4 +18,4 @@ wget -N $location"/kibana/kibana-"$version"-x86_64.rpm" -P $destdir
 wget -N $location"/logstash/logstash-"$version"-x86_64.rpm" -P $destdir
 wget -N $location"/beats/filebeat/filebeat-"$version"-x86_64.rpm" -P $destdir
 wget -N $location"/beats/metricbeat/metricbeat-"$version"-x86_64.rpm" -P $destdir
-wget -N $location"elasticsearch-plugins/repository-s3/repository-s3-"$version".zip -P $destdir
+wget -N $location"elasticsearch-plugins/repository-s3/repository-s3-"$version".zip" -P $destdir
