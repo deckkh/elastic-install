@@ -3,15 +3,15 @@
 
 - name: Copy file 
   copy:
-    src: "{{ local_install_dir}}/elasticsearch-{{ elastic_version }}-x86_64.rpm"
-    dest: "{{ remote_install_dir}}/elasticsearch-{{ elastic_version }}-x86_64.rpm"
+    src: "{{ local_install_dir}}/repository-s3-{{elastic_version}}.zip"
+    dest: "{{ remote_install_dir}}/repository-s3-{{elastic_version}}.zip"
 
 - name: stop service 
   service: 
     name=elasticsearch
     state=stopped 
 
-- name: Install package.
-  yum:
-     name: "{{ remote_install_dir}}/elasticsearch-{{ elastic_version }}-x86_64.rpm"
-     state: present    
+- elasticsearch_plugin:
+    name: repository-s3
+    state: present
+    src: "file://{{ remote_install_dir}}/repository-s3-{{elastic_version}}.zip"
