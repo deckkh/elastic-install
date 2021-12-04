@@ -6,10 +6,14 @@
     src: "{{ local_install_dir}}/repository-s3-{{elastic_version}}.zip"
     dest: "{{ remote_install_dir}}/repository-s3-{{elastic_version}}.zip"
 
+- name: Populate service facts
+  service_facts:    
+
 - name: stop service 
   service: 
     name=elasticsearch
     state=stopped 
+  when: ansible_facts.services['elasticsearch.service'] is defined    
 
 - elasticsearch_plugin:
     name: repository-s3

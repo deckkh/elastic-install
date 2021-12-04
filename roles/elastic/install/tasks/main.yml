@@ -6,10 +6,14 @@
     src: "{{ local_install_dir}}/elasticsearch-{{ elastic_version }}-x86_64.rpm"
     dest: "{{ remote_install_dir}}/elasticsearch-{{ elastic_version }}-x86_64.rpm"
 
+- name: Populate service facts
+  service_facts:    
+
 - name: stop service 
   service: 
     name=elasticsearch
     state=stopped 
+  when: ansible_facts.services['elasticsearch.service'] is defined    
 
 - name: Install package.
   yum:
