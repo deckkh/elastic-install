@@ -17,8 +17,14 @@
 
 - elasticsearch_plugin:
     name: repository-s3
+    state: absent
+    force: yes
+
+- elasticsearch_plugin:
+    name: repository-s3
     state: present
     src: "file://{{ remote_install_dir}}/repository-s3-{{elastic_version}}.zip"
+    force: yes
 
 - name: issue daemon-reload to pick up config changes
   systemd:
