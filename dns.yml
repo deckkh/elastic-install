@@ -1,0 +1,9 @@
+---
+- hosts: dns
+  roles:
+     - dns/requirements
+     - dns/install
+     - dns/firewall
+     - dns/configure
+
+
