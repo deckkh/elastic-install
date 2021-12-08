@@ -1,5 +1,5 @@
 $TTL 86400
-@   IN  SOA     ns1.kkh.net. root.kkh.net. (
+@   IN  SOA     ns1.{{forward_zone}}. root.{{ forward_zone}}. (
                                               3           ;Serial
                                               3600        ;Refresh
                                               1800        ;Retry
@@ -8,16 +8,16 @@ $TTL 86400
 )
 
 ;Name Server Information
-@       IN  NS      ns1.kkh.net.
+@       IN  NS      ns1.{{ forward_zone}}.
 
 ;IP address of Name Server
-ns1       IN  A       192.168.0.254
+ns1       IN  A       {{ reverse_zone}}.{{ dns_ip}}
 
 ;A - Record HostName To Ip Address
-ansible     IN  A       192.168.0.3
-node1       IN  A       192.168.0.4
-node2       IN  A       192.168.0.5
-kibana      IN  A       192.168.0.6
+ansible     IN  A       {{ reverse_zone}}.3
+node1       IN  A       {{ reverse_zone}}.4
+node2       IN  A       {{ reverse_zone}}.5
+kibana      IN  A       {{ reverse_zone}}.6
 
 ;CNAME record
 ;ftp     IN CNAME        www.hosting.local.

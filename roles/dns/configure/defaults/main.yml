@@ -1,2 +1,9 @@
 ---
 # defaults file for configure
+forward_zone: "kkh.net"
+reverse_zone: "192.168.0"
+reverse_zone_inaddr: "0.168.192"
+allowed_to_query: "192.168.0.0/24"
+forward_dns_1: "8.8.8.8"
+forward_dns_2: "8.8.4.4"
+dns_ip : "254"

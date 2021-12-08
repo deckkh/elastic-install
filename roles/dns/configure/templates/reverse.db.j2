@@ -1,5 +1,5 @@
 $TTL 86400
-@   IN  SOA     ns1.kkh.net. root.kkh.net. (
+@   IN  SOA     ns1.{{ forward_zone}}. root.{{ forward_zone}}. (
                                        3           ;Serial
                                        3600        ;Refresh
                                        1800        ;Retry
@@ -8,13 +8,13 @@ $TTL 86400
 )
 
 ;Name Server Information
-@         IN      NS         ns1.kkh.net.
+@         IN      NS         ns1.{{ forward_zone}}.
 
 ;Reverse lookup for Name Server
-254       IN  PTR     ns1.kkh.net.
+{{ dns_ip}}       IN  PTR     ns1.{{ forward_zone}}.
 
 ;PTR Record IP address to HostName
-3      IN  PTR     ansible.kkh.net.
-4      IN  PTR     node1.kkh.net.
-5      IN  PTR     node2.kkh.net.
-6      IN  PTR     kibana.kkh.net.
+3      IN  PTR     ansible.{{ forward_zone}}.
+4      IN  PTR     node1.{{ forward_zone}}.
+5      IN  PTR     node2.{{ forward_zone}}.
+6      IN  PTR     kibana.{{ forward_zone}}.

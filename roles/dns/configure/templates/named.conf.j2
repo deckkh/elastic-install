@@ -16,7 +16,7 @@ options {
 	memstatistics-file "/var/named/data/named_mem_stats.txt";
 	secroots-file	"/var/named/data/named.secroots";
 	recursing-file	"/var/named/data/named.recursing";
-	allow-query     { localhost;192.168.0.0/24; };
+	allow-query     { localhost; {{allowed_to_query }}; };
 
 	/* 
 	 - If you are building an AUTHORITATIVE DNS server, do NOT enable recursion.
@@ -43,8 +43,8 @@ options {
 
 
         forwarders {
-                8.8.8.8;
-                8.8.4.4;
+                {{ forward_dns_1 }};
+                {{ forward_dns_2 }};
         };
 
 };
@@ -65,19 +65,19 @@ include "/etc/named.rfc1912.zones";
 include "/etc/named.root.key";
 
 //Forward Zone
-zone "kkh.net" IN { 
+zone "{{ forward_zone}}" IN { 
 
            type master;  
-           file "kkh.net.db"; 
+           file "{{ forward_zone}}.db"; 
            allow-update { none; };  
 
 };
 
 //Reverse Zone
-zone "0.168.192.in-addr.arpa" IN { 
+zone "{{ reverse_zone_inaddr}}.in-addr.arpa" IN { 
 
              type master;  
-             file "192.168.0.db";             
+             file "{{ reverse_zone}}.db";             
              allow-update { none; };
 
 };
