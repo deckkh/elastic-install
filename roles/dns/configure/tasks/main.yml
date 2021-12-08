@@ -1,2 +1,23 @@
 ---
 # tasks file for configure
+
+    - name: Create named.conf
+      template:
+        src: named.conf.j2
+        dest: /etc/named.conf
+      notify:
+        - restart
+
+    - name: Create forward zone
+      template:
+        src: kkh.net.db.j2
+        dest: /var/named/kkh.net.db
+      notify:
+        - restart
+
+    - name: Create reverse zone
+      template:
+        src: 192.168.0.db.j2
+        dest: /var/named/192.168.0.db
+      notify:
+        - restart

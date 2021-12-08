@@ -1,0 +1,23 @@
+$TTL 86400
+@   IN  SOA     ns1.kkh.net. root.kkh.net. (
+                                              3           ;Serial
+                                              3600        ;Refresh
+                                              1800        ;Retry
+                                              604800      ;Expire
+                                              86400       ;Minimum TTL
+)
+
+;Name Server Information
+@       IN  NS      ns1.kkh.net.
+
+;IP address of Name Server
+ns1       IN  A       192.168.0.254
+
+;A - Record HostName To Ip Address
+ansible     IN  A       192.168.0.3
+node1       IN  A       192.168.0.4
+node2       IN  A       192.168.0.5
+kibana      IN  A       192.168.0.6
+
+;CNAME record
+;ftp     IN CNAME        www.hosting.local.

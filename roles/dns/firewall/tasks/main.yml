@@ -1,2 +1,13 @@
 ---
 # tasks file for firewall
+- firewalld:
+    port: 53/udp
+    permanent: true
+    state: enabled
+    immediate: true
+
+- firewalld:
+    port: 53/tcp
+    permanent: true
+    state: enabled
+    immediate: true

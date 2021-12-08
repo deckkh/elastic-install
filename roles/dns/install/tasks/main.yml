@@ -1,2 +1,19 @@
 ---
 # tasks file for install
+- name: Install bind-utils
+  yum:
+    name:
+    - "bind"
+    - "bind-utils"
+    state: present
+
+- name: issue daemon-reload to pick up config changes
+  systemd:
+    daemon_reload: yes
+
+- name: Enable service named
+  service:
+    name: named
+    enabled: yes
+    state: started
+
