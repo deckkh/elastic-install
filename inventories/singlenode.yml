@@ -1,0 +1,18 @@
+all: # keys must be unique, i.e. only one 'hosts' per group
+    children:   # key order does not matter, indentation does
+        elastic:
+            children:
+            vars:
+                es_clustername: singlenode
+            hosts:
+                node1:
+              vars:
+                  es_roles: ['master','data' ]
+        kibana:
+            children:
+            hosts:
+                node1:
+        logstash:
+            children:
+            hosts:
+                node1:
