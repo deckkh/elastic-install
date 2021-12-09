@@ -1,2 +1,11 @@
 ---
 # tasks file for firewall
+
+- firewalld:
+    port: "{{ ls_beats_port}}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+  tags:
+    - firewall  
+

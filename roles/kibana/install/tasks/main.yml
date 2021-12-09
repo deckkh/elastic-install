@@ -15,8 +15,8 @@
 
 - name: stop service 
   service: 
-    name=kibana
-    state=stopped 
+    name: kibana
+    state: stopped 
   when: ansible_facts.services['kibana.service'] is defined    
   tags:
     - install  

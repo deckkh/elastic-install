@@ -1,0 +1,9 @@
+---
+- hosts: logstash
+  roles:
+     - logstash/requirements
+     - logstash/install
+     - logstash/firewall
+     - logstash/configure
+
+
