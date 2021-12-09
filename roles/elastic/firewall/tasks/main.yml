@@ -2,13 +2,13 @@
 # tasks file for firewall
 
 - firewalld:
-    port: {{ es_host_port}}/tcp
+    port: "{{ es_host_port}}/tcp"
     permanent: true
     state: enabled
     immediate: true
 
 - firewalld:
-    port: {{ es_transport_port}}/tcp
+    port: "{{ es_transport_port}}/tcp"
     permanent: true
     state: enabled
     immediate: true
