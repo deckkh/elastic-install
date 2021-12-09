@@ -1,2 +1,36 @@
 ---
 # tasks file for uninstall
+
+- name: Populate service facts
+  service_facts:    
+  tags:
+    - uninstall  
+
+- name: stop service 
+  service: 
+    name: elasticsearch
+    state: stopped 
+  when: ansible_facts.services['elasticsearch.service'] is defined    
+  tags:
+    - uninstall  
+
+- name: Uninstall package.
+  yum:
+     name: "elasticsearch*"
+     state: absent       
+  tags:
+    - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: /etc/elasticsearch
+    state: absent
+  tags:
+    - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: /var/log/elasticsearch
+    state: absent    
+  tags:
+    - uninstall  
