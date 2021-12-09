@@ -1,0 +1,13 @@
+---
+- hosts: logstash
+  roles:
+     - logstash/uninstall
+
+- hosts: kibana
+  roles:
+     - kibana/uninstall
+
+- hosts: elastic
+  roles:
+     - elastic/uninstall
+
