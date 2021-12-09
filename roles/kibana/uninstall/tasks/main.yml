@@ -1,9 +1,6 @@
 ---
 # tasks file for uninstall
 
----
-# tasks file for uninstall
-
 - name: Populate service facts
   service_facts:    
   tags:
