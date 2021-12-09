@@ -34,3 +34,10 @@
     state: absent    
   tags:
     - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "{{ data_path }}"
+    state: absent    
+  tags:
+    - uninstall  
