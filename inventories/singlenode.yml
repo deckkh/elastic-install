@@ -9,8 +9,8 @@ all: # keys must be unique, i.e. only one 'hosts' per group
                 es_cluster_initial_master_nodes: ['node1']
             hosts:
                 node1:
-                vars:
-                  es_roles: ['master','data' ]
+                  vars:
+                    es_roles: ['master','data' ]
         kibana:
             children:
             hosts:
