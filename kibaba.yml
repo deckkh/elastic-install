@@ -1,0 +1,9 @@
+---
+- hosts: kibana
+  roles:
+     - kibana/requirements
+     - kibana/install
+     - kibana/firewall
+     - kibana/configure
+
+

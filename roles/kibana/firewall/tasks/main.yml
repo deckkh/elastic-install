@@ -1,2 +1,20 @@
 ---
 # tasks file for firewall
+
+- firewalld:
+    port: "{{ kbn_public_port}}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+  tags:
+    - firewall  
+
+- name: Redirect port public to private with Rich Rule
+  firewalld:
+    rich_rule: rule family=ipv4 forward-port port={{ kbn_public_port }} protocol=tcp to-port={{ kbn_private_port}}
+    zone: public
+    permanent: yes
+    immediate: yes
+    state: enabled
+  tags:
+    - firewall  

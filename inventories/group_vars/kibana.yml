@@ -1,0 +1,2 @@
+kbn_public_port: "443"
+kbn_private_port: "5601"
