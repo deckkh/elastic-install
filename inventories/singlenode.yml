@@ -11,6 +11,9 @@ all: # keys must be unique, i.e. only one 'hosts' per group
                 node1:
                   es_node_roles: ['master','data' ]
         kibana:
+            vars:
+                kbn_kibana_yml: "singlenode.kibana.yml.j2"
+                kbn_elasticsearch_hosts: ["http://node1:9200"]
             children:
             hosts:
                 node1:

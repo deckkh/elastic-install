@@ -1,2 +1,12 @@
 ---
 # tasks file for configure
+- name: Configure kibana.yml
+  template:
+    src: "{{ kbn_kibana_yml }}"
+    dest: "/etc/kibana/kibana.yml"
+    owner: kibana
+    group: kibana
+  notify:
+    - restart
+  tags:
+    - configure  

@@ -1,2 +1,6 @@
 ---
 # handlers file for configure
+- name: restart
+  service:
+    name: "kibana"
+    state: "restarted"
