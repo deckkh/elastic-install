@@ -7,6 +7,8 @@
     state: directory
     owner: elasticsearch
     group: elasticsearch
+  tags:
+    - configure  
 
 
 - name: Configure elasticsearch.yml
@@ -17,3 +19,5 @@
     group: elasticsearch
   notify:
     - restart
+  tags:
+    - configure  
