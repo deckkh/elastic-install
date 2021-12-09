@@ -4,3 +4,4 @@ data_disk: '/dev/sdb'
 mount_logical_volume: "/data"
 data_path: "/data/elastic"
 es_host_port: "9200"
+es_transport_port: "9300"
