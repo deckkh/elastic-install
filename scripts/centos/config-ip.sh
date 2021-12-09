@@ -14,4 +14,5 @@ nmcli con mod $interface +ipv4.dns 8.8.4.4
 nmcli con mod $interface ipv4.gateway $vlan$gateway
 nmcli con mod $interface ipv4.addresses $vlan$last_octet/$mask
 nmcli general hostname $hostname
+nmcli con mod $interface ipv4.dns-search "kkh.net"
 nmcli con up $interface
