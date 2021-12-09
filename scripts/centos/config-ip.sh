@@ -8,7 +8,8 @@ read last_octet
 echo -n "enter hostname : "
 read hostname
 #nmcli con show $interface
-nmcli con mod $interface ipv4.dns 8.8.8.8
+nmcli con mod $interface ipv4.dns 192.168.0.254
+nmcli con mod $interface +ipv4.dns 8.8.8.8
 nmcli con mod $interface +ipv4.dns 8.8.4.4
 nmcli con mod $interface ipv4.gateway $vlan$gateway
 nmcli con mod $interface ipv4.addresses $vlan$last_octet/$mask
