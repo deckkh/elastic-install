@@ -1,6 +1,14 @@
 ---
 # tasks file for configure
 
+- name: create data directory
+  file:
+    path: "{{ data_path}}"
+    state: directory
+    owner: elasticsearch
+    group: elasticsearch
+
+
 - name: Configure elasticsearch.yml
   template:
     src: "{{ es_elasticsearch_yml }}"
