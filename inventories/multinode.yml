@@ -1,0 +1,25 @@
+all: # keys must be unique, i.e. only one 'hosts' per group
+    children:   # key order does not matter, indentation does
+        elastic:
+            children:
+            vars:
+                es_clustername: multinode
+                es_elasticsearch_yml: "multinode.elasticsearch.yml.j2"
+                es_discovery_seed_hosts : ['node1']
+                es_cluster_initial_master_nodes: ['node1']
+            hosts:
+                node1:
+                  es_node_roles: ['master' ]
+                node2:
+                  es_node_roles: ['data','ingest' ]
+        kibana:
+            vars:
+                kbn_kibana_yml: "multinode.kibana.yml.j2"
+                kbn_elasticsearch_hosts: ["http://node1:9200"]
+            children:
+            hosts:
+                kibana:
+        logstash:
+            children:
+            hosts:
+                node1:
