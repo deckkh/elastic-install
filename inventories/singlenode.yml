@@ -10,7 +10,7 @@ all: # keys must be unique, i.e. only one 'hosts' per group
             hosts:
                 node1:
                   vars:
-                    es_roles: ['master','data' ]
+                    es_node_roles: ['master','data' ]
         kibana:
             children:
             hosts:
