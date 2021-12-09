@@ -5,9 +5,13 @@
     permanent: true
     state: enabled
     immediate: true
+  tags:
+    - firewall  
 
 - firewalld:
     port: 53/tcp
     permanent: true
     state: enabled
     immediate: true
+  tags:
+    - firewall  

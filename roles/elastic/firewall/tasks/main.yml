@@ -6,9 +6,13 @@
     permanent: true
     state: enabled
     immediate: true
+  tags:
+    - firewall  
 
 - firewalld:
     port: "{{ es_transport_port}}/tcp"
     permanent: true
     state: enabled
     immediate: true
+  tags:
+    - firewall  
