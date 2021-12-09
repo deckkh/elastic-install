@@ -1,2 +1,4 @@
 kbn_public_port: "443"
 kbn_private_port: "5601"
+kbn_server_host: "0.0.0.0"
+
