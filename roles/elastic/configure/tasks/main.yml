@@ -1,2 +1,11 @@
 ---
 # tasks file for configure
+
+- name: Configure elasticsearch.yml
+  template:
+    src: "{{ es_elasticsearch_yml }}"
+    dest: "/etc/elasticsearch/elasticsearch.yml"
+    owner: elasticsearch
+    group: elasticsearch
+  notify:
+    - restart

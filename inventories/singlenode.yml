@@ -4,6 +4,7 @@ all: # keys must be unique, i.e. only one 'hosts' per group
             children:
             vars:
                 es_clustername: singlenode
+                es_elasticsearch_yml: "singlenode.elasticsearch.yml.j2"
             hosts:
                 node1:
               vars:
