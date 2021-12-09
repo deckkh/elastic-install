@@ -26,7 +26,7 @@ node.name:  {{ ansible_hostname}}
 #
 #node.attr.rack: r1
 
-node.roles: "{{ es_node_roles }}"
+node.roles: {{ es_node_roles }}
 #
 # ----------------------------------- Paths ------------------------------------
 #
