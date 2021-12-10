@@ -80,7 +80,7 @@
 
 - name: Fetch kibana cert
   ansible.builtin.fetch:
-    src: "/tmp/{{ kbn_hostname }}.p12"
+    src: "/tmp/{{es_clustername}}-{{ kbn_hostname }}.p12"
     dest: "{{ local_install_dir }}/{{ es_clustername }}-{{ kbn_hostname}}.p12"
     flat: true
 #  when: ca_p12.stat.exists == false 
