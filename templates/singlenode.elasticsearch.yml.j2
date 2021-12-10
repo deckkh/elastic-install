@@ -82,3 +82,13 @@ cluster.initial_master_nodes: {{ es_cluster_initial_master_nodes }}
 # Require explicit names when deleting indices:
 #
 #action.destructive_requires_name: true
+
+{% if es_tls == true %}
+
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: full
+xpack.security.transport.ssl.client_authentication: required
+xpack.security.transport.ssl.keystore.path: /etc/elasticsearch/certs/cert-{{ ansible_hostname}}.p12
+xpack.security.transport.ssl.truststore.path: /etc/elasticsearch/certs/{{ es_clustername}}.p12
+
+{% endif %}
