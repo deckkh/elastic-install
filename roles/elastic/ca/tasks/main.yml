@@ -91,7 +91,7 @@
 - name: Extract PEM
   delegate_to: localhost
   ansible.builtin.command:
-     cmd: openssl pkcs12 -in "{{ local_install_dir }}/{{ es_clustername}}-{{ kbn_hostname}}.p12" -cacerts -nokeys -out "{{ local_install_dir }}/{{es _clustername}}.crt" -password "pass:{{ es_clustername}}"
+     cmd: openssl pkcs12 -in "{{ local_install_dir }}/{{ es_clustername}}-{{ kbn_hostname}}.p12" -cacerts -nokeys -out "{{ local_install_dir }}/{{es_clustername}}.crt" -password "pass:{{ es_clustername}}"
      creates: "{{ local_install_dir }}/{{es _clustername}}.crt"
 #  when: ca_p12.stat.exists == false 
   tags:
