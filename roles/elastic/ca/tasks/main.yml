@@ -20,7 +20,7 @@
 
 - name: Run command if ca.p12 does not exist
   ansible.builtin.command:
-    cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil ca --out "/etc/elasticsearch/certs/{{ es_clustername }}.p12" --pass "{{es_clustername}}"
+    cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil ca --out "/tmp/{{ es_clustername }}.p12" --pass "{{es_clustername}}"
     creates: "/tmp/{{ es_clustername }}.p12"
   when: ca_p12.stat.exists == false
   tags:
