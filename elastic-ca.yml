@@ -1,0 +1,8 @@
+---
+- hosts: elastic
+  serial: 1
+  order: sorted
+  roles:
+     - elastic/ca
+
+

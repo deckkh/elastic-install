@@ -1,2 +1,21 @@
 ---
 # tasks file for ca
+- name: create certs directory 
+  file:
+    path: /etc/elasticsearch/certs
+    state: directory
+    owner: elasticsearch
+    group: elasticsearch
+  tags:
+    - ca
+
+- name: Run command if ca.p12 does not exist
+  ansible.builtin.command:
+    cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil ca --out /etc/elasticsearch/certs/{{ es_clustername }}.p12" --pass "{{es_clustername}}"
+    creates: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
+
+- name: Change CA owner
+  ansible.builtin.file:
+    path: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
+    owner: elasticsearch
+    group: elasticsearch
