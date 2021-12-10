@@ -1,5 +1,11 @@
 ---
 # tasks file for ca
+
+- name: check if ca file exists
+  stat: 
+    path: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
+  register: ca_p12
+
 - name: create certs directory 
   file:
     path: /etc/elasticsearch/certs
@@ -19,3 +25,8 @@
     path: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
     owner: elasticsearch
     group: elasticsearch
+
+- name: Fetch ca 
+  ansible.builtin.fetch:
+    src: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
+    dest: "{{ local_install_dir"/{{ es_clustername }}.p12
