@@ -1,11 +1,6 @@
 ---
 # tasks file for ca
 
-- name: check if ca file exists
-  stat: 
-    path: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
-  register: ca_p12
-
 - name: create certs directory 
   file:
     path: /etc/elasticsearch/certs
@@ -15,18 +10,47 @@
   tags:
     - ca
 
+- name: Check for local CA
+  delegate_to: localhost
+  stat:
+    path: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+  register: ca_p12
+  tags:
+    - ca
+
 - name: Run command if ca.p12 does not exist
   ansible.builtin.command:
     cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil ca --out "/etc/elasticsearch/certs/{{ es_clustername }}.p12" --pass "{{es_clustername}}"
     creates: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
+  when: ca_p12.stat.exists == false
+  tags:
+    - ca
+
+- name: Fetch ca 
+  ansible.builtin.fetch:
+    src: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
+    dest: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+  when: ca_p12.stat.exists == false 
+  tags:
+    - ca
+
+
+- name: Copy CA file 
+  copy:
+    src: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+    dest: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
+    owner: elasticsearch
+    group: elasticsearch
+  when: ca_p12.stat.exists == true  
+  tags:
+    - ca
+
 
 - name: Change CA owner
   ansible.builtin.file:
     path: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
     owner: elasticsearch
     group: elasticsearch
+  tags:
+    - ca
 
-- name: Fetch ca 
-  ansible.builtin.fetch:
-    src: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
-    dest: "{{ local_install_dir }}/{{ es_clustername }}.p12"
