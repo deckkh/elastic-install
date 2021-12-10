@@ -69,6 +69,25 @@
   tags:
     - ca
 
+
+- name: Create kibana  cert
+  ansible.builtin.command:
+     cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca "/etc/elasticsearch/certs/{{ es_clustername }}.p12" --ca-pass "{{es_clustername}}"   --dns "{{ kbn_hostname }}" --name "{{ kbn_hostname }}.p12" --out "/tmp/kbn_hostname }}.p12" --pass "{{es_clustername}}"
+     creates: "/etc/elasticsearch/certs/http-{{ ansible_hostname }}.p12"
+#  when: ca_p12.stat.exists == false 
+  tags:
+    - ca
+
+- name: Fetch kibana cert
+  ansible.builtin.fetch:
+    src: "/tmp/{{ kbn_clustername }}.p12"
+    dest: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+    flat: true
+#  when: ca_p12.stat.exists == false 
+  tags:
+    - ca
+
+
 # - name: Create http  cert
 #   ansible.builtin.command:
 #     cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil http --ca "/etc/elasticsearch/certs/{{ es_clustername }}.p12" --ca-pass "{{es_clustername}}" --ip "{{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}.p12" --out "/etc/elasticsearch/certs/http-{{ ansible_hostname }}.p12" --pass "{{es_clustername}}"
