@@ -38,7 +38,7 @@
 - name: Copy CA file 
   copy:
     src: "{{ local_install_dir }}/{{ es_clustername }}.p12"
-    dest: "/tmp/x.p12"
+    dest: "/etc/elasticsearch/certs"
     owner: elasticsearch
     group: elasticsearch
   tags:
