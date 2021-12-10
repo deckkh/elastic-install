@@ -21,15 +21,16 @@
 - name: Run command if ca.p12 does not exist
   ansible.builtin.command:
     cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil ca --out "/etc/elasticsearch/certs/{{ es_clustername }}.p12" --pass "{{es_clustername}}"
-    creates: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
+    creates: "/tmp/{{ es_clustername }}.p12"
   when: ca_p12.stat.exists == false
   tags:
     - ca
 
 - name: Fetch ca 
   ansible.builtin.fetch:
-    src: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
+    src: "/tmp/{{ es_clustername }}.p12"
     dest: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+    flat: true
   when: ca_p12.stat.exists == false 
   tags:
     - ca
@@ -38,7 +39,7 @@
 - name: Copy CA file 
   copy:
     src: "{{ local_install_dir }}/{{ es_clustername }}.p12"
-    dest: "/etc/elasticsearch/certs/{{ es_clustername }}.p13"
+    dest: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
     owner: elasticsearch
     group: elasticsearch
   tags:
