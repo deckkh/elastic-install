@@ -41,7 +41,6 @@
     dest: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
     owner: elasticsearch
     group: elasticsearch
-  when: ca_p12.stat.exists == true  
   tags:
     - ca
 
