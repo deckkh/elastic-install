@@ -89,6 +89,8 @@ xpack.security.transport.ssl.enabled: true
 xpack.security.transport.ssl.verification_mode: full
 xpack.security.transport.ssl.client_authentication: required
 xpack.security.transport.ssl.keystore.path: /etc/elasticsearch/certs/cert-{{ ansible_hostname}}.p12
+xpack.security.transport.ssl.keystore.secure_password: {{ es_clustername }}
 xpack.security.transport.ssl.truststore.path: /etc/elasticsearch/certs/{{ es_clustername}}.p12
+xpack.security.transport.ssl.truststore.secure_password: {{ es_clustername }}
 
 {% endif %}
