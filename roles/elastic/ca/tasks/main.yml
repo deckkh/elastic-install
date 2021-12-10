@@ -56,7 +56,7 @@
 
 - name: Create node  cert
   ansible.builtin.command:
-    cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca "/etc/elasticsearch/certs/{{ es_clustername }}.p12" --ca-pass "{{es_clustername}}" --ip "{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}.p12" --out "/etc/elasticsearch/certs" --pass "{{es_clustername}}"
+    cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca "/etc/elasticsearch/certs/{{ es_clustername }}.p12" --ca-pass "{{es_clustername}}" --ip "{{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}.p12" --out "/etc/elasticsearch/certs" --pass "{{es_clustername}}"
     creates: "/etc/elasticsearch/certs/{{ ansible_hostname }}.p12"
   tags:
     - ca
