@@ -88,15 +88,34 @@
     - ca
 
 
-- name: Extract PEM
+- name: Extract CA cert
   delegate_to: localhost
   ansible.builtin.command:
      cmd: openssl pkcs12 -in "{{ local_install_dir }}/{{ es_clustername}}-{{ kbn_hostname}}.p12" -cacerts -nokeys -out "{{ local_install_dir }}/{{es_clustername}}.crt" -password "pass:{{ es_clustername}}"
      creates: "{{ local_install_dir }}/{{es_clustername}}.crt"
-#  when: ca_p12.stat.exists == false 
   tags:
     - ca
     - pem
+
+
+- name: Extract kibana cert
+  delegate_to: localhost
+  ansible.builtin.command:
+     cmd: openssl pkcs12 -in "{{ local_install_dir }}/{{ es_clustername}}-{{ kbn_hostname}}.p12"  -nokeys -out "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.pem" -password "pass:{{ es_clustername}}"
+     creates: "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.pem"
+  tags:
+    - ca
+    - pem
+
+- name: Extract kibana key
+  delegate_to: localhost
+  ansible.builtin.command:
+     cmd: openssl pkcs12 -in "{{ local_install_dir }}/{{ es_clustername}}-{{ kbn_hostname}}.p12"  -nocerts -out "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.key" -password "pass:{{ es_clustername}}"
+     creates: "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.key"
+  tags:
+    - ca
+    - pem
+
 
 # - name: Create http  cert
 #   ansible.builtin.command:
