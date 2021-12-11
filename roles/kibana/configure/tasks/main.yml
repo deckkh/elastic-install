@@ -10,3 +10,50 @@
     - restart
   tags:
     - configure  
+
+- name: create certs directory
+  file:
+    path: "/etc/kibana/certs"
+    state: directory
+    owner: kibana
+    group: kibana
+  notify:
+    - restart
+  tags:
+    - configure  
+
+- name: Copy CA file 
+  copy:
+    src: "{{ local_install_dir }}/{{ es_clustername }}.crt"
+    dest: "/etc/kibana/certs/{{ es_clustername }}.crt"
+    owner: kibana
+    group: kibana
+  when: es_tls == true  
+  notify:
+    - restart
+  tags:
+    - configure
+
+- name: Copy kibana cert file 
+  copy:
+    src: "{{ local_install_dir }}/{{ es_clustername }}-{{ kbn_hostname}}.pem"
+    dest: "/etc/kibana/certs/{{ es_clustername }}-{{ kbn_hostname}}.pem"
+    owner: kibana
+    group: kibana
+  when: es_tls == true  
+  notify:
+    - restart
+  tags:
+    - configure
+
+- name: Copy kibana key file 
+  copy:
+    src: "{{ local_install_dir }}/{{ es_clustername }}-{{ kbn_hostname}}.key"
+    dest: "/etc/kibana/certs/{{ es_clustername }}-{{ kbn_hostname}}.key"
+    owner: kibana
+    group: kibana
+  when: es_tls == true  
+  notify:
+    - restart
+  tags:
+    - configure

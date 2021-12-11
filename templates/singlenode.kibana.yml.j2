@@ -31,6 +31,16 @@ server.host: {{ kbn_server_host }}
 # The URLs of the Elasticsearch instances to use for all your queries.
 elasticsearch.hosts:  {{ kbn_elasticsearch_hosts }} 
 
+{% if es_tls == true %}
+
+elasticsearch.ssl.certificateAuthorities: /etc/kibana/certs/{{ es_clustername}}.crt
+
+server.ssl.certificate: /etc/kibana/certs/{{ es_clustername}}-{{ kbn_hostname }}.pem
+server.ssl.key: /etc/kibana/certs/{{ es_clustername}}-{{ kbn_hostname }}.key
+server.ssl.enabled: true
+
+{% endif %}
+
 # Kibana uses an index in Elasticsearch to store saved searches, visualizations and
 # dashboards. Kibana creates a new index if the index doesn't already exist.
 #kibana.index: ".kibana"
