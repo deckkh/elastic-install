@@ -17,6 +17,10 @@ all: # keys must be unique, i.e. only one 'hosts' per group
             vars:
                 kbn_kibana_yml: "singlenode.kibana.yml.j2"
                 kbn_elasticsearch_hosts: ["https://node1:9200"]
+                # use utility kibana_encryption_keys to generate new values, change these
+                kbn_xpack_encryptedSavedObjects_encryptionKey: "eb1660a77119d9210982e9eafcc96134"
+                kbn_xpack_reporting_encryptionKey:  "19d3f68aacb396e2b2a4106693d0ff41"   
+                kbn_xpack_security_encryptionKey: "329b0faa9aa3da870d1d3b4e984eac42"
             children:
             hosts:
                 node1:

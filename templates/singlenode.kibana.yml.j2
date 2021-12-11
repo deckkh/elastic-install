@@ -124,8 +124,8 @@ server.ssl.enabled: true
 # Supported languages are the following: English - en , by default , Chinese - zh-CN .
 #i18n.locale: "en"
 
-# encryption keys
-xpack.encryptedSavedObjects.encryptionKey: changemeeb1660a77119d9210982e9eafcc96134
-xpack.reporting.encryptionKey: changeme19d3f68aacb396e2b2a4106693d0ff41
-xpack.security.encryptionKey: changeme329b0faa9aa3da870d1d3b4e984eac42
+# encryption keys from inventory
+xpack.encryptedSavedObjects.encryptionKey: {{ kbn_xpack_encryptedSavedObjects_encryptionKey}}
+xpack.reporting.encryptionKey: {{ kbn_xpack_reporting_encryptionKey}}
+xpack.security.encryptionKey: {{kbn_xpack_security_encryptionKey}}
 #
