@@ -1,9 +1,9 @@
 all: # keys must be unique, i.e. only one 'hosts' per group
-    children:   # key order does not matter, indentation does
     vars:
         es_tls: true
         kbn_hostname: "kibana"
         es_clustername: singlenode
+    children:   # key order does not matter, indentation does
         elastic:
             children:
             vars:
