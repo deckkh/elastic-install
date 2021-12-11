@@ -110,7 +110,7 @@
 - name: Extract kibana key
   delegate_to: localhost
   ansible.builtin.command:
-     cmd: openssl pkcs12 -in "{{ local_install_dir }}/{{ es_clustername}}-{{ kbn_hostname}}.p12"  -nocerts -out "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.key" -password "pass:{{ es_clustername}}"
+     cmd: openssl pkcs12 -in "{{ local_install_dir }}/{{ es_clustername}}-{{ kbn_hostname}}.p12"  -nocerts -nodes -out "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.key" -password "pass:{{ es_clustername}}"
      creates: "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.key"
   tags:
     - ca
