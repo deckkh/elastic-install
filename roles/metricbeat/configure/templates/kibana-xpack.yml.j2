@@ -4,11 +4,11 @@
 - module: kibana
   xpack.enabled: true
   period: 10s
-  {% if es_tls == true %}
+{% if es_tls == true %}
   hosts: ["https://{{ ansible_hostname }}:5601"]
-  {% else %}
+{% else %}
   hosts: ["{{ ansible_hostname }}:5601"]
-  {% endif  %}  
+{% endif  %}  
   #basepath: ""
   #username: "user"
   #password: "secret"
