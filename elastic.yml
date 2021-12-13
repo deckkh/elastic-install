@@ -2,7 +2,7 @@
 - hosts: elastic
   roles:
      - elastic/requirements
-     - elastic/disk
+     - disk/configure
      - elastic/install
      - elastic/firewall
      - elastic/plugin
