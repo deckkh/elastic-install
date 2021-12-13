@@ -7,6 +7,8 @@
         dest: /etc/named.conf
       notify:
         - restart
+      tags:
+        - configure  
 
     - name: Create forward zone
       template:
@@ -14,6 +16,8 @@
         dest: "/var/named/{{ forward_zone}}.db"
       notify:
         - restart
+      tags:
+        - configure  
 
     - name: Create reverse zone
       template:
@@ -21,3 +25,5 @@
         dest: "/var/named/{{ reverse_zone}}.db"
       notify:
         - restart
+      tags:
+        - configure  
