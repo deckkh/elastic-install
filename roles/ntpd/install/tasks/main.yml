@@ -4,15 +4,14 @@
 - name: Install ntpd
   yum:
     name: 
-      - ntp
-      - ntpdate
+      - chrony
     state: present  
   tags:
     - install  
 
 - name: enable service 
   service: 
-    name: ntpd
+    name: chronyd
     enabled: true
     state: started
   tags:

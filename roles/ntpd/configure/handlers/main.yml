@@ -2,5 +2,5 @@
 # handlers file for configure
 - name: restart
   service:
-    name: "ntpd"
+    name: "chronyd"
     state: "restarted"
