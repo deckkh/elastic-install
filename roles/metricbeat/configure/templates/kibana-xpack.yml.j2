@@ -4,7 +4,15 @@
 - module: kibana
   xpack.enabled: true
   period: 10s
+  {% if es_tls == true %}
+  hosts: ["https://{{ ansible_hostname }}:5601"]
+  {% else %}
   hosts: ["{{ ansible_hostname }}:5601"]
+  {% endif  %}  
   #basepath: ""
   #username: "user"
   #password: "secret"
+
+{% if es_tls == true %}
+  ssl.certificate_authorities: ["/etc/metricbeat/certs/{{ es_clustername }}.crt"]
+{% endif  %}
