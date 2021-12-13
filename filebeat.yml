@@ -1,9 +1,9 @@
 ---
 - hosts: all
   roles:
-     - metricbeat/requirements
-     - metricbeat/install
-     - metricbeat/firewall
-     - metricbeat/configure
+     - filebeat/requirements
+     - filebeat/install
+     - filebeat/firewall
+     - filebeat/configure
 
 
