@@ -8,7 +8,7 @@
 
 - name: Configure kibana module
   template:
-    src: "kibana-xpack.j2"
+    src: "kibana-xpack.yml.j2"
     dest: "/etc/metricbeat/modules.d/kibana.yml"
   when: ansible_facts.services['kibana.service'] is defined    
   notify:
@@ -18,7 +18,7 @@
 
 - name: Configure logstash module
   template:
-    src: "logstash-xpack.j2"
+    src: "logstash-xpack.yml.j2"
     dest: "/etc/metricbeat/modules.d/logstash.yml"
   when: ansible_facts.services['logstash.service'] is defined    
   notify:
@@ -28,7 +28,7 @@
 
 - name: Configure elasticsearch module
   template:
-    src: "kibana-xpack.j2"
+    src: "kibana-xpack.yml.j2"
     dest: "/etc/metricbeat/modules.d/elasticsearch.yml"
   when: ansible_facts.services['elasticsearch.service'] is defined    
   notify:
