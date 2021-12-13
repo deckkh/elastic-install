@@ -107,7 +107,7 @@ output.elasticsearch:
   #password: "changeme"
 
 {% if es_tls == true %}
-  output.elasticsearch.ssl.certificate_authorities: /etc/logstash/{{es_clustername}}.crt
+  ssl.certificate_authorities: /etc/metricbeat/{{es_clustername}}.crt
 {% endif  %}
 
 # ------------------------------ Logstash Output -------------------------------
