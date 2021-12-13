@@ -1,0 +1,12 @@
+---
+- hosts: all
+  vars_prompt:
+ 
+    - name: device
+      prompt: "Enter device?"
+      private: no
+ 
+  roles:
+     - disk/add-disk
+
+
