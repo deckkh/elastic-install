@@ -3,7 +3,6 @@
   roles:
      - ntpd/requirements
      - ntpd/install
-     - ntpd/firewall
      - ntpd/configure
 
 
