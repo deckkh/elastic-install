@@ -2,19 +2,29 @@
 - hosts: logstash
   roles:
      - logstash/uninstall
+  tags:
+    - logstash   
 
 - hosts: kibana
   roles:
      - kibana/uninstall
+  tags:
+    - kibana
 
 - hosts: elastic
   roles:
      - elastic/uninstall
+  tags:
+    - elastic   
 
 - hosts: all
   roles:
      - metricbeat/uninstall
+  tags:
+    - metricbeat   
 
 - hosts: all
   roles:
      - filebeat/uninstall
+  tags:
+    - filebeat
