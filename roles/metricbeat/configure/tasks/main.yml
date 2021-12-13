@@ -44,3 +44,25 @@
     - restart
   tags:
     - configure  
+
+- name: create certs directory 
+  file:
+    path: /etc/logstash/certs
+    state: directory
+    owner: logstash
+    group: logstash
+  notify:
+    - restart
+  tags:
+    - configure
+
+- name: Copy root ca file 
+  copy:
+    src: "{{ local_install_dir}}/{{ es_clustername}}.crt"
+    dest: "/etc/logstash/certs/{{ es_clustername}}.crt"
+    owner: logstash
+    group: logstash
+  notify:
+    - restart
+  tags:
+    - configure
