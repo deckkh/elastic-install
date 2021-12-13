@@ -1,2 +1,16 @@
 ---
 # tasks file for install
+
+- name: Install ntpd
+  yum:
+    name: ntpd
+  tags:
+    - install  
+
+- name: enable service 
+  service: 
+    name: ntpd
+    enabled: true
+    state: started
+  tags:
+    - install  
