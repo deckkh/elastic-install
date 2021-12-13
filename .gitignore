@@ -1,3 +1,7 @@
 *.rpm
 *.zip
 *.retry
+*.pem
+*.key
+*.crt
+*.csr
