@@ -1,2 +1,3 @@
 ---
 # defaults file for configure
+ntpd_timezone : "Europe/Copenhagen"

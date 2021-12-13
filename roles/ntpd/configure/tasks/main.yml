@@ -6,8 +6,8 @@
   tags:
     - configure
 
-- name: Update pool
+- name: Update timezone
   ansible.builtin.command:
-    cmd: timedatectl set-timezone Europe/Copenhagen
+    cmd: timedatectl set-timezone "{{ ntpd_timezone }}"
   tags:
     - configure
