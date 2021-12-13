@@ -16,11 +16,11 @@
   tags:
     - configure  
 
-- name: Configure metricbeat module
+- name: Configure logstash module
   template:
-    src: "metricbeat-xpack.yml.j2"
-    dest: "/etc/metricbeat/modules.d/metricbeat.yml"
-  when: ansible_facts.services['metricbeat.service'] is defined    
+    src: "logstash-xpack.yml.j2"
+    dest: "/etc/metricbeat/modules.d/logstash.yml"
+  when: ansible_facts.services['logstash.service'] is defined    
   notify:
     - restart
   tags:
