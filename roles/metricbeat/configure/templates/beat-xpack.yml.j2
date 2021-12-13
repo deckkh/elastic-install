@@ -4,7 +4,7 @@
 - module: beat
   xpack.enabled: true
   period: 10s
-  hosts: ["http://localhost:5066"]
+  hosts: ["http://{{ ansible_hostname}}:5066"]
   #username: "user"
   #password: "secret"
 
