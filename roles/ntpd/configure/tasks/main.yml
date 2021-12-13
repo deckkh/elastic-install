@@ -5,3 +5,9 @@
     cmd: timedatectl set-ntp true
   tags:
     - configure
+
+- name: Update pool
+  ansible.builtin.command:
+    cmd: timedatectl set-timezone Europe/Copenhagen
+  tags:
+    - configure
