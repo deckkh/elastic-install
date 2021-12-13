@@ -11,3 +11,10 @@
   roles:
      - elastic/uninstall
 
+- hosts: all
+  roles:
+     - metricbeat/uninstall
+
+- hosts: all
+  roles:
+     - filebeat/uninstall
