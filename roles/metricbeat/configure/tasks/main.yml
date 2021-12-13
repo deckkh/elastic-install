@@ -1,2 +1,17 @@
 ---
 # tasks file for configure
+
+- name: Populate service facts
+  service_facts:    
+  tags:
+    - configure
+
+- name: Configure kibana module
+  template:
+    src: "{{ mb_kibana_yml }}"
+    dest: "/etc/metricbeat/modules.d/kibana.yml"
+  when: ansible_facts.services['metricbeat.service'] is defined    
+  notify:
+    - restart
+  tags:
+    - configure  
