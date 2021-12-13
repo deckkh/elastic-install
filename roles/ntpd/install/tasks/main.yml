@@ -3,7 +3,10 @@
 
 - name: Install ntpd
   yum:
-    name: ntpd
+    name: 
+      - ntp
+      - ntpdate
+    state: present  
   tags:
     - install  
 
