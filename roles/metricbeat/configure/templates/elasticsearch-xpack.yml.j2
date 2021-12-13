@@ -5,11 +5,11 @@
   xpack.enabled: true
   period: 10s
 
-  {% if es_tls == true %}
+{% if es_tls == true %}
   hosts: ["https://{{ ansible_hostname }}:9200"]
-  {% else %}
+{% else %}
   hosts: ["http://{{ ansible_hostname }}:9200"]
-  {% endif  %}
+{% endif  %}
   #username: "user"
   #password: "secret"
 
