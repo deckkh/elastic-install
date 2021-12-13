@@ -49,8 +49,6 @@
   file:
     path: /etc/logstash/certs
     state: directory
-    owner: logstash
-    group: logstash
   notify:
     - restart
   tags:
@@ -60,8 +58,6 @@
   copy:
     src: "{{ local_install_dir}}/{{ es_clustername}}.crt"
     dest: "/etc/logstash/certs/{{ es_clustername}}.crt"
-    owner: logstash
-    group: logstash
   notify:
     - restart
   tags:
