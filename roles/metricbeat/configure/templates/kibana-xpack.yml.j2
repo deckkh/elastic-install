@@ -5,9 +5,9 @@
   xpack.enabled: true
   period: 10s
 {% if es_tls == true %}
-  hosts: ["https://{{ ansible_hostname }}:5601"]
+  hosts: ["https://{{ kbn_hostname }}:5601"]
 {% else %}
-  hosts: ["{{ ansible_hostname }}:5601"]
+  hosts: ["{{ kbn_hostname }}:5601"]
 {% endif  %}  
   #basepath: ""
   #username: "user"
