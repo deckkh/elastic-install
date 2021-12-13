@@ -16,11 +16,11 @@
   tags:
     - configure  
 
-- name: Configure logstash module
+- name: Configure metricbeat module
   template:
-    src: "logstash-xpack.yml.j2"
-    dest: "/etc/metricbeat/modules.d/logstash.yml"
-  when: ansible_facts.services['logstash.service'] is defined    
+    src: "metricbeat-xpack.yml.j2"
+    dest: "/etc/metricbeat/modules.d/metricbeat.yml"
+  when: ansible_facts.services['metricbeat.service'] is defined    
   notify:
     - restart
   tags:
@@ -47,7 +47,7 @@
 
 - name: create certs directory 
   file:
-    path: /etc/logstash/certs
+    path: /etc/metricbeat/certs
     state: directory
   notify:
     - restart
@@ -57,7 +57,7 @@
 - name: Copy root ca file 
   copy:
     src: "{{ local_install_dir}}/{{ es_clustername}}.crt"
-    dest: "/etc/logstash/certs/{{ es_clustername}}.crt"
+    dest: "/etc/metricbeat/certs/{{ es_clustername}}.crt"
   notify:
     - restart
   tags:

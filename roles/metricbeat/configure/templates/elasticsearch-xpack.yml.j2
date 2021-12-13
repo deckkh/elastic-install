@@ -15,5 +15,5 @@
 
 
 {% if es_tls == true %}
-  ssl.certificate_authorities: ["/etc/logstash/certs/{{ es_clustername }}.crt"]
+  ssl.certificate_authorities: ["/etc/metricbeat/certs/{{ es_clustername }}.crt"]
 {% endif  %}
