@@ -1,0 +1,9 @@
+---
+- hosts: minio
+  roles:
+     - minio/requirements
+     - minio/install
+     - minio/firewall
+     - minio/configure
+
+
