@@ -1,2 +1,18 @@
 ---
 # tasks file for add-disk
+
+- name: "Extend LV Step1 :  PVCreate device /dev/{{ device }}"
+  shell: |
+    pvcreate "/dev/{{ device }}"
+
+- name: "Extend LV Step2 :  Extend Volume Group {{ volume_group }} with new device {{ device }}"
+  shell: |
+     vgextend "{{ volume_group }}" "/dev/{{ device }}"
+
+- name: "Extend LV Step3 : Logical Volume Extend"
+  shell: |
+     lvm lvextend -l +100%FREE "/dev/{{ volume_group }}/{{ logical_volume }}"
+
+- name: "Extend LV Step4: xfs_growfs"
+  shell: |
+     xfs_growfs "/dev/mapper/{{ volume_group}}-{{logical_volume}}"
