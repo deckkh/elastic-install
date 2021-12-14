@@ -1,2 +1,57 @@
 ---
 # tasks file for install
+
+- name: Copy file server
+  copy:
+    src: "{{ local_install_dir}}/minio-{{ minio_server_version}}.x86_64.rpm"
+    dest: "{{ remote_install_dir}}/minio-{{ minio_server_version}}.x86_64.rpm"
+  tags:
+    - install  
+
+- name: Copy file mcli
+  copy:
+    src: "{{ local_install_dir}}/mcli-{{ minio_mcli_version}}.x86_64.rpm"
+    dest: "{{ remote_install_dir}}//mcli-{{ minio_mcli_version}}.x86_64.rpm"
+  tags:
+    - install  
+
+
+- name: Populate service facts
+  service_facts:    
+  tags:
+    - install  
+
+- name: stop service 
+  service: 
+    name: minio
+    state: stopped 
+  when: ansible_facts.services['minio.service'] is defined    
+  tags:
+    - install  
+
+- name: Install package server.
+  yum:
+     name: "{{ remote_install_dir}}/minio-{{ minio_server_version}}.x86_64.rpm"
+     state: present        
+  tags:
+    - install  
+
+- name: Install package mcli.
+  yum:
+     name: "{{ remote_install_dir}}/mcli-{{ minio_mcli_version}}.x86_64.rpm"
+     state: present        
+  tags:
+    - install  
+
+- name: issue daemon-reload to pick up config changes
+  systemd:
+    daemon_reload: yes
+  tags:
+    - install  
+
+- name: Remove file
+  file:
+    path: "{{ remote_install_dir}}/minio-{{ minio_server_version}}.x86_64.rpm"
+    state: absent     
+  tags:
+    - install  

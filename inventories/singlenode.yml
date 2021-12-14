@@ -5,6 +5,15 @@ all: # keys must be unique, i.e. only one 'hosts' per group
         es_clustername: singlenode
         mb_ingest: node1
     children:   # key order does not matter, indentation does
+        minio:
+            hosts:
+                node1:
+        zookeeper:
+            hosts:
+                node1:
+        kafka:
+            hosts:
+                node1:
         elastic:
             children:
             vars:
