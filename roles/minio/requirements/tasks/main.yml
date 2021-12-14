@@ -1,2 +1,22 @@
 ---
 # tasks file for requirements
+
+- name: Copy file 
+  copy:
+    src: "{{ local_install_dir}}/minio.asc"
+    dest: "{{ remote_install_dir}}/minio.asc"
+  tags:
+    - requirements  
+
+- rpm_key:
+    state: present
+    key: "{{ remote_install_dir}}/minio.asc"
+  tags:
+    - requirements  
+
+- name: Remove file
+  file:
+    path: "{{ remote_install_dir}}/minio.asc"
+    state: absent         
+  tags:
+    - requirements  
