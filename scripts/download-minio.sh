@@ -13,9 +13,7 @@ rm -f $destdir/minio-*.rpm
 wget -N $location_server"/minio.asc" -P $destdir
 
 
-wget -N $location_server"/minio-20211124231933.0.0.x86_64.rpm" -P $destdir
-wget -N $location_client"/mcli-20211116203736.0.0.x86_64.rpm" -P $destdir
+wget -N $location_server"/minio-*.0.0.x86_64.rpm" -P $destdir
+wget -N $location_client"/mcli-*.0.0.x86_64.rpm" -P $destdir
 
-wget -N $location_server"/minio-20211124231933.0.0.x86_64.rpm" -P $destdir
-wget -N $location_client"/mcli-20211116203736.0.0.x86_64.rpm" -P $destdir
 
