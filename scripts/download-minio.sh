@@ -1,5 +1,3 @@
-echo -n "enter minio version to download : "
-read version
 
 location_server="https://dl.min.io/server/minio/release/linux-amd64"
 location_client="https://dl.min.io/client/mc/release/linux-amd64"
@@ -8,12 +6,10 @@ destdir="/opt/ansible/elastic-install/files"
 
 mkdir $destdir
 
-rm -f $destdir/minio-*.rpm
+rm -f $destdir/minio
+rm -f $destdir/mc
 
-wget -N $location_server"/minio.asc" -P $destdir
-
-
-wget -N $location_server"/minio-20211210230339.0.0.x86_64.rpm" -P $destdir
-wget -N $location_client"/mcli-20211210001428.0.0.x86_64.rpm" -P $destdir
+wget -N $location_server/minio -P $destdir
+wget -N $location_client/mc -P $destdir
 
 
