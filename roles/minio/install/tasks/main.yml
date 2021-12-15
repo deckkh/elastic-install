@@ -22,8 +22,6 @@
     state: directory
     owner: "{{ mi_user}}"
     group: "{{ mi_group}}"
-  notify:
-    - restart
   tags:
     - install
 
@@ -33,8 +31,6 @@
     state: directory
     owner: "{{ mi_user}}"
     group: "{{ mi_group}}"
-  notify:
-    - restart
   tags:
     - install
 
