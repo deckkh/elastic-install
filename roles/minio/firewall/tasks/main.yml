@@ -1,2 +1,10 @@
 ---
 # tasks file for firewall
+
+- firewalld:
+    port: "{{ mi_port}}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+  tags:
+    - firewall  
