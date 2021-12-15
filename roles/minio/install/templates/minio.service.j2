@@ -13,7 +13,7 @@ Environment=MI_HOME={{ mi_home }}
 Environment=MI_CONF={{ mi_conf }}
 
 
-ExecStart={{ mi_home}}/minio server {{ mi_data_path}}
+ExecStart={{ mi_home}}/minio server {{ mi_data_path}} --console-address ":{{mi_console_port}}"
 
 Restart=on-failure
 RestartSec=3
