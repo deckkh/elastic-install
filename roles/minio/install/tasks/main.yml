@@ -40,6 +40,7 @@
     dest: "{{ mi_home}}"
     owner: "{{ mi_user}}"
     group: "{{ mi_group}}"
+    mode: "+x"
   tags:
     - install  
 
@@ -47,6 +48,9 @@
   copy:
     src: "{{ local_install_dir}}/mc"
     dest: "{{ mi_home}}/mc"
+    owner: "{{ mi_user}}"
+    group: "{{ mi_group}}"
+    mode: "+x"
   tags:
     - install  
 
