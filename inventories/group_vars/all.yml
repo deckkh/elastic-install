@@ -3,3 +3,6 @@ local_install_dir: "/opt/ansible/elastic-install/files"
 remote_install_dir: "/tmp"
 volume_group: 'vg_data'
 logical_volume: 'lv_data'
+mount_logical_volume: "/data"
+data_disk: '/dev/sdb'
+

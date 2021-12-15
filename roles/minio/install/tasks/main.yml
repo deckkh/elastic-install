@@ -16,6 +16,17 @@
   tags:
     - install
 
+
+- name: create data directory
+  file:
+    path: "{{ mi_data_path}}"
+    state: directory
+    owner: {{ mi_user }}
+    group: {{ mi_group }}
+  tags:
+    - install
+
+
 - name: create minio home directory
   file:
     path: "{{ mi_home}}"

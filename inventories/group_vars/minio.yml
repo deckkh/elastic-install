@@ -3,4 +3,4 @@ mi_group: "minio"
 mi_home: "/opt/minio"
 mi_conf: "/etc/minio"
 mi_port: "9000"
-
+mi_data_path: "{{ mount_logical_volume}}/minio"

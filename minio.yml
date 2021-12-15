@@ -2,6 +2,7 @@
 - hosts: minio
   roles:
      - minio/requirements
+     - disk/configure
      - minio/install
      - minio/firewall
      - minio/configure

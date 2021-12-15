@@ -13,13 +13,16 @@ Environment=MI_HOME={{ mi_home }}
 Environment=MI_CONF={{ mi_conf }}
 
 
-ExecStart={{ mi_home}}/minio
+ExecStart={{ mi_home}}/minio server {{ mi_data_path}}
 
 Restart=on-failure
 RestartSec=3
 
 StartLimitBurst=3
 StartLimitInterval=60
+
+LimitNOFILE=65536
+
 
 WorkingDirectory={{ mi_home}}
 
