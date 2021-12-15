@@ -1,6 +1,4 @@
 elastic_version: "7.15.2"
-minio_server_version: "20211210230339.0.0"
-minio_mcli_version: "20211210001428.0.0"
 local_install_dir: "/opt/ansible/elastic-install/files"
 remote_install_dir: "/tmp"
 volume_group: 'vg_data'

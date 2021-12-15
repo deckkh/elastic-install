@@ -1,17 +1,56 @@
 ---
 # tasks file for install
 
+- name: Ensure group {{ mi_group}} exists
+  group:
+    name: "{{ mi_group}}"
+    state: present
+  tags:
+    - install
+
+- name: Add the user {{ mi_user}}
+  user:
+    name: "{{ mi_user}}"
+    comment: MINIO service user
+    group: "{{ mi_group}}"
+  tags:
+    - install
+
+- name: create minio home directory
+  file:
+    path: "{{ mi_home}}"
+    state: directory
+    owner: "{{ mi_user}}"
+    group: "{{ mi_group}}"
+  notify:
+    - restart
+  tags:
+    - install
+
+- name: create minio conf directory
+  file:
+    path: "{{ mi_conf}}"
+    state: directory
+    owner: "{{ mi_user}}"
+    group: "{{ mi_group}}"
+  notify:
+    - restart
+  tags:
+    - install
+
 - name: Copy file server
   copy:
-    src: "{{ local_install_dir}}/minio-{{ minio_server_version}}.x86_64.rpm"
-    dest: "{{ remote_install_dir}}/minio-{{ minio_server_version}}.x86_64.rpm"
+    src: "{{ local_install_dir}}/minio"
+    dest: "{{ mi_home}}"
+    owner: "{{ mi_user}}"
+    group: "{{ mi_group}}"
   tags:
     - install  
 
-- name: Copy file mcli
+- name: Copy file mc
   copy:
-    src: "{{ local_install_dir}}/mcli-{{ minio_mcli_version}}.x86_64.rpm"
-    dest: "{{ remote_install_dir}}//mcli-{{ minio_mcli_version}}.x86_64.rpm"
+    src: "{{ local_install_dir}}/mc"
+    dest: "{{ mi_home}}/mc"
   tags:
     - install  
 
@@ -23,25 +62,12 @@
 
 - name: stop service 
   service: 
-    name: minio
+    name: "{{ mi_service}}"
     state: stopped 
-  when: ansible_facts.services['minio.service'] is defined    
+  when: ansible_facts.services['{{ mi_service}}.service'] is defined    
   tags:
     - install  
 
-- name: Install package server.
-  yum:
-     name: "{{ remote_install_dir}}/minio-{{ minio_server_version}}.x86_64.rpm"
-     state: present        
-  tags:
-    - install  
-
-- name: Install package mcli.
-  yum:
-     name: "{{ remote_install_dir}}/mcli-{{ minio_mcli_version}}.x86_64.rpm"
-     state: present        
-  tags:
-    - install  
 
 - name: issue daemon-reload to pick up config changes
   systemd:
@@ -49,9 +75,3 @@
   tags:
     - install  
 
-- name: Remove file
-  file:
-    path: "{{ remote_install_dir}}/minio-{{ minio_server_version}}.x86_64.rpm"
-    state: absent     
-  tags:
-    - install  
