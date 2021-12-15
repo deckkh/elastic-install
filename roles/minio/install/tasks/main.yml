@@ -60,7 +60,7 @@
   service: 
     name: "{{ mi_service}}"
     state: stopped 
-  when: ansible_facts.services['{{ mi_service}}.service'] is defined    
+  when: ansible_facts.services["{{ mi_service}}.service"] is defined    
   tags:
     - install  
 
