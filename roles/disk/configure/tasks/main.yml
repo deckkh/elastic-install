@@ -3,7 +3,7 @@
 
 
 - name: Check for vg
-  shell: "vgs|grep {{ vg_data}}"
+  shell: "vgs|grep {{ volume_group }}"
   register: vgs_output
   ignore_errors: yes  
   tags: 
