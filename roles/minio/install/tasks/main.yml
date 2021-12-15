@@ -21,8 +21,8 @@
   file:
     path: "{{ mi_data_path}}"
     state: directory
-    owner: {{ mi_user }}
-    group: {{ mi_group }}
+    owner: "{{ mi_user }}"
+    group: "{{ mi_group }}"
   tags:
     - install
 
