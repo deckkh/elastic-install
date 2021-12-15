@@ -3,7 +3,7 @@
 
 
 - name: Check for vg
-  shell: "vgs|grep {{ volume_group }}"
+  shell: "vgs|grep {{ volume_group }}|wc -l"
   register: vgs_output
   ignore_errors: yes  
   tags: 
@@ -20,7 +20,7 @@
     vg: "{{ volume_group }}"
     pvs: "{{ data_disk }}"
     pesize: 4
-  when: vgs_output.stdout != '0'    
+  when: vgs_output.stdout == '0'
   tags: 
     - configure
     
@@ -28,7 +28,7 @@
   package:
     name: lvm2
     state: present
-  when: vgs_output.stdout != '0'    
+  when: vgs_output.stdout == '0'
   tags: 
     - configure
  
@@ -38,7 +38,7 @@
     lv: "{{ logical_volume }}"
     size: 100%PVS
     force: yes
-  when: vgs_output.stdout != '0'    
+  when: vgs_output.stdout == '0'
   tags: 
     - configure
 
@@ -47,7 +47,7 @@
     path: "{{ mount_logical_volume}}"
     state: directory
     mode: '0755'
-  when: vgs_output.stdout != '0'    
+  when: vgs_output.stdout == '0'
   tags: 
     - configure
 
@@ -55,7 +55,7 @@
   filesystem:
     fstype: xfs
     dev: "/dev/{{ volume_group }}/{{ logical_volume }}"
-  when: vgs_output.stdout != '0'    
+  when: vgs_output.stdout == '0'
   tags: 
     - configure
 
@@ -66,6 +66,6 @@
     src: "/dev/{{ volume_group }}/{{ logical_volume }}"
     fstype: xfs
     state: mounted      
-  when: vgs_output.stdout != '0'    
+  when: vgs_output.stdout == '0'
   tags: 
     - configure
