@@ -58,9 +58,9 @@
 
 - name: stop service 
   service: 
-    name: "{{ mi_service}}"
+    name: "minio"
     state: stopped 
-  when: ansible_facts.services["{{ mi_service}}.service"] is defined    
+  when: ansible_facts.services["minio.service"] is defined    
   tags:
     - install  
 
