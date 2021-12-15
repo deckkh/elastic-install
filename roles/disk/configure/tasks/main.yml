@@ -11,7 +11,7 @@
 
 - name: Print
   debug:
-    msg="vgs_output.stdout"    
+    msg="{{vgs_output.stdout}}"    
   tags: 
     - configure
 
