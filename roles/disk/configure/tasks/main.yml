@@ -1,34 +1,63 @@
 ---
 # tasks file for disk
 
+
+- name: Check for vg
+  shell: "vgs|grep {{ vg_data}}"
+  register: vgs_output
+  ignore_errors: yes  
+  tags: 
+    - configure
+
+- name: Print
+  debug:
+    msg="vgs_output.stdout"    
+  tags: 
+    - configure
+
 - name: task for creating volume group
   lvg:
     vg: "{{ volume_group }}"
     pvs: "{{ data_disk }}"
     pesize: 4
-
+  when: vgs_output.stdout != '0'    
+  tags: 
+    - configure
+    
 - name: Install lvm2 dependency
   package:
     name: lvm2
     state: present
-
+  when: vgs_output.stdout != '0'    
+  tags: 
+    - configure
+ 
 - name: task for creating logical volume
   lvol:
     vg: "{{ volume_group }}"
     lv: "{{ logical_volume }}"
     size: 100%PVS
     force: yes
+  when: vgs_output.stdout != '0'    
+  tags: 
+    - configure
 
 - name: Create directory data1 if does not exist
   file:
     path: "{{ mount_logical_volume}}"
     state: directory
     mode: '0755'
+  when: vgs_output.stdout != '0'    
+  tags: 
+    - configure
 
 - name: format the xfs filesystem
   filesystem:
     fstype: xfs
     dev: "/dev/{{ volume_group }}/{{ logical_volume }}"
+  when: vgs_output.stdout != '0'    
+  tags: 
+    - configure
 
 
 - name: mount the lv on 
@@ -37,3 +66,6 @@
     src: "/dev/{{ volume_group }}/{{ logical_volume }}"
     fstype: xfs
     state: mounted      
+  when: vgs_output.stdout != '0'    
+  tags: 
+    - configure
