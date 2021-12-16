@@ -28,3 +28,9 @@
      - filebeat/uninstall
   tags:
     - filebeat
+
+- hosts: minio
+  roles:
+     - minio/uninstall
+  tags:
+    - minio
