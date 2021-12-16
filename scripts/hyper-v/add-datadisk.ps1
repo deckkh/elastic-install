@@ -1,13 +1,13 @@
-Write-Host "Add data disk to vm"
-Write-Host "enter vm name"
+param
+(
+  [Parameter(Mandatory=$true)]
+  [Int64]$disksize,
+  [Parameter(Mandatory=$true)]
+  [String]$name
+)
 
-$name = read-host 
 
-Write-Host "enter size fx 50GB"
-
-$disksize = read-host 
-
-write-host "adding disk to  $name"
+write-host "adding $disksize disk to  $name"
 
 $diskdir = "C:\Users\Public\Documents\Hyper-V\Virtual hard disks"
 $datadisk = "$($diskdir)\$($name)-data.vhdx"
