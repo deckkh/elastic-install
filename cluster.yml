@@ -1,0 +1,13 @@
+---
+- name: elastic
+    import_playbook: elastic.yml
+- name: kibana
+    import_playbook: kibana.yml
+- name: logstash
+    import_playbook: kibana.yml
+- name: minio
+    import_playbook: kibana.yml
+- name: metricbeat
+    import_playbook: metricbeat.yml    
+- name: filebeat
+    import_playbook: filebeat.yml    
