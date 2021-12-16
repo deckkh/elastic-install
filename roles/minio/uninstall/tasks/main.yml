@@ -1,2 +1,65 @@
 ---
 # tasks file for uninstall
+
+- name: Populate service facts
+  service_facts:    
+  tags:
+    - uninstall  
+
+- name: stop service 
+  service: 
+    name: minio
+    state: stopped 
+  when: ansible_facts.services['minio.service'] is defined    
+  tags:
+    - uninstall  
+
+- name: Remove the user {{ mi_user}}
+  user:
+    name: "{{ mi_user}}"
+    remove: "yes"
+    state: absent
+  tags:
+    - uninstall
+
+- name: Ensure group {{ mi_group}} is removed
+  group:
+    name: "{{ mi_group}}"
+    state: absent
+  tags:
+    - uninstall
+
+- name: Remove service file
+  file:
+    path: "/etc/systemd/system/minio.service"
+    state: absent
+  tags:
+    - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "{{ mi_home }}"
+    state: absent
+  tags:
+    - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "{{ mi_conf }}"
+    state: absent    
+  tags:
+    - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "{{ mi_data_path }}"
+    state: absent    
+  tags:
+    - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "/home/{{ mi_user}}"
+    state: absent    
+  tags:
+    - uninstall  
