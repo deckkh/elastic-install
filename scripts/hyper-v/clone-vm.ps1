@@ -1,17 +1,45 @@
-$name = read-host 
+param
+(
+  [Parameter(Mandatory=$false)]
+  [Int64]$memory=2048*1024*1024,
+  [Parameter(Mandatory=$false)]
+  [String]$templatedisk="centos8-template",
+  [Parameter(Mandatory=$false)]
+  [String]$switchname="nat-switch",
+  [Parameter(Mandatory=$true)]
+  [String]$name,
+  [Parameter(Mandatory=$false)]
+  [bool]$adddatadisk=$false,
+  [Parameter(Mandatory=$false)]
+  [Int64]$disksize
+)
 
-write-host "creating $name"
 
-$memory = 2048*1024*1024
 $diskdir = "C:\Users\Public\Documents\Hyper-V\Virtual hard disks"
-$templatedisk= "centos8-template"
 $destdisk = "$($diskdir)\$($name).vhdx"
 $sourcedisk = "$($diskdir)\$($templatedisk).vhdx"
 
-$vm = new-vm -Name $name -MemoryStartupBytes $memory
 
-Convert-VHD -Path $sourcedisk  -DestinationPath $destdisk
+// .\clone-vm.ps1 -memory 2GB -name dummy -adddatadisk $true -disksize 20GB
 
-$vm |Add-VMHardDiskDrive -Path $destdisk
+
+try {
+    $vm = new-vm -Name $name -MemoryStartupBytes $memory
+
+    Convert-VHD -Path $sourcedisk  -DestinationPath $destdisk
+    
+    $vm |Add-VMHardDiskDrive -Path $destdisk
+     
+    $vm | Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName $switchname
+    
+    if ($adddatadisk)
+    {
+        $datadisk = "$($diskdir)\$($name)-data.vhdx"
+        new-vhd -Dynamic $datadisk  -SizeBytes $disksize
+        ADD-VMHardDiskDrive -vmname $name -path $datadisk -ControllerType SCSI -ControllerNumber 0 
+    }    
+}
+catch {
  
-$vm | Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName "nat-switch"
+    write-host $ErrorMessage = $_.Exception.Message
+}
