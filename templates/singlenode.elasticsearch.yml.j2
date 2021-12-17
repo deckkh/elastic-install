@@ -83,6 +83,15 @@ cluster.initial_master_nodes: {{ es_cluster_initial_master_nodes }}
 #
 #action.destructive_requires_name: true
 
+
+{% if es_tls == true %}
+xpack.security.enabled: true
+{% endif %}
+
+#{% if es_single_node == true %}
+#discovery.type: single-node
+#{% endif %}
+
 {% if es_tls == true %}
 
 xpack.security.transport.ssl.enabled: true

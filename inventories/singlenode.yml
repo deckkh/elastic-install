@@ -1,6 +1,8 @@
 all: # keys must be unique, i.e. only one 'hosts' per group
     vars:
         es_tls: true
+        es_security: true
+        es_single_node: true
         kbn_hostname: "kibana"
         es_clustername: singlenode
         mb_ingest: node1
