@@ -10,9 +10,7 @@
     - security
 
 - name: Run command if security does not exist
-  ansible.builtin.command:
-    shell: printf "Y"|bin/elasticsearch-setup-passwords auto | grep PASSWORD > "/tmp/{{ es_clustername }}-security"
-    creates: "/tmp/{{ es_clustername }}-security"
+  shell: printf "Y"|bin/elasticsearch-setup-passwords auto | grep PASSWORD > "/tmp/{{ es_clustername }}-security"
   when: security.stat.exists == false
   tags:
     - security
