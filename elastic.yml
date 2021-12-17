@@ -4,6 +4,7 @@
      - elastic/requirements
      - disk/configure
      - elastic/install
+     - elastic/ca
      - elastic/firewall
      - elastic/plugin
      - elastic/configure
