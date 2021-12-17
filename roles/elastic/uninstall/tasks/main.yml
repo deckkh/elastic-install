@@ -43,7 +43,7 @@
     - uninstall  
 
 - name: Remove CA
-  delegate_to: local_host
+  delegate_to: localhost
   file:
     path: "{{ local_install_dir }}/{{ es_clustername }}.p12"
     state: absent    
@@ -51,7 +51,7 @@
     - uninstall  
 
 - name: Remove Security
-  delegate_to: local_host
+  delegate_to: localhost
   file:
     path: "{{ local_install_dir }}/{{ es_clustername }}-security"
     state: absent    
