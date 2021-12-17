@@ -34,6 +34,13 @@
   tags:
     - install  
 
+- name: Remove file
+  file:
+    path: "{{ remote_install_dir}}/metricbeat-{{ elastic_version }}-x86_64.rpm"
+    state: absent     
+  tags:
+    - install  
+
 - name: enable service 
   service: 
     name: metricbeat
@@ -41,9 +48,3 @@
   tags:
     - install  
 
-- name: Remove file
-  file:
-    path: "{{ remote_install_dir}}/metricbeat-{{ elastic_version }}-x86_64.rpm"
-    state: absent     
-  tags:
-    - install  

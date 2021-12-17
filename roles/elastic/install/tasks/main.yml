@@ -28,3 +28,10 @@
   file:
     path: "{{ remote_install_dir}}/elasticsearch-{{ elastic_version }}-x86_64.rpm"
     state: absent     
+
+- name: enable service 
+  service: 
+    name: elasticsearch
+    enabled: yes
+  tags:
+    - install  

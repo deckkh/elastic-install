@@ -6,10 +6,10 @@
   import_playbook: kibana.yml
 
 - name: logstash
-  import_playbook: kibana.yml
+  import_playbook: logstash.yml
 
 - name: minio
-  import_playbook: kibana.yml
+  import_playbook: minio.yml
 
 - name: metricbeat
   import_playbook: metricbeat.yml    

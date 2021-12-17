@@ -40,3 +40,10 @@
     state: absent     
   tags:
     - install  
+
+- name: enable service 
+  service: 
+    name: kibana
+    enabled: yes
+  tags:
+    - install  
