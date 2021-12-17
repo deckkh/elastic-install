@@ -11,6 +11,9 @@
 
 - name: Run command if security does not exist
   shell: printf "Y"|bin/elasticsearch-setup-passwords auto | grep PASSWORD > "/tmp/{{ es_clustername }}-security"
+  args:
+    chdir: "/usr/share/elasticsearch"
+    creates:  "/tmp/{{ es_clustername }}-security"
   when: security.stat.exists == false
   tags:
     - security
