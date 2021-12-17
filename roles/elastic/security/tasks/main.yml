@@ -1,2 +1,34 @@
 ---
 # tasks file for security
+
+- name: Check for security info
+  delegate_to: localhost
+  stat:
+    path: "{{ local_install_dir }}/{{ es_clustername }}-security"
+  register: security
+  tags:
+    - security
+
+- name: Run command if security does not exist
+  ansible.builtin.command:
+    shell: printf "Y"|bin/elasticsearch-setup-passwords auto | grep PASSWORD > "/tmp/{{ es_clustername }}-security"
+    creates: "/tmp/{{ es_clustername }}-security"
+  when: security.stat.exists == false
+  tags:
+    - security
+
+- name: Fetch security
+  ansible.builtin.fetch:
+    src: "/tmp/{{ es_clustername }}-security"
+    dest: "{{ local_install_dir }}/{{ es_clustername }}-security"
+    flat: true
+  when: security.stat.exists == false 
+  tags:
+    - security
+
+- name: remove security
+  file:
+    path: "/tmp/{{ es_clustername }}-security"
+    state: absent
+  tags:
+    - security 

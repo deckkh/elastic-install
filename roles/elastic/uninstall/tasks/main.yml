@@ -41,3 +41,21 @@
     state: absent    
   tags:
     - uninstall  
+
+- name: Remove CA
+  delegate_to: local_host
+  file:
+    path: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+    state: absent    
+  tags:
+    - uninstall  
+
+- name: Remove Security
+  delegate_to: local_host
+  file:
+    path: "{{ local_install_dir }}/{{ es_clustername }}-security"
+    state: absent    
+  tags:
+    - uninstall  
+
+
