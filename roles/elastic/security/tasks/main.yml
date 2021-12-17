@@ -15,7 +15,6 @@
   register: ps
   args:
     chdir: "/usr/share/elasticsearch"
-    creates:  "/tmp/{{ es_clustername }}-security"
   when: security.stat.exists == false
   tags:
     - security
@@ -25,7 +24,10 @@
   tags:
     - security
 
-- debug: var=ps.stderr_lines
+- name: save all facts to host specific file
+  copy:
+    content: "{{ ps.stdout_lines }}"
+    dest: "/tmp/{{ es_clustername }}-security"
   when: security.stat.exists == false
   tags:
     - security
