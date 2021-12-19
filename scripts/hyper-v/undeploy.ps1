@@ -1,0 +1,11 @@
+param
+(
+  [Parameter(Mandatory=$false)]
+  [String]$switchname="nat-switch",
+  [Parameter(Mandatory=$true)]
+  [String]$name,
+  [Parameter(Mandatory=$false)]
+  [bool]$adddatadisk=$false,
+  [Parameter(Mandatory=$false)]
+  [Int64]$disksize
+)
