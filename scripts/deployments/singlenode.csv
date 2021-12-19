@@ -1,1 +1,2 @@
-nodex;2GB;nat-switch;centos8-template;40GB,10GB:
+name,memory,switch,template,disks,
+nodex,2,nat-switch,centos8-template,40;10,

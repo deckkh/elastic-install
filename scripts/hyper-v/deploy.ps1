@@ -8,35 +8,22 @@ try {
 
     if (Test-Path $csv)
     {
-        $deploy = Import-Csv -path $csv -Header "name" , "memory", "switch","template","disks" -Delimiter ';'
+        $deploy = Import-Csv -path $csv 
 
-        $vmhost  =get-vmhost
         foreach($row in $deploy)
         {
-            write-host "Creating vm $($row.name)"
+            $memory = [System.Int64]($row.memory)*1024*1024*1024
+            .\clone-vm.ps1 -name $row.name -templatedisk $row.template -memory $memory -adddatadisk $false
 
+            $cnt = 1
+            foreach($disk in $row.disks.split(';'))
+            {
+                $disksize = [System.Int64]($disk)*1024*1024*1024
+                $diskname = "data-$cnt"
+                .\add-datadisk.ps1 -name $row.name -disksize $disksize -diskname $diskname
+                $cnt++
+            }
 
-            $diskdir = $vm.VirtualHardDiskPath
-            $destdisk = "$($diskdir)\$($row.name).vhdx"
-            $sourcedisk = "$($diskdir)\$($row.template).vhdx"
-
-
-
-            $vm = new-vm -Name $row.name -MemoryStartupBytes $row.memory
-
-            Convert-VHD -Path $sourcedisk  -DestinationPath $destdisk
-            
-            $vm |Add-VMHardDiskDrive -Path $destdisk
-             
-            $vm | Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName $row.switchname
-            
-            # if ($adddatadisk)
-            # {
-            #     $datadisk = "$($diskdir)\$($name)-data.vhdx"
-            #     new-vhd -Dynamic $datadisk  -SizeBytes $disksize
-            #     ADD-VMHardDiskDrive -vmname $name -path $datadisk -ControllerType SCSI -ControllerNumber 0 
-            # }    
-        
 
         }
     }
@@ -47,7 +34,7 @@ try {
 }
 catch {
     
-    write-host $ErrorMessage = $_.Exception.Message
+    write-host $_.Exception
 
 }
 
