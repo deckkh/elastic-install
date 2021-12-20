@@ -1,0 +1,10 @@
+---
+- hosts: kafka
+  roles:
+     - kafka/requirements
+     - disk/configure
+     - kafka/install
+     - kafka/firewall
+     - kafka/configure
+
+

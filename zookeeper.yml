@@ -1,0 +1,10 @@
+---
+- hosts: zookeeper
+  roles:
+     - zookeeper/requirements
+     - disk/configure
+     - zookeeper/install
+     - zookeeper/firewall
+     - zookeeper/configure
+
+

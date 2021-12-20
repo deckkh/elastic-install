@@ -34,3 +34,15 @@
      - minio/uninstall
   tags:
     - minio
+
+- hosts: zookeeper
+  roles:
+     - zookeeper/uninstall
+  tags:
+    - zookeeper
+
+- hosts: kafka
+  roles:
+     - kafka/uninstall
+  tags:
+    - kafka
