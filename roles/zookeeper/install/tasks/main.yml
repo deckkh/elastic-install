@@ -50,6 +50,9 @@
   unarchive:
     src: "{{ local_install_dir}}/kafka_{{ scala_version}}-{{ zookeeper_version }}.tgz"
     dest: "{{ zk_home}}"
+    owner: "{{ zk_user}}"
+    group: "{{ zk_group}}"
+
 
 - name: Populate service facts
   service_facts:    
