@@ -46,18 +46,9 @@
   tags:
     - install
 
-- name: Copy file server
-  copy:
-    src: "{{ local_install_dir}}/kafka_2.13-{{ zookeeper_version }}.tgz"
-    dest: "/tmp"
-    owner: "{{ zk_user}}"
-    group: "{{ zk_group}}"
-  tags:
-    - install  
-
 - name: Extract kafka into {{ zk_home}}
   unarchive:
-    src: "/tmp/kafka_2.13-{{ zookeeper_version }}.tgz"
+    src: "{{ local_install_dir}}/kafka_{{ scala_version}}-{{ zookeeper_version }}.tgz"
     dest: "{{ zk_home}}"
 
 - name: Populate service facts
