@@ -1,0 +1,2 @@
+name,memory,switch,template,disks,
+nodex,2,nat-switch,centos8-template,40;10,
