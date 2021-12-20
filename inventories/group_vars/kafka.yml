@@ -1,0 +1,7 @@
+ka_user: "kafka"
+ka_group: "kafka"
+ka_home: "/opt/kafka"
+ka_conf: "/etc/kafka"
+ka_port: "9000"
+ka_console_port: "9001"
+ka_data_path: "{{ mount_logical_volume}}/kafka"
