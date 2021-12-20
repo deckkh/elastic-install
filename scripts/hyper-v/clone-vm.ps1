@@ -28,22 +28,33 @@ $sourcedisk = "$($diskdir)\$($templatedisk).vhdx"
 
 
 try {
-    $vm = new-vm -Name $name -MemoryStartupBytes $memory
 
-    Convert-VHD -Path $sourcedisk  -DestinationPath $destdisk
-    
-    $vm |Add-VMHardDiskDrive -Path $destdisk
-     
-    $vm | Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName $switchname
-    
-    if ($adddatadisk)
+    # check if vm exist
+    $vm = get-vm -name $name -ErrorAction SilentlyContinue
+
+    if (-not $vm)
     {
-        $datadisk = "$($diskdir)\$($name)-$($diskname).vhdx"
-        new-vhd -Dynamic $datadisk  -SizeBytes $disksize
-        ADD-VMHardDiskDrive -vmname $name -path $datadisk -ControllerType SCSI -ControllerNumber 0 
-    }    
+        $vm = new-vm -Name $name -MemoryStartupBytes $memory
+
+        Convert-VHD -Path $sourcedisk  -DestinationPath $destdisk
+        
+        $vm |Add-VMHardDiskDrive -Path $destdisk
+         
+        $vm | Get-VMNetworkAdapter | Connect-VMNetworkAdapter -SwitchName $switchname
+        
+        if ($adddatadisk)
+        {
+            $datadisk = "$($diskdir)\$($name)-$($diskname).vhdx"
+            new-vhd -Dynamic $datadisk  -SizeBytes $disksize
+            ADD-VMHardDiskDrive -vmname $name -path $datadisk -ControllerType SCSI -ControllerNumber 0 
+        }    
+    
+    }
+    else {
+        Write-Warning "$name already exist"
+    }
 }
 catch {
  
-    write-host $ErrorMessage = $_.Exception.Message
+    write-host $_.Exception
 }

@@ -12,19 +12,38 @@ try {
 
         foreach($row in $deploy)
         {
-            $memory = [System.Int64]($row.memory)*1024*1024*1024
-            .\clone-vm.ps1 -name $row.name -templatedisk $row.template -memory $memory -adddatadisk $false
 
-            $cnt = 1
-            foreach($disk in $row.disks.split(';'))
+            write-host $row.name
+            if (-not $row.name.StartsWith('#'))
             {
-                $disksize = [System.Int64]($disk)*1024*1024*1024
-                $diskname = "data-$cnt"
-                .\add-datadisk.ps1 -name $row.name -disksize $disksize -diskname $diskname
-                $cnt++
+
+                # check if vm exist
+                $vm = get-vm -name $row.name -ErrorAction SilentlyContinue
+
+                if (-not $vm)
+                {
+                    # expect range in GB 
+                    $memory = [System.Int64]($row.memory)*1024*1024*1024
+                    .\clone-vm.ps1 -name $row.name -templatedisk $row.template -memory $memory -adddatadisk $false
+        
+                    # allocate datadisk(s)
+                    $cnt = 1
+                    foreach($disk in $row.disks.split(';'))
+                    {
+                        $disksize = [System.Int64]($disk)*1024*1024*1024
+                        $diskname = "data-$cnt"
+                        .\add-datadisk.ps1 -name $row.name -disksize $disksize -diskname $diskname
+                        $cnt++
+                    }
+                }
+                else {
+                    Write-Warning "$($row.name) already exist"
+                }
+    
             }
-
-
+            else {
+                Write-Warning "$($row.name) ignored"
+            }
         }
     }
     else {
@@ -33,8 +52,6 @@ try {
 
 }
 catch {
-    
-    write-host $_.Exception
-
+    write-host $_.exception
 }
 

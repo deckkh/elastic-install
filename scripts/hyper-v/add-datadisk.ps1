@@ -9,6 +9,7 @@ param
 
 )
 
+try {
 
 write-host "adding $disksize disk to  $name"
 
@@ -20,3 +21,9 @@ $datadisk = "$($diskdir)\$($name)-$($diskname).vhdx"
 new-vhd -Dynamic $diskdir\$name-$diskname.vhdx -SizeBytes $disksize
 
 ADD-VMHardDiskDrive -vmname $name -path $datadisk -ControllerType SCSI -ControllerNumber 0 
+
+}
+catch {
+  write-host $_.Exception
+
+}
