@@ -15,4 +15,6 @@
 *.crt
 *.csr
 *.p12
+*.tgz
+*.tar
 
