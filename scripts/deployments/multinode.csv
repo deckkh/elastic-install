@@ -1,0 +1,4 @@
+name,memory,switch,template,disks,
+multi1,2,nat-switch,centos8-template,40,
+multi2,2,nat-switch,centos8-template,40,
+multi3,2,nat-switch,centos8-template,40,
