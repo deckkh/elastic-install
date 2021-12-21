@@ -1,2 +1,65 @@
 ---
 # tasks file for uninstall
+
+- name: Populate service facts
+  service_facts:    
+  tags:
+    - uninstall  
+
+- name: stop service 
+  service: 
+    name: zookeeper
+    state: stopped 
+  when: ansible_facts.services['zookeeper.service'] is defined    
+  tags:
+    - uninstall  
+
+- name: Remove the user {{ zk_user}}
+  user:
+    name: "{{ zk_user}}"
+    remove: "yes"
+    state: absent
+  tags:
+    - uninstall
+
+- name: Ensure group {{ zk_group}} is removed
+  group:
+    name: "{{ zk_group}}"
+    state: absent
+  tags:
+    - uninstall
+
+- name: Remove service file
+  file:
+    path: "/etc/systemd/system/zookeeper.service"
+    state: absent
+  tags:
+    - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "{{ zk_home }}"
+    state: absent
+  tags:
+    - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "{{ zk_conf }}"
+    state: absent    
+  tags:
+    - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "{{ zk_data_path }}"
+    state: absent    
+  tags:
+    - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "/home/{{ zk_user}}"
+    state: absent    
+  tags:
+    - uninstall  
