@@ -46,3 +46,9 @@
      - kafka/uninstall
   tags:
     - kafka
+
+- hosts: kafka,zookeeper
+  roles:
+     - java/uninstall
+  tags:
+    - java

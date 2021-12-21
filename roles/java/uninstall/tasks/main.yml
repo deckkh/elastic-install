@@ -1,2 +1,9 @@
 ---
 # tasks file for uninstall
+
+- name: Uninstall package.
+  yum:
+     name: "java-11-openjdk"
+     state: absent       
+  tags:
+    - uninstall  
