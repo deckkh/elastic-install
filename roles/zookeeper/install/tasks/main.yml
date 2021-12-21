@@ -37,7 +37,7 @@
   tags:
     - install
 
-- name: create minio conf directory
+- name: create zookeeper conf directory
   file:
     path: "{{ zk_conf}}"
     state: directory

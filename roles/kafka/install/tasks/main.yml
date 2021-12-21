@@ -1,18 +1,18 @@
 ---
 # tasks file for install
 
-- name: Ensure group {{ mi_group}} exists
+- name: Ensure group {{ ka_group}} exists
   group:
-    name: "{{ mi_group}}"
+    name: "{{ ka_group}}"
     state: present
   tags:
     - install
 
-- name: Add the user {{ mi_user}}
+- name: Add the user {{ ka_user}}
   user:
-    name: "{{ mi_user}}"
-    comment: MINIO service user
-    group: "{{ mi_group}}"
+    name: "{{ ka_user}}"
+    comment: kafka service user
+    group: "{{ ka_group}}"
     shell: "/usr/sbin/nologin"
   tags:
     - install
@@ -20,51 +20,59 @@
 
 - name: create data directory
   file:
-    path: "{{ mi_data_path}}"
+    path: "{{ ka_data_path}}"
     state: directory
-    owner: "{{ mi_user }}"
-    group: "{{ mi_group }}"
+    owner: "{{ ka_user }}"
+    group: "{{ ka_group }}"
   tags:
     - install
 
 
-- name: create minio home directory
+- name: create kafka home directory
   file:
-    path: "{{ mi_home}}"
+    path: "{{ ka_home}}"
     state: directory
-    owner: "{{ mi_user}}"
-    group: "{{ mi_group}}"
+    owner: "{{ ka_user}}"
+    group: "{{ ka_group}}"
   tags:
     - install
 
-- name: create minio conf directory
+- name: create kafka conf directory
   file:
-    path: "{{ mi_conf}}"
+    path: "{{ ka_conf}}"
     state: directory
-    owner: "{{ mi_user}}"
-    group: "{{ mi_group}}"
+    owner: "{{ ka_user}}"
+    group: "{{ ka_group}}"
   tags:
     - install
 
-- name: Copy file server
-  copy:
-    src: "{{ local_install_dir}}/minio"
-    dest: "{{ mi_home}}"
-    owner: "{{ mi_user}}"
-    group: "{{ mi_group}}"
-    mode: "+x"
+- name: Check for kafka dir
+  stat: path="{{ ka_home}}/kafka_{{ scala_version}}-{{ kafka_version }}"
+  register: kafka_dir
   tags:
-    - install  
+    - install
 
-- name: Copy file mc
-  copy:
-    src: "{{ local_install_dir}}/mc"
-    dest: "{{ mi_home}}/mc"
-    owner: "{{ mi_user}}"
-    group: "{{ mi_group}}"
-    mode: "+x"
+- name: Extract kafka into {{ ka_home}}
+  unarchive:
+    src: "{{ local_install_dir}}/kafka_{{ scala_version}}-{{ kafka_version }}.tgz"
+    dest: "{{ ka_home}}"
+    owner: "{{ ka_user}}"
+    group: "{{ ka_group}}"
+  when: not kafka_dir.stat.exists
   tags:
-    - install  
+    - install
+
+
+
+- name: Create a symbolic link
+  file:
+    src: "{{ ka_home}}/kafka_{{ scala_version}}-{{ kafka_version }}"
+    dest: "{{ ka_home}}/bin"
+    owner: "{{ ka_user}}"
+    group: "{{ ka_group}}"
+    state: link
+  tags:
+    - install
 
 
 - name: Populate service facts
@@ -74,16 +82,16 @@
 
 - name: stop service 
   service: 
-    name: "minio"
+    name: "kafka"
     state: stopped 
-  when: ansible_facts.services["minio.service"] is defined    
+  when: ansible_facts.services["kafka.service"] is defined    
   tags:
     - install  
 
-- name: Configure minio.service
+- name: Configure kafka.service
   template:
-    src: "minio.service.j2"
-    dest: "/etc/systemd/system/minio.service"
+    src: "kafka.service.j2"
+    dest: "/etc/systemd/system/kafka.service"
   tags:
     - install
 
@@ -93,11 +101,4 @@
   tags:
     - install  
 
-- name: enable service 
-  service: 
-    name: "minio"
-    enabled: yes
-    state: started
-  tags:
-    - install  
 

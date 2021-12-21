@@ -1,0 +1,34 @@
+[Unit]
+Description=kafka
+Documentation=https://kafka.apache.org/
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User={{ ka_user}}
+Group={{ ka_group }}
+
+Environment=ka_HOME={{ ka_home }}
+Environment=ka_CONF={{ ka_conf }}
+
+
+ExecStart=/bin/sh -c '{{ ka_home}}/bin/bin/kafka-server-start.sh {{ka_conf}}/kafka.properties'
+ExecStop={{ ka_home}}/bin/bin/kafka-server-stop.sh
+
+Restart=on-failure
+RestartSec=3
+
+StartLimitBurst=3
+StartLimitInterval=60
+
+LimitNOFILE=65536
+
+
+WorkingDirectory={{ ka_home}}
+
+StandardOutput=journal
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target
