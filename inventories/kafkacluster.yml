@@ -14,7 +14,7 @@ all: # keys must be unique, i.e. only one 'hosts' per group
             hosts:
                 kafka1:
                   ka_broker_id: 1
-                kafka1:
+                kafka2:
                   ka_broker_id: 2
                 kafka1:
                   ka_broker_id: 3
