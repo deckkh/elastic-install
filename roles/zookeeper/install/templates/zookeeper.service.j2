@@ -14,6 +14,7 @@ Environment=zk_CONF={{ zk_conf }}
 
 
 ExecStart=/bin/sh -c '{{ zk_home}}/bin/bin/zookeeper-server-start.sh {{zk_conf}}/zookeeper.properties'
+ExecStop={{ zk_home}}/bin/bin/zookeeper-server-stop.sh
 
 Restart=on-failure
 RestartSec=3
