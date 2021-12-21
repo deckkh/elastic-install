@@ -46,12 +46,33 @@
   tags:
     - install
 
+- name: Check for kafka dir
+  stat: path="{{ zk_home}}/kafka_{{ scala_version}}-{{ zookeeper_version }}"
+  register: kafka_dir
+  tags:
+    - install
+
 - name: Extract kafka into {{ zk_home}}
   unarchive:
     src: "{{ local_install_dir}}/kafka_{{ scala_version}}-{{ zookeeper_version }}.tgz"
     dest: "{{ zk_home}}"
     owner: "{{ zk_user}}"
     group: "{{ zk_group}}"
+  when: not kafka_dir.stat.exists
+  tags:
+    - install
+
+
+
+- name: Create a symbolic link
+  file:
+    src: "{{ zk_home}}/kafka_{{ scala_version}}-{{ zookeeper_version }}"
+    dest: "{{ zk_home}}/bin"
+    owner: "{{ zk_user}}"
+    group: "{{ zk_group}}"
+    state: link
+  tags:
+    - install
 
 
 - name: Populate service facts
