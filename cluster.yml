@@ -11,6 +11,12 @@
 - name: minio
   import_playbook: minio.yml
 
+- name: zookeeper
+  import_playbook: zookeeper.yml
+
+- name: kafka
+  import_playbook: kafka.yml
+
 - name: metricbeat
   import_playbook: metricbeat.yml    
 
