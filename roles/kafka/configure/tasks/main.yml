@@ -1,2 +1,19 @@
 ---
 # tasks file for configure
+
+- name: Configure server conf
+  template:
+    src: "server.properties.j2"
+    dest: "{{ ka_conf}}/server.properties"
+    owner: "{{ ka_user}}"
+    group: "{{ ka_group}}"
+  tags:
+    - configure
+
+- name: enable service 
+  service: 
+    name: "kafka"
+    enabled: yes
+    state: started
+  tags:
+    - configure

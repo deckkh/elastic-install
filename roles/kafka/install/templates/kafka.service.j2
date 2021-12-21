@@ -13,7 +13,7 @@ Environment=ka_HOME={{ ka_home }}
 Environment=ka_CONF={{ ka_conf }}
 
 
-ExecStart=/bin/sh -c '{{ ka_home}}/bin/bin/kafka-server-start.sh {{ka_conf}}/kafka.properties'
+ExecStart=/bin/sh -c '{{ ka_home}}/bin/bin/kafka-server-start.sh {{ka_conf}}/server.properties'
 ExecStop={{ ka_home}}/bin/bin/kafka-server-stop.sh
 
 Restart=on-failure
