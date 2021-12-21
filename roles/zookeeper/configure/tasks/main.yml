@@ -10,7 +10,7 @@
 - name: Configure server conf
   template:
     src: "zookeeper.properties.j2"
-    dest: "{{ zk_conf}}/bin/conf/zookeeper.properties"
+    dest: "{{ zk_conf}}/bin/config/zookeeper.properties"
   tags:
     - configure
 
