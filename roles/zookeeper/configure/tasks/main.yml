@@ -1,2 +1,23 @@
 ---
 # tasks file for configure
+- name: Configure myid
+  template:
+    src: "myid.j2"
+    dest: "{{ zk_data_path}}/myid"
+  tags:
+    - configure
+
+- name: Configure server conf
+  template:
+    src: "zookeeper.properties.j2"
+    dest: "{{ zk_conf}}/bin/conf/zookeeper.properties"
+  tags:
+    - configure
+
+- name: enable service 
+  service: 
+    name: "zookeeper"
+    enabled: yes
+    state: started
+  tags:
+    - configure

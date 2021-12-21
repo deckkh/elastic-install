@@ -101,11 +101,4 @@
   tags:
     - install  
 
-- name: enable service 
-  service: 
-    name: "zookeeper"
-    enabled: yes
-    state: started
-  tags:
-    - install  
 

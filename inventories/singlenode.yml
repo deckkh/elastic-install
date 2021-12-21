@@ -13,6 +13,7 @@ all: # keys must be unique, i.e. only one 'hosts' per group
         zookeeper:
             hosts:
                 node1:
+                    zk_id: 1
         kafka:
             hosts:
                 node1:
