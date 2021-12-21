@@ -1,2 +1,9 @@
 ---
 # tasks file for firewall
+- firewalld:
+    port: "{{ zk_port}}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+  tags:
+    - firewall  
