@@ -1,0 +1,33 @@
+[Unit]
+Description=minio
+Documentation=https://min.io
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User={{ zk_user}}
+Group={{ zk_group }}
+
+Environment=zk_HOME={{ zk_home }}
+Environment=zk_CONF={{ zk_conf }}
+
+
+ExecStart={{ zk_home}}/bin/zookeeper-server-start.sh
+
+Restart=on-failure
+RestartSec=3
+
+StartLimitBurst=3
+StartLimitInterval=60
+
+LimitNOFILE=65536
+
+
+WorkingDirectory={{ zk_home}}
+
+StandardOutput=journal
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target
