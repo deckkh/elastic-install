@@ -13,7 +13,7 @@ Environment=zk_HOME={{ zk_home }}
 Environment=zk_CONF={{ zk_conf }}
 
 
-ExecStart={{ zk_home}}/bin/zookeeper-server-start.sh -daemon {{zk_conf}}/zookeeper.properties
+ExecStart={{ zk_home}}/bin/bin/zookeeper-server-start.sh -daemon {{zk_conf}}/zookeeper.properties
 
 Restart=on-failure
 RestartSec=3
