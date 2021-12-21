@@ -3,6 +3,6 @@
 
 - name: Install tar
   yum:
-  delegate_to : localhost
+  delegate_to: localhost
      name: "tar"
      state: present        
