@@ -3,6 +3,7 @@
   roles:
      - zookeeper/requirements
      - disk/configure
+     - java/install
      - zookeeper/install
      - zookeeper/firewall
      - zookeeper/configure

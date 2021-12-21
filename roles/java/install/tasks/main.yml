@@ -1,2 +1,7 @@
 ---
 # tasks file for install
+
+- name: Install java
+  yum:
+     name: "java-11-openjdk"
+     state: present        

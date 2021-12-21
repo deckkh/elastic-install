@@ -3,6 +3,7 @@
   roles:
      - kafka/requirements
      - disk/configure
+     - java/install
      - kafka/install
      - kafka/firewall
      - kafka/configure
