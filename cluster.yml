@@ -1,4 +1,7 @@
 ---
+- name: ntpd
+  import_playbook: ntpd.yml
+
 - name: elastic
   import_playbook: elastic.yml
 

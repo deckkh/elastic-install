@@ -1,5 +1,8 @@
 ---
 
+- name: ntpd
+  import_playbook: ntpd.yml
+
 - name: zookeeper
   import_playbook: zookeeper.yml
 
