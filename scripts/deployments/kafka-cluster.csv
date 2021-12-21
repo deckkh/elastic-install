@@ -1,0 +1,4 @@
+name,memory,switch,template,disks,
+kafka1,2,nat-switch,centos8-template,10,
+kafka2,2,nat-switch,centos8-template,10,
+kafka3,2,nat-switch,centos8-template,10,
