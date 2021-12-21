@@ -2,7 +2,6 @@
 # tasks file for requirements
 
 - name: Install tar
-  delegate_to: localhost
   yum:
      name: "tar"
      state: present        
