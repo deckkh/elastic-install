@@ -7,6 +7,7 @@
     dest: "{{ ka_conf}}/server.properties"
     owner: "{{ ka_user}}"
     group: "{{ ka_group}}"
+  notify: restart  
   tags:
     - configure
 
