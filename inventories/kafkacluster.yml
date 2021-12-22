@@ -1,29 +1,29 @@
 all: # keys must be unique, i.e. only one 'hosts' per group
     vars:
-        ka_zk_hosts: "kafka1:2181,kafka2:2181,kafka3:2181"
+      ka_zk_hosts: "kafka1:2181,kafka2:2181,kafka3:2181"
     children:   # key order does not matter, indentation does
         zookeeper:
           vars:
           hosts:
             kafka1:
               zk_id: 1
-              zk_confile_file: "kafka-cluster.zookeeper.properties.j2"
+              zk_config_file: "kafka-cluster.zookeeper.properties.j2"
             kafka2:
               zk_id: 2
-              zk_confile_file: "kafka-cluster.zookeeper.properties.j2"
+              zk_config_file: "kafka-cluster.zookeeper.properties.j2"
             kafka3:
               zk_id: 3
-              zk_confile_file: "kafka-cluster.zookeeper.properties.j2"
+              zk_config_file: "kafka-cluster.zookeeper.properties.j2"
         kafka:
           vars:
             ka_zk_hosts: "kafka1:2181,kafka2:2181,kafka3:2181"
           hosts:
              kafka1:
                ka_broker_id: 1
-               ka_confile_file: "kafka-cluster.server.properties.j2"
+               ka_config_file: "kafka-cluster.server.properties.j2"
              kafka2:
                ka_broker_id: 2
-               ka_confile_file: "kafka-cluster.server.properties.j2"
+               ka_config_file: "kafka-cluster.server.properties.j2"
              kafka3:
                ka_broker_id: 3
-               ka_confile_file: "kafka-cluster.server.properties.j2"
+               ka_config_file: "kafka-cluster.server.properties.j2"
