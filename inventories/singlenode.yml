@@ -22,7 +22,7 @@ all: # keys must be unique, i.e. only one 'hosts' per group
         elastic:
             children:
             vars:
-                es_elasticsearch_yml: "singlenode.elasticsearch.yml.j2"
+                es_elasticsearch_yml: "singlenode/elasticsearch.yml.j2"
                 es_discovery_seed_hosts : ['node1']
                 es_cluster_initial_master_nodes: ['node1']
             hosts:
@@ -30,7 +30,7 @@ all: # keys must be unique, i.e. only one 'hosts' per group
                     es_node_roles: ['master','data' ]
         kibana:
             vars:
-                kbn_kibana_yml: "singlenode.kibana.yml.j2"
+                kbn_kibana_yml: "singlenode/kibana.yml.j2"
                 kbn_elasticsearch_hosts: ["https://node1:9200"]
                 kbn_server_publicBaseUrl : "https://{{kbn_hostname}}"
                 # use utility kibana_encryption_keys to generate new values, change these
