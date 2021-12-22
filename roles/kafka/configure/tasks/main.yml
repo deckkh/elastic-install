@@ -3,7 +3,7 @@
 
 - name: Configure server conf
   template:
-    src: "server.properties.j2"
+    src: "{{ ka_config_file }}"
     dest: "{{ ka_conf}}/server.properties"
     owner: "{{ ka_user}}"
     group: "{{ ka_group}}"

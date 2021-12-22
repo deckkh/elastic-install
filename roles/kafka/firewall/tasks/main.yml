@@ -7,3 +7,11 @@
     immediate: true
   tags:
     - firewall  
+
+- firewalld:
+    port: "{{ ka_port_repl}}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+  tags:
+    - firewall  

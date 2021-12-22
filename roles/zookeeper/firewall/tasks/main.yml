@@ -7,3 +7,21 @@
     immediate: true
   tags:
     - firewall  
+
+# tasks file for firewall
+- firewalld:
+    port: "{{ zk_port_mgt1}}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+  tags:
+    - firewall  
+
+# tasks file for firewall
+- firewalld:
+    port: "{{ zk_port_mgt2}}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+  tags:
+    - firewall  
