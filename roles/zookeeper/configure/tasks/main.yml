@@ -6,6 +6,7 @@
     dest: "{{ zk_data_path}}/myid"
     owner: "{{ zk_user}}"
     group: "{{ zk_group}}"
+  notify: restart  
   tags:
     - configure
 
@@ -15,6 +16,7 @@
     dest: "{{ zk_conf}}/zookeeper.properties"
     owner: "{{ zk_user}}"
     group: "{{ zk_group}}"
+  notify: restart  
   tags:
     - configure
 
