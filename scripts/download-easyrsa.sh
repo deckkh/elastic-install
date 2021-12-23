@@ -1,7 +1,7 @@
 echo -n "enter easyrsa version to download : "
 read version
 
-location_server="https://github.com/OpenVPN/easy-rsa/releases/download/"$version"/EasyRSA-"$version".tgz"
+location_server="https://github.com/OpenVPN/easy-rsa/releases/download/v"$version"/EasyRSA-"$version".tgz"
 
 destdir="/opt/ansible/elastic-install/files"
 
