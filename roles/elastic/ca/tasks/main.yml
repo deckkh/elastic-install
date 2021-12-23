@@ -51,31 +51,31 @@
   tags:
     - ca
 
-- debug: var=keystore
+- debug: var=keystore.stdout_lines
 
 
 - name: Update xpack.security.transport.ssl.keystore.secure_password in keystore
   shell: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
-  when: '"xpack.security.transport.ssl.keystore.secure_password" not in keystore'
+  when: '"xpack.security.transport.ssl.keystore.secure_password" not in keystore.stdout_lines'
   tags:
     - ca
 
 
 - name: Update xpack.security.transport.ssl.truststore.secure_password in keystore
   shell: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
-  when: '"xpack.security.transport.ssl.truststore.secure_password" not in keystore'
+  when: '"xpack.security.transport.ssl.truststore.secure_password" not in keystore.stdout_lines'
   tags:
     - ca
 
 - name: Update xpack.security.http.ssl.keystore.secure_password in keystore
   shell: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
-  when: '"xpack.security.http.ssl.keystore.secure_password" not in keystore'
+  when: '"xpack.security.http.ssl.keystore.secure_password" not in keystore.stdout_lines'
   tags:
     - ca
 
 - name: Update xpack.security.http.ssl.truststore.secure_password in keystore
   shell: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.truststore.secure_password
-  when: '"xpack.security.http.ssl.truststore.secure_password" not in keystore'
+  when: '"xpack.security.http.ssl.truststore.secure_password" not in keystore.stdout_lines'
   tags:
     - ca
 
