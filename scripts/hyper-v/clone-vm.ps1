@@ -13,7 +13,9 @@ param
   [Parameter(Mandatory=$false)]
   [bool]$adddatadisk=$false,
   [Parameter(Mandatory=$false)]
-  [Int64]$disksize
+  [Int64]$disksize,
+  [Parameter(Mandatory=$false)]
+  [Int64]$cpus=1
 )
 
 
@@ -35,6 +37,11 @@ try {
     if (-not $vm)
     {
         $vm = new-vm -Name $name -MemoryStartupBytes $memory
+
+        if ($cpus -ne 1)
+        {
+            $vm |Set-VMProcessor -Count $cpus
+        }
 
         Convert-VHD -Path $sourcedisk  -DestinationPath $destdisk
         

@@ -24,7 +24,9 @@ try {
                 {
                     # expect range in GB 
                     $memory = [System.Int64]($row.memory)*1024*1024*1024
-                    .\clone-vm.ps1 -name $row.name -templatedisk $row.template -memory $memory -adddatadisk $false
+                    $cpus = [System.Int64]$row.cpus
+
+                    .\clone-vm.ps1 -name $row.name -templatedisk $row.template -memory $memory -adddatadisk $false -cpus $cpus
         
                     # allocate datadisk(s)
                     $cnt = 1
