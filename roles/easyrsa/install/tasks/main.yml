@@ -66,7 +66,7 @@
 
 - name: Create a symbolic link
   file:
-    src: "{{ er_home}}/EasyRSA-{{ er_version}}.tgz"
+    src: "{{ er_home}}/EasyRSA-{{ er_version}}"
     dest: "{{ er_home}}/bin"
     owner: "{{ er_user}}"
     group: "{{ er_group}}"
