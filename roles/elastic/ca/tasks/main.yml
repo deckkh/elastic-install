@@ -48,25 +48,25 @@
 
 - name: Update xpack.security.transport.ssl.keystore.secure_password in keystore
   ansible.builtin.command:
-    cmd: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password"
+    cmd: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
   tags:
     - ca
 
 - name: Update xpack.security.transport.ssl.truststore.secure_password in keystore
   ansible.builtin.command:
-    cmd: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password"
+    cmd: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
   tags:
     - ca
 
 - name: Update xpack.security.http.ssl.keystore.secure_password in keystore
   ansible.builtin.command:
-    cmd: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password"
+    cmd: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
   tags:
     - ca
 
 - name: Update xpack.security.http.ssl.truststore.secure_password in keystore
   ansible.builtin.command:
-    cmd: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.truststore.secure_password"
+    cmd: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.truststore.secure_password
   tags:
     - ca
 
