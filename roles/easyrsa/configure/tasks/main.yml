@@ -1,2 +1,14 @@
 ---
 # tasks file for configure
+
+- name: Check for pki dir
+  stat: path="{{ er_home}}/bin/pki"
+  register: p
+
+- name: init pki
+  shell: 
+    cmd: ./easyrsa init-pki
+    chdir: "{{ er_home}}/bin"
+  when: not p.stat.exist
+  tags:
+    - ca
