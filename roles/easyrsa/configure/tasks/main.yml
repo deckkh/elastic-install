@@ -9,6 +9,6 @@
   shell: 
     cmd: ./easyrsa init-pki
     chdir: "{{ er_home}}/bin"
-  when: not p.stat.exist
+  when: not p.stat.exists
   tags:
     - ca
