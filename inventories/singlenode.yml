@@ -8,6 +8,9 @@ all: # keys must be unique, i.e. only one 'hosts' per group
         mb_ingest: node1
         ka_zk_hosts: "node1:2181"
     children:   # key order does not matter, indentation does
+        easyrsa:
+            hosts:
+                node1:
         minio:
             hosts:
                 node1:
