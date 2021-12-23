@@ -1,2 +1,104 @@
 ---
 # tasks file for install
+
+- name: Ensure group {{ er_group}} exists
+  group:
+    name: "{{ er_group}}"
+    state: present
+  tags:
+    - install
+
+- name: Add the user {{ er_user}}
+  user:
+    name: "{{ er_user}}"
+    comment: zookeeper service user
+    group: "{{ er_group}}"
+    shell: "/usr/sbin/nologin"
+  tags:
+    - install
+
+
+- name: create data directory
+  file:
+    path: "{{ er_data_path}}"
+    state: directory
+    owner: "{{ er_user }}"
+    group: "{{ er_group }}"
+  tags:
+    - install
+
+
+- name: create zookeeper home directory
+  file:
+    path: "{{ er_home}}"
+    state: directory
+    owner: "{{ er_user}}"
+    group: "{{ er_group}}"
+  tags:
+    - install
+
+- name: create zookeeper conf directory
+  file:
+    path: "{{ er_conf}}"
+    state: directory
+    owner: "{{ er_user}}"
+    group: "{{ er_group}}"
+  tags:
+    - install
+
+- name: Check for easyrsa dir
+  stat: path="{{ er_home}}/kafka_{{ scala_version}}-{{ zookeeper_version }}"
+  register: easyrsa_dir
+  tags:
+    - install
+
+- name: Extract easyrsa into {{ er_home}}
+  unarchive:
+    src: "{{ local_install_dir}}/EasyRSA-{{ er_version}}.tgz"
+    dest: "{{ er_home}}"
+    owner: "{{ er_user}}"
+    group: "{{ er_group}}"
+  when: not easyrsa_dir.stat.exists
+  tags:
+    - install
+
+
+
+- name: Create a symbolic link
+  file:
+    src: "{{ er_home}}/EasyRSA-{{ er_version}}.tgz"
+    dest: "{{ er_home}}/bin"
+    owner: "{{ er_user}}"
+    group: "{{ er_group}}"
+    state: link
+  tags:
+    - install
+
+
+- name: Populate service facts
+  service_facts:    
+  tags:
+    - install  
+
+- name: stop service 
+  service: 
+    name: "easyrsa"
+    state: stopped 
+  when: ansible_facts.services["easyrsa.service"] is defined    
+  tags:
+    - install  
+
+- name: Configure easyrsa.service
+  template:
+    src: "easyrsa.service.j2"
+    dest: "/etc/systemd/system/easyrsa.service"
+  tags:
+    - install
+
+- name: issue daemon-reload to pick up config changes
+  systemd:
+    daemon_reload: yes
+  tags:
+    - install  
+
+

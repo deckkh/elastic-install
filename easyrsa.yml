@@ -1,0 +1,10 @@
+---
+- hosts: easyrsa
+  roles:
+     - easyrsa/requirements
+     - disk/configure
+     - easyrsa/install
+     - easyrsa/firewall
+     - easyrsa/configure
+
+
