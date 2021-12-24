@@ -1,29 +1,29 @@
 ---
 # tasks file for configure
 
-    - name: Create named.conf
-      template:
-        src: named.conf.j2
-        dest: /etc/named.conf
-      notify:
-        - restart
-      tags:
-        - configure  
+- name: Create named.conf
+  template:
+    src: named.conf.j2
+    dest: /etc/named.conf
+  notify:
+    - restart
+  tags:
+    - configure  
 
-    - name: Create forward zone
-      template:
-        src: forward.db.j2
-        dest: "/var/named/{{ forward_zone}}.db"
-      notify:
-        - restart
-      tags:
-        - configure  
+- name: Create forward zone
+  template:
+    src: forward.db.j2
+    dest: "/var/named/{{ forward_zone}}.db"
+  notify:
+    - restart
+  tags:
+    - configure  
 
-    - name: Create reverse zone
-      template:
-        src: reverse.db.j2
-        dest: "/var/named/{{ reverse_zone}}.db"
-      notify:
-        - restart
-      tags:
-        - configure  
+- name: Create reverse zone
+  template:
+    src: reverse.db.j2
+    dest: "/var/named/{{ reverse_zone}}.db"
+  notify:
+    - restart
+  tags:
+    - configure  

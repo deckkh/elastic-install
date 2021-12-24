@@ -12,3 +12,10 @@
   when: not p.stat.exists
   tags:
     - ca
+
+- name: Create vars
+  template:
+    src: vars.j2
+    dest: "{{ er_home}}/bin/vars"
+  tags:
+    - configure  
