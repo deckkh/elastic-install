@@ -1,2 +1,46 @@
 ---
 # tasks file for uninstall
+
+- name: Remove the user {{ er_user}}
+  user:
+    name: "{{ er_user}}"
+    remove: "yes"
+    state: absent
+  tags:
+    - uninstall
+
+- name: Ensure group {{ er_group}} is removed
+  group:
+    name: "{{ er_group}}"
+    state: absent
+  tags:
+    - uninstall
+
+
+- name: Recursively remove directory
+  file:
+    path: "{{ er_home }}"
+    state: absent
+  tags:
+    - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "{{ er_conf }}"
+    state: absent    
+  tags:
+    - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "{{ er_data_path }}"
+    state: absent    
+  tags:
+    - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "/home/{{ er_user}}"
+    state: absent    
+  tags:
+    - uninstall  
