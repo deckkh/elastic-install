@@ -4,6 +4,8 @@
 - name: Check for pki dir
   stat: path="{{ er_home}}/bin/pki"
   register: p
+  tags:
+    - configure
 
 - name: init pki
   shell: 
@@ -11,7 +13,7 @@
     chdir: "{{ er_home}}/bin"
   when: not p.stat.exists
   tags:
-    - ca
+    - configure
 
 - name: Create vars
   template:
@@ -26,4 +28,4 @@
     chdir: "{{ er_home}}/bin"
   when: not p.stat.exists
   tags:
-    - ca
+    - configure
