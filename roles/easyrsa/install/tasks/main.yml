@@ -11,7 +11,7 @@
 - name: Add the user {{ er_user}}
   user:
     name: "{{ er_user}}"
-    comment: zookeeper service user
+    comment: easyrsa service user
     group: "{{ er_group}}"
     shell: "/usr/sbin/nologin"
   tags:
@@ -28,7 +28,7 @@
     - install
 
 
-- name: create zookeeper home directory
+- name: create easyrsa home directory
   file:
     path: "{{ er_home}}"
     state: directory
@@ -37,7 +37,7 @@
   tags:
     - install
 
-- name: create zookeeper conf directory
+- name: create easyrsa conf directory
   file:
     path: "{{ er_conf}}"
     state: directory
@@ -47,7 +47,7 @@
     - install
 
 - name: Check for easyrsa dir
-  stat: path="{{ er_home}}/kafka_{{ scala_version}}-{{ zookeeper_version }}"
+  stat: path="{{ er_home}}/kafka_{{ scala_version}}-{{ easyrsa_version }}"
   register: easyrsa_dir
   tags:
     - install
