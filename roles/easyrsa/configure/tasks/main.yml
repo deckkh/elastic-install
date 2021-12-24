@@ -19,3 +19,11 @@
     dest: "{{ er_home}}/bin/vars"
   tags:
     - configure  
+
+- name: build-ca
+  shell: 
+    cmd: ./easyrsa build-ca nopass
+    chdir: "{{ er_home}}/bin"
+  when: not p.stat.exists
+  tags:
+    - ca
