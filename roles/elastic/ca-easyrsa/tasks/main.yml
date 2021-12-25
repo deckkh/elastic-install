@@ -50,6 +50,7 @@
     - ca
 
 - name: Extract node cert csr
+  delegate_to: localhost
   unarchive:
     src: "{{ local_install_dir}}/cert-{{ ansible_hostname }}.zip"
     dest: "/tmp"
