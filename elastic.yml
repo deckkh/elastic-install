@@ -5,6 +5,7 @@
      - disk/configure
      - elastic/install
      - elastic/ca
+     - elastic/ca-easyrsa
      - elastic/firewall
      - elastic/plugin
      - elastic/configure
