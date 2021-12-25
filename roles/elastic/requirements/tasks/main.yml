@@ -29,3 +29,11 @@
      state: present        
   tags:
     - requirements  
+
+- name: Install unzip
+  delegate_to: localhost
+  yum:
+     name: "unzip"
+     state: present        
+  tags:
+    - requirements  
