@@ -21,3 +21,11 @@
     state: absent         
   tags:
     - requirements  
+
+- name: Install tar
+  delegate_to: localhost
+  yum:
+     name: "tar"
+     state: present        
+  tags:
+    - requirements  
