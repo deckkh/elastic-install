@@ -47,7 +47,7 @@
     - install
 
 - name: Check for easyrsa dir
-  stat: path="{{ er_home}}/kafka_{{ scala_version}}-{{ easyrsa_version }}"
+  stat: path="{{ er_home}}/EasyRSA-{{ er_version}}"
   register: easyrsa_dir
   tags:
     - install
