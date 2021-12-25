@@ -4,5 +4,6 @@
   order: sorted
   roles:
      - elastic/ca
+     - elastic/ca-easyrsa
 
 
