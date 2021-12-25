@@ -69,7 +69,7 @@
     - ca
 
 - name: sign request
-  shell: '{{ er_home}}/bin/pki/easyrsa sign-req server {{ ansible_hostname}}'
+  shell: '{{ er_home}}/bin/easyrsa sign-req server {{ ansible_hostname}}'
   when: ca_provider == "easyrsa"
   tags:
     - ca
