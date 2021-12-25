@@ -53,7 +53,7 @@
   delegate_to: localhost
   unarchive:
     src: "{{ local_install_dir}}/cert-{{ ansible_hostname }}.zip"
-    dest: "/tmp"
+    dest: "/tmp/cert-{{ ansible_hostname }}"
   tags:
     - ca
 
