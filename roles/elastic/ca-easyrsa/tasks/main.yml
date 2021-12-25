@@ -61,7 +61,7 @@
   delegate_to: node1
   copy:
     src: "/tmp/{{ ansible_hostname }}/{{ ansible_hostname }}.csr"
-    dest: "{{ er_home}}/bin/pki/requests/{{ ansible_hostname }}.req"
+    dest: "{{ er_home}}/bin/pki/reqs/{{ ansible_hostname }}.req"
     owner: "{{ er_user}}"
     group: "{{ er_group}}"
   when: ca_provider == "easyrsa"
