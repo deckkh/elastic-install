@@ -29,3 +29,11 @@
   when: not p.stat.exists
   tags:
     - configure
+
+- name: Fetch ca 
+  ansible.builtin.fetch:
+    src: "{{ er_home}}/bin/pki/ca.crt"
+    dest: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+    flat: true
+  tags:
+    - configure
