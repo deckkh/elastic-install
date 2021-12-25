@@ -2,7 +2,7 @@
 # tasks file for configure
 
 - name: Check for pki dir
-  stat: path="{{ er_home}}/bin/pki"
+  stat: path="{{ er_home}}/bin/pki/ca.crt"
   register: p
   tags:
     - configure
