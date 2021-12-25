@@ -34,7 +34,7 @@
 
 - name: Create node  cert csr
   ansible.builtin.command:
-    cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil csr --ip "{{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}.p12" --out "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip" 
+    cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil csr --ip "{{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}" --out "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip" 
     creates: "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip"
   when: ca_provider == "easyrsa"
   tags:
