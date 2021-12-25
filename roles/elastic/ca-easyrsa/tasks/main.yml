@@ -69,7 +69,9 @@
     - ca
 
 - name: sign request
-  shell: '{{ er_home}}/bin/easyrsa sign-req server {{ ansible_hostname}}'
+  shell: 
+    cmd: "{{ er_home}}/bin/easyrsa sign-req server {{ ansible_hostname}}"
+    chdir: "{{ er_home}}/bin"
   when: ca_provider == "easyrsa"
   tags:
     - ca
