@@ -1,2 +1,181 @@
 ---
 # tasks file for ca-easyrsa
+
+- name: create certs directory 
+  file:
+    path: /etc/elasticsearch/certs
+    state: directory
+    owner: elasticsearch
+    group: elasticsearch
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
+
+- name: Check for local CA
+  delegate_to: localhost
+  stat:
+    path: "{{ local_install_dir }}/{{ es_clustername }}.crt"
+  register: ca
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
+
+- name: Fetch ca 
+  delegate_to: node1
+  ansible.builtin.fetch:
+    src: "/tmp/{{ es_clustername }}.p12"
+    dest: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+    flat: true
+  when: ca_provider == "easyrsa" and ca_p12.stat.exists == false 
+  tags:
+    - ca
+
+
+
+- name: Run command if ca.p12 does not exist
+  ansible.builtin.command:
+    cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil ca --out "/tmp/{{ es_clustername }}.p12" --pass "{{es_clustername}}"
+    creates: "/tmp/{{ es_clustername }}.p12"
+  when: ca_provider == "easyrsa" and ca_p12.stat.exists == false
+  tags:
+    - ca
+
+- name: Fetch ca 
+  ansible.builtin.fetch:
+    src: "/tmp/{{ es_clustername }}.p12"
+    dest: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+    flat: true
+  when: ca_provider == "easyrsa" and ca_p12.stat.exists == false 
+  tags:
+    - ca
+
+
+- name: Copy CA file 
+  copy:
+    src: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+    dest: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
+    owner: elasticsearch
+    group: elasticsearch
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
+
+- name: list  keystore
+  shell: /usr/share/elasticsearch/bin/elasticsearch-keystore list
+  register: keystore
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
+
+- debug: var=keystore.stdout_lines
+  when: ca_provider == "easyrsa"
+  
+
+- name: Update xpack.security.transport.ssl.keystore.secure_password in keystore
+  shell: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
+  when: ca_provider == "easyrsa" and '"xpack.security.transport.ssl.keystore.secure_password" not in keystore.stdout_lines'
+  tags:
+    - ca
+
+
+- name: Update xpack.security.transport.ssl.truststore.secure_password in keystore
+  shell: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
+  when: ca_provider == "easyrsa" and  '"xpack.security.transport.ssl.truststore.secure_password" not in keystore.stdout_lines'
+  tags:
+    - ca
+
+- name: Update xpack.security.http.ssl.keystore.secure_password in keystore
+  shell: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
+  when: ca_provider == "easyrsa" and  '"xpack.security.http.ssl.keystore.secure_password" not in keystore.stdout_lines'
+  tags:
+    - ca
+
+- name: Update xpack.security.http.ssl.truststore.secure_password in keystore
+  shell: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.truststore.secure_password
+  when: ca_provider == "easyrsa" and  '"xpack.security.http.ssl.truststore.secure_password" not in keystore.stdout_lines'
+  tags:
+    - ca
+
+
+- name: Create node  cert
+  ansible.builtin.command:
+    cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca "/etc/elasticsearch/certs/{{ es_clustername }}.p12" --ca-pass "{{es_clustername}}" --ip "{{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}.p12" --out "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.p12" --pass "{{es_clustername}}"
+    creates: "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.p12"
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
+
+- name: Change node cert owner
+  ansible.builtin.file:
+    path: "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.p12"
+    owner: elasticsearch
+    group: elasticsearch
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
+
+
+- name: Create kibana  cert
+  ansible.builtin.command:
+     cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca "/etc/elasticsearch/certs/{{ es_clustername }}.p12" --ca-pass "{{es_clustername}}"   --dns "{{ kbn_hostname }}" --name "{{ es_clustername}}-{{ kbn_hostname }}.p12" --out "/tmp/{{es_clustername}}-{{kbn_hostname }}.p12" --pass "{{es_clustername}}"
+     creates: "/tmp/{{ es_clustername}}-{{ kbn_hostname }}.p12"
+  when: ca_provider == "easyrsa" and ca_p12.stat.exists == false 
+  tags:
+    - ca
+
+- name: Fetch kibana cert
+  ansible.builtin.fetch:
+    src: "/tmp/{{es_clustername}}-{{ kbn_hostname }}.p12"
+    dest: "{{ local_install_dir }}/{{ es_clustername }}-{{ kbn_hostname}}.p12"
+    flat: true
+  when:  ca_provider == "easyrsa" and ca_p12.stat.exists == false 
+  tags:
+    - ca
+
+
+- name: Extract CA cert
+  delegate_to: localhost
+  ansible.builtin.command:
+     cmd: openssl pkcs12 -in "{{ local_install_dir }}/{{ es_clustername}}-{{ kbn_hostname}}.p12" -cacerts -nokeys -out "{{ local_install_dir }}/{{es_clustername}}.crt" -password "pass:{{ es_clustername}}"
+     creates: "{{ local_install_dir }}/{{es_clustername}}.crt"
+  when:  ca_provider == "easyrsa"    
+  tags:
+    - ca
+    - pem
+
+
+- name: Extract kibana cert
+  delegate_to: localhost
+  ansible.builtin.command:
+     cmd: openssl pkcs12 -in "{{ local_install_dir }}/{{ es_clustername}}-{{ kbn_hostname}}.p12"  -nokeys -out "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.pem" -password "pass:{{ es_clustername}}"
+     creates: "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.pem"
+  when:  ca_provider == "easyrsa"    
+  tags:
+    - ca
+    - pem
+
+- name: Extract kibana key
+  delegate_to: localhost
+  ansible.builtin.command:
+     cmd: openssl pkcs12 -in "{{ local_install_dir }}/{{ es_clustername}}-{{ kbn_hostname}}.p12"  -nocerts -nodes -out "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.key" -password "pass:{{ es_clustername}}"
+     creates: "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.key"
+  when:  ca_provider == "easyrsa"    
+  tags:
+    - ca
+    - pem
+
+
+# - name: Create http  cert
+#   ansible.builtin.command:
+#     cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil http --ca "/etc/elasticsearch/certs/{{ es_clustername }}.p12" --ca-pass "{{es_clustername}}" --ip "{{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}.p12" --out "/etc/elasticsearch/certs/http-{{ ansible_hostname }}.p12" --pass "{{es_clustername}}"
+#     creates: "/etc/elasticsearch/certs/http-{{ ansible_hostname }}.p12"
+#   tags:
+#     - ca
+
+# - name: Change node http owner
+#   ansible.builtin.file:
+#     path: "/etc/elasticsearch/certs/http-{{ ansible_hostname }}.p12"
+#     owner: elasticsearch
+#     group: elasticsearch
+#   tags:
+#     - ca

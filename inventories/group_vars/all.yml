@@ -9,3 +9,4 @@ logical_volume: 'lv_data'
 mount_logical_volume: "/data"
 data_disk: '/dev/sdb'
 
+
