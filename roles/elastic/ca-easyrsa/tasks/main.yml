@@ -58,7 +58,7 @@
     - ca
 
 - name: Copy CA file 
-  delegateto: node1
+  delegate_to: node1
   copy:
     src: "/tmp/{{ ansible_hostname }}/{{ ansible_hostname }}.csr"
     dest: "{{ er_home}}/bin/pki/requests/{{ ansible_hostname }}.req"
