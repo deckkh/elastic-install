@@ -57,6 +57,22 @@
   tags:
     - ca
 
+- name: Copy CA file 
+  delegateto: node1
+  copy:
+    src: "/tmp/{{ ansible_hostname }}/{{ ansible_hostname }}.csr"
+    dest: "{{ er_home}}/bin/pki/requests/{{ ansible_hostname }}.req"
+    owner: "{{ er_user}}"
+    group: "{{ er_group}}"
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
+
+- name: sign request
+  shell: '{{ er_home}}/bin/pki/easyrsa sign-req server {{ ansible_hostname}}'
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
 
 
 - name: list  keystore
