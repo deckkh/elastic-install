@@ -32,7 +32,7 @@
     - ca
 
 
-- name: Create node  cert
+- name: Create node  cert csr
   ansible.builtin.command:
     cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil csr --ip "{{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}.p12" --out "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip" 
     creates: "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip"
@@ -41,7 +41,7 @@
     - ca
 
 
-- name: Fetch ca 
+- name: Fetch csr
   ansible.builtin.fetch:
     src: "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip"
     dest: "{{ local_install_dir }}/cert-{{ ansible_hostname }}.zip"
