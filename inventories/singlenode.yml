@@ -7,6 +7,7 @@ all: # keys must be unique, i.e. only one 'hosts' per group
         es_clustername: singlenode
         mb_ingest: node1
         ka_zk_hosts: "node1:2181"
+        ca_provider: "elastic"
     children:   # key order does not matter, indentation does
         easyrsa:
             hosts:
