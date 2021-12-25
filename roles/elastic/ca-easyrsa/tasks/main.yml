@@ -54,6 +54,7 @@
   unarchive:
     src: "{{ local_install_dir}}/cert-{{ ansible_hostname }}.zip"
     dest: "/tmp/cert-{{ ansible_hostname }}"
+    flat: yes
   tags:
     - ca
 
