@@ -72,6 +72,25 @@
   tags:
     - ca
 
+- name: Copy private key
+  delegate_to: localhost
+  copy:
+    src: "/tmp/{{ ansible_hostname }}/{{ ansible_hostname }}.key"
+    dest: "{{ local_install_dir}}/{{ ansible_hostname }}.key"
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
+
+- name: Copy CA file 
+  copy:
+    src: "{{ local_install_dir }}/{{ ansible_hostname }}.key"
+    dest: "/etc/elasticsearch/certs/{{ ansible_hostname}}.key"
+    owner: "elasticsearch"
+    group: "elasticsearch"
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
+
 
 
 - name: Copy CA file 
@@ -96,7 +115,7 @@
 - name: Fetch cert
   delegate_to: node1
   ansible.builtin.fetch:
-    src: "{{ er_home}}/bin/pki/issued/{{ ansible_hostname }}.req"
+    src: "{{ er_home}}/bin/pki/issued/{{ ansible_hostname }}.crt"
     dest: "{{ local_install_dir }}/{{ ansible_hostname }}.crt"
     flat: true
   tags:
