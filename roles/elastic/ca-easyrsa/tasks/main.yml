@@ -32,6 +32,13 @@
     - ca
 
 
+- name: Recursively remove csr
+  file:
+    path: "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip"
+    state: absent
+  tags:
+    - ca
+
 - name: Create node  cert csr
   ansible.builtin.command:
     cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil csr --ip "{{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}" --out "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip" 
@@ -49,6 +56,14 @@
   tags:
     - ca
 
+- name: Recursively remove csr
+  file:
+    path: "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip"
+    state: absent
+  tags:
+    - ca
+
+
 - name: Extract node cert csr
   delegate_to: localhost
   unarchive:
@@ -56,6 +71,8 @@
     dest: "/tmp"
   tags:
     - ca
+
+
 
 - name: Copy CA file 
   delegate_to: node1
@@ -76,53 +93,27 @@
   tags:
     - ca
 
+- name: Fetch cert
+  delegate_to: node1
+  ansible.builtin.fetch:
+    src: "{{ er_home}}/bin/pki/issued/{{ ansible_hostname }}.req"
+    dest: "{{ local_install_dir }}/{{ ansible_hostname }}.crt"
+    flat: true
+  tags:
+    - ca
 
-- name: list  keystore
-  shell: /usr/share/elasticsearch/bin/elasticsearch-keystore list
-  register: keystore
+
+- name: Copy CA file 
+  copy:
+    src: "{{ local_install_dir }}/{{ ansible_hostname }}.crt"
+    dest: "/etc/elasticsearch/certs/{{ ansible_hostname}}.crt"
+    owner: "elasticsearch"
+    group: "elasticsearch"
   when: ca_provider == "easyrsa"
   tags:
     - ca
 
-- debug: var=keystore.stdout_lines
-  when: ca_provider == "easyrsa"
-  
 
-- name: Update xpack.security.transport.ssl.keystore.secure_password in keystore
-  shell: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
-  when: ca_provider == "easyrsa" and '"xpack.security.transport.ssl.keystore.secure_password" not in keystore.stdout_lines'
-  tags:
-    - ca
-
-
-- name: Update xpack.security.transport.ssl.truststore.secure_password in keystore
-  shell: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
-  when: ca_provider == "easyrsa" and  '"xpack.security.transport.ssl.truststore.secure_password" not in keystore.stdout_lines'
-  tags:
-    - ca
-
-- name: Update xpack.security.http.ssl.keystore.secure_password in keystore
-  shell: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.keystore.secure_password
-  when: ca_provider == "easyrsa" and  '"xpack.security.http.ssl.keystore.secure_password" not in keystore.stdout_lines'
-  tags:
-    - ca
-
-- name: Update xpack.security.http.ssl.truststore.secure_password in keystore
-  shell: printf "{{es_clustername}}"| /usr/share/elasticsearch/bin/elasticsearch-keystore add xpack.security.http.ssl.truststore.secure_password
-  when: ca_provider == "easyrsa" and  '"xpack.security.http.ssl.truststore.secure_password" not in keystore.stdout_lines'
-  tags:
-    - ca
-
-
-
-- name: Change node cert owner
-  ansible.builtin.file:
-    path: "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.p12"
-    owner: elasticsearch
-    group: elasticsearch
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
 
 
 - name: Create kibana  cert
