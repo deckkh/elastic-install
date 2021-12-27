@@ -91,8 +91,6 @@
   tags:
     - ca
 
-
-
 - name: Copy CA file 
   delegate_to: node1
   copy:
@@ -158,6 +156,36 @@
   tags:
     - ca
 
+
+- name: Copy CA file 
+  delegate_to: node1
+  copy:
+    src: "/tmp/{{ kbn_hostname }}/{{ kbn_hostname }}.csr"
+    dest: "{{ er_home}}/bin/pki/reqs/{{ kbn_hostname }}.req"
+    owner: "{{ er_user}}"
+    group: "{{ er_group}}"
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
+
+- name: sign request
+  shell: 
+    cmd: "{{ er_home}}/bin/easyrsa sign-req server {{ kbn_hostname}}"
+    chdir: "{{ er_home}}/bin"
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
+
+- name: Fetch cert
+  delegate_to: node1
+  ansible.builtin.fetch:
+    src: "{{ er_home}}/bin/pki/issued/{{ kbn_hostname }}.crt"
+    dest: "{{ local_install_dir }}/{{ kbn_hostname }}.crt"
+    flat: true
+  tags:
+    - ca
+
+
 - name: Copy private key
   delegate_to: localhost
   copy:
@@ -168,49 +196,3 @@
     - ca
 
 
-- name: Extract CA cert
-  delegate_to: localhost
-  ansible.builtin.command:
-     cmd: openssl pkcs12 -in "{{ local_install_dir }}/{{ es_clustername}}-{{ kbn_hostname}}.p12" -cacerts -nokeys -out "{{ local_install_dir }}/{{es_clustername}}.crt" -password "pass:{{ es_clustername}}"
-     creates: "{{ local_install_dir }}/{{es_clustername}}.crt"
-  when:  ca_provider == "easyrsa"    
-  tags:
-    - ca
-    - pem
-
-
-- name: Extract kibana cert
-  delegate_to: localhost
-  ansible.builtin.command:
-     cmd: openssl pkcs12 -in "{{ local_install_dir }}/{{ es_clustername}}-{{ kbn_hostname}}.p12"  -nokeys -out "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.pem" -password "pass:{{ es_clustername}}"
-     creates: "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.pem"
-  when:  ca_provider == "easyrsa"    
-  tags:
-    - ca
-    - pem
-
-- name: Extract kibana key
-  delegate_to: localhost
-  ansible.builtin.command:
-     cmd: openssl pkcs12 -in "{{ local_install_dir }}/{{ es_clustername}}-{{ kbn_hostname}}.p12"  -nocerts -nodes -out "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.key" -password "pass:{{ es_clustername}}"
-     creates: "{{ local_install_dir }}/{{es_clustername}}-{{kbn_hostname}}.key"
-  when:  ca_provider == "easyrsa"    
-  tags:
-    - ca
-    - pem
-
-
-# - name: Create http  cert
-#   ansible.builtin.command:
-#     cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil http --ca "/etc/elasticsearch/certs/{{ es_clustername }}.p12" --ca-pass "{{es_clustername}}" --ip "{{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}.p12" --out "/etc/elasticsearch/certs/http-{{ ansible_hostname }}.p12" --pass "{{es_clustername}}"
-#     creates: "/etc/elasticsearch/certs/http-{{ ansible_hostname }}.p12"
-#   tags:
-#     - ca
-
-# - name: Change node http owner
-#   ansible.builtin.file:
-#     path: "/etc/elasticsearch/certs/http-{{ ansible_hostname }}.p12"
-#     owner: elasticsearch
-#     group: elasticsearch
-#   tags:
-#     - ca
