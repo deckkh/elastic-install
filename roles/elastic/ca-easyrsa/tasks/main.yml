@@ -165,7 +165,7 @@
     - ca
 
 - name: Copy kibana key file
-  delegate_to: node1
+  delegate_to: localhost
   copy:
     src: "/tmp/{{ kbn_hostname }}/{{ kbn_hostname }}.key"
     dest: "{{ local_install_dir}}/{{ kbn_hostname }}.key"
