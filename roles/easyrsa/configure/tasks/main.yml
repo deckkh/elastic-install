@@ -30,10 +30,19 @@
   tags:
     - configure
 
+
+- name: create certs directory 
+  delegate_to: localhost
+  file:
+    path: "{{ local_install_dir }}/certs"
+    state: directory
+  tags:
+    - configure
+
 - name: Fetch ca 
   ansible.builtin.fetch:
     src: "{{ er_home}}/bin/pki/ca.crt"
-    dest: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+    dest: "{{ local_install_dir }}/certs/{{ er_rootca }}.crt"
     flat: true
   tags:
     - configure
