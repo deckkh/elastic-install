@@ -194,6 +194,19 @@
   tags:
     - ca
 
+- name: Recursively remove node csr
+  file:
+    path: "/tmp/{{ ansible_hostname }}"
+    state: absent
+  tags:
+    - ca
+
+- name: Recursively remove kibana csr
+  file:
+    path: "/tmp/{{ ansible_hostname }}"
+    state: absent
+  tags:
+    - ca
 
 
 
