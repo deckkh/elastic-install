@@ -41,8 +41,8 @@
 
 - name: Create node  cert csr
   ansible.builtin.command:
-    cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil csr --ip "{{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}" --out "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip" 
-    creates: "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip"
+    cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil csr --ip "{{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}" --out "/tmp/cert-{{ ansible_hostname }}.zip" 
+    creates: "/tmp/cert-{{ ansible_hostname }}.zip"
   when: ca_provider == "easyrsa"
   tags:
     - ca
@@ -50,15 +50,15 @@
 
 - name: Fetch csr
   ansible.builtin.fetch:
-    src: "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip"
+    src: "/tmp/cert-{{ ansible_hostname }}.zip"
     dest: "{{ local_install_dir }}/cert-{{ ansible_hostname }}.zip"
     flat: true
   tags:
     - ca
 
-- name: Recursively remove csr
+- name: Recursively remove node csr
   file:
-    path: "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip"
+    path: "/tmp/cert-{{ ansible_hostname }}.zip"
     state: absent
   tags:
     - ca
@@ -120,7 +120,7 @@
     - ca
 
 
-- name: Copy CA file 
+- name: Copy node cert file 
   copy:
     src: "{{ local_install_dir }}/{{ ansible_hostname }}.crt"
     dest: "/etc/elasticsearch/certs/{{ ansible_hostname}}.crt"
@@ -148,6 +148,14 @@
     - ca
 
 
+- name: Recursively remove kibana csr
+  file:
+    path: "/tmp/kibana-{{ kbn_hostname }}.zip"
+    state: absent
+  tags:
+    - ca
+
+
 - name: Extract kibana cert csr
   delegate_to: localhost
   unarchive:
@@ -156,7 +164,7 @@
   tags:
     - ca
 
-- name: Copy kibana key files
+- name: Copy kibana key file
   delegate_to: node1
   copy:
     src: "/tmp/{{ kbn_hostname }}/{{ kbn_hostname }}.key"
@@ -185,7 +193,7 @@
   tags:
     - ca
 
-- name: Fetch kibana cert
+- name: Fetch issued kibana cert
   delegate_to: node1
   ansible.builtin.fetch:
     src: "{{ er_home}}/bin/pki/issued/{{ kbn_hostname }}.crt"
@@ -195,6 +203,7 @@
     - ca
 
 - name: Recursively remove node csr
+  delegate_to: localhost
   file:
     path: "/tmp/{{ ansible_hostname }}"
     state: absent
@@ -202,8 +211,9 @@
     - ca
 
 - name: Recursively remove kibana csr
+  delegate_to: localhost
   file:
-    path: "/tmp/{{ ansible_hostname }}"
+    path: "/tmp/{{ kbn_hostname }}"
     state: absent
   tags:
     - ca
