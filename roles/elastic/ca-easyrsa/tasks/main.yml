@@ -11,6 +11,22 @@
   tags:
     - ca
 
+- name: create certs directory 
+  file:
+    path: "{{ local_install_dir }}/certs"
+    state: directory
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
+
+- name: create certs directory for cluster
+  file:
+    path: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ es_clustername}}"
+    state: directory
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
+
 - name: Check for local CA
   delegate_to: localhost
   stat:
@@ -21,9 +37,9 @@
     - ca
 
 
-- name: Copy CA file 
+- name: Copy root CA file 
   copy:
-    src: "{{ local_install_dir }}/{{ es_clustername }}.crt"
+    src: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ es_clustername }}.crt"
     dest: "/etc/elasticsearch/certs/{{ es_clustername }}.crt"
     owner: elasticsearch
     group: elasticsearch
@@ -32,12 +48,6 @@
     - ca
 
 
-- name: Recursively remove csr
-  file:
-    path: "/etc/elasticsearch/certs/cert-{{ ansible_hostname }}.zip"
-    state: absent
-  tags:
-    - ca
 
 - name: Create node  cert csr
   ansible.builtin.command:
@@ -51,7 +61,7 @@
 - name: Fetch csr
   ansible.builtin.fetch:
     src: "/tmp/cert-{{ ansible_hostname }}.zip"
-    dest: "{{ local_install_dir }}/cert-{{ ansible_hostname }}.zip"
+    dest: "{{ local_install_dir }}/certs/{{ es_clustername }}/cert-{{ ansible_hostname }}.zip"
     flat: true
   tags:
     - ca
@@ -67,7 +77,7 @@
 - name: Extract node cert csr
   delegate_to: localhost
   unarchive:
-    src: "{{ local_install_dir}}/cert-{{ ansible_hostname }}.zip"
+    src: "{{ local_install_dir}}/certs/cert-{{ ansible_hostname }}.zip"
     dest: "/tmp"
   tags:
     - ca
@@ -76,14 +86,14 @@
   delegate_to: localhost
   copy:
     src: "/tmp/{{ ansible_hostname }}/{{ ansible_hostname }}.key"
-    dest: "{{ local_install_dir}}/{{ ansible_hostname }}.key"
+    dest: "{{ local_install_dir}}/certs/{{ ansible_hostname }}.key"
   when: ca_provider == "easyrsa"
   tags:
     - ca
 
 - name: Copy CA file 
   copy:
-    src: "{{ local_install_dir }}/{{ ansible_hostname }}.key"
+    src: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ ansible_hostname }}.key"
     dest: "/etc/elasticsearch/certs/{{ ansible_hostname}}.key"
     owner: "elasticsearch"
     group: "elasticsearch"
@@ -114,7 +124,7 @@
   delegate_to: node1
   ansible.builtin.fetch:
     src: "{{ er_home}}/bin/pki/issued/{{ ansible_hostname }}.crt"
-    dest: "{{ local_install_dir }}/{{ ansible_hostname }}.crt"
+    dest: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ ansible_hostname }}.crt"
     flat: true
   tags:
     - ca
@@ -122,7 +132,7 @@
 
 - name: Copy node cert file 
   copy:
-    src: "{{ local_install_dir }}/{{ ansible_hostname }}.crt"
+    src: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ ansible_hostname }}.crt"
     dest: "/etc/elasticsearch/certs/{{ ansible_hostname}}.crt"
     owner: "elasticsearch"
     group: "elasticsearch"
@@ -141,7 +151,7 @@
 - name: Fetch kibana cert
   ansible.builtin.fetch:
     src: "/tmp/kibana-{{ kbn_hostname }}.zip"
-    dest: "{{ local_install_dir }}/kibana-{{ kbn_hostname}}.zip"
+    dest: "{{ local_install_dir }}/certs/{{ es_clustername }}/kibana-{{ kbn_hostname}}.zip"
     flat: true
   when:  ca_provider == "easyrsa" 
   tags:
@@ -159,7 +169,7 @@
 - name: Extract kibana cert csr
   delegate_to: localhost
   unarchive:
-    src: "{{ local_install_dir}}/kibana-{{ kbn_hostname }}.zip"
+    src: "{{ local_install_dir}}/certs/kibana-{{ kbn_hostname }}.zip"
     dest: "/tmp"
   tags:
     - ca
@@ -168,7 +178,7 @@
   delegate_to: localhost
   copy:
     src: "/tmp/{{ kbn_hostname }}/{{ kbn_hostname }}.key"
-    dest: "{{ local_install_dir}}/{{ kbn_hostname }}.key"
+    dest: "{{ local_install_dir}}/certs/{{ kbn_hostname }}.key"
   when: ca_provider == "easyrsa"
   tags:
     - ca
@@ -197,7 +207,7 @@
   delegate_to: node1
   ansible.builtin.fetch:
     src: "{{ er_home}}/bin/pki/issued/{{ kbn_hostname }}.crt"
-    dest: "{{ local_install_dir }}/{{ kbn_hostname }}.crt"
+    dest: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ kbn_hostname }}.crt"
     flat: true
   tags:
     - ca
