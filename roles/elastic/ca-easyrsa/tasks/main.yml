@@ -156,8 +156,17 @@
   tags:
     - ca
 
+- name: Copy kibana key files
+  delegate_to: node1
+  copy:
+    src: "/tmp/{{ kbn_hostname }}/{{ kbn_hostname }}.key"
+    dest: "{{ local_install_dir}}/{{ kbn_hostname }}.key"
+  when: ca_provider == "easyrsa"
+  tags:
+    - ca
 
-- name: Copy CA file 
+
+- name: Copy kibana csr file
   delegate_to: node1
   copy:
     src: "/tmp/{{ kbn_hostname }}/{{ kbn_hostname }}.csr"
@@ -168,7 +177,7 @@
   tags:
     - ca
 
-- name: sign request
+- name: sign kibana request
   shell: 
     cmd: "{{ er_home}}/bin/easyrsa sign-req server {{ kbn_hostname}}"
     chdir: "{{ er_home}}/bin"
@@ -176,7 +185,7 @@
   tags:
     - ca
 
-- name: Fetch cert
+- name: Fetch kibana cert
   delegate_to: node1
   ansible.builtin.fetch:
     src: "{{ er_home}}/bin/pki/issued/{{ kbn_hostname }}.crt"
@@ -186,13 +195,5 @@
     - ca
 
 
-- name: Copy private key
-  delegate_to: localhost
-  copy:
-    src: "/tmp1/{{ ansible_hostname }}/{{ ansible_hostname }}.key"
-    dest: "{{ local_install_dir}}/{{ ansible_hostname }}.key"
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
 
 
