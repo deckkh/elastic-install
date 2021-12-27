@@ -7,6 +7,13 @@
   tags:
     - configure
 
+- name: Create vars
+  template:
+    src: vars.j2
+    dest: "{{ er_home}}/bin/vars"
+  tags:
+    - configure  
+
 - name: init pki
   shell: 
     cmd: ./easyrsa init-pki
@@ -15,12 +22,6 @@
   tags:
     - configure
 
-- name: Create vars
-  template:
-    src: vars.j2
-    dest: "{{ er_home}}/bin/vars"
-  tags:
-    - configure  
 
 - name: build-ca
   shell: 
