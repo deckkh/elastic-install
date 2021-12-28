@@ -181,7 +181,7 @@
   delegate_to: localhost
   copy:
     src: "/tmp/{{ kbn_hostname }}/{{ kbn_hostname }}.key"
-    dest: "{{ local_install_dir}}/certs/{{ kbn_hostname }}.key"
+    dest: "{{ local_install_dir}}/certs/{{ es_clustername }}/{{ kbn_hostname }}.key"
   when: ca_provider == "easyrsa"
   tags:
     - ca
@@ -231,5 +231,21 @@
   tags:
     - ca
 
+
+- name: Recursively remove node csr
+  delegate_to: localhost
+  file:
+    path: "{{ local_install_dir }}/certs/{{ es_clustername }}/kibana-{{ kbn_hostname}}.zip"
+    state: absent
+  tags:
+    - ca
+
+- name: Recursively remove kibana csr
+  delegate_to: localhost
+  file:
+    path: "{{ local_install_dir }}/certs/{{ es_clustername }}/cert-{{ hostname}}.zip"
+    state: absent
+  tags:
+    - ca
 
 
