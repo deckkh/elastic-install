@@ -97,11 +97,31 @@ xpack.security.enabled: true
 xpack.security.transport.ssl.enabled: true
 xpack.security.transport.ssl.verification_mode: full
 xpack.security.transport.ssl.client_authentication: required
+xpack.security.http.ssl.enabled: true
+
+{% if ca_provider == "elastic" %}
+
 xpack.security.transport.ssl.keystore.path: /etc/elasticsearch/certs/cert-{{ ansible_hostname}}.p12
 xpack.security.transport.ssl.truststore.path: /etc/elasticsearch/certs/{{ es_clustername}}.p12
 
-xpack.security.http.ssl.enabled: true
 xpack.security.http.ssl.keystore.path: /etc/elasticsearch/certs/cert-{{ ansible_hostname}}.p12
 xpack.security.http.ssl.truststore.path: /etc/elasticsearch/certs/{{ es_clustername}}.p12
+
+
+{% endif %}
+
+
+{% if ca_provider == "easyrsa" %}
+
+xpack.security.transport.ssl.key: /etc/elasticsearch/certs/{{ ansible_hostname}}.crt
+xpack.security.transport.ssl.certificate: /etc/elasticsearch/certs/{{ ansible_hostname}}.key
+
+xpack.security.http.ssl.key: /etc/elasticsearch/certs/{{ ansible_hostname}}.crt
+xpack.security.http.ssl.certificate: /etc/elasticsearch/certs/{{ ansible_hostname}}.key
+
+xpack.security.http.ssl.certificate_authorities: /etc/elasticsearch/certs/{{ er_rootca}}.crt
+xpack.security.transport.ssl.certificate_authorities: /etc/elasticsearch/certs/{{ er_rootca}}.crt
+
+{% endif %}
 
 {% endif %}
