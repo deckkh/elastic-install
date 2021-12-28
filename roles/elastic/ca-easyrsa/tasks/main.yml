@@ -243,7 +243,7 @@
 - name: Recursively remove kibana csr
   delegate_to: localhost
   file:
-    path: "{{ local_install_dir }}/certs/{{ es_clustername }}/cert-{{ hostname}}.zip"
+    path: "{{ local_install_dir }}/certs/{{ es_clustername }}/cert-{{ ansible_hostname}}.zip"
     state: absent
   tags:
     - ca
