@@ -172,7 +172,7 @@
 - name: Extract kibana cert csr
   delegate_to: localhost
   unarchive:
-    src: "{{ local_install_dir}}/certs/kibana-{{ kbn_hostname }}.zip"
+    src: "{{ local_install_dir}}/certs/{{ es_clustername }}/kibana-{{ kbn_hostname }}.zip"
     dest: "/tmp"
   tags:
     - ca
