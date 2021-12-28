@@ -113,11 +113,11 @@ xpack.security.http.ssl.truststore.path: /etc/elasticsearch/certs/{{ es_clustern
 
 {% if ca_provider == "easyrsa" %}
 
-xpack.security.transport.ssl.key: /etc/elasticsearch/certs/{{ ansible_hostname}}.crt
-xpack.security.transport.ssl.certificate: /etc/elasticsearch/certs/{{ ansible_hostname}}.key
+xpack.security.transport.ssl.key: /etc/elasticsearch/certs/{{ ansible_hostname}}.key
+xpack.security.transport.ssl.certificate: /etc/elasticsearch/certs/{{ ansible_hostname}}.crt
 
-xpack.security.http.ssl.key: /etc/elasticsearch/certs/{{ ansible_hostname}}.crt
-xpack.security.http.ssl.certificate: /etc/elasticsearch/certs/{{ ansible_hostname}}.key
+xpack.security.http.ssl.key: /etc/elasticsearch/certs/{{ ansible_hostname}}.key
+xpack.security.http.ssl.certificate: /etc/elasticsearch/certs/{{ ansible_hostname}}.crt
 
 xpack.security.http.ssl.certificate_authorities: /etc/elasticsearch/certs/{{ er_rootca}}.crt
 xpack.security.transport.ssl.certificate_authorities: /etc/elasticsearch/certs/{{ er_rootca}}.crt
