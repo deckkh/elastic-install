@@ -42,8 +42,8 @@
 
 - name: Copy root CA file 
   copy:
-    src: "{{ local_install_dir }}/certs/{{ er_clustername }}.crt"
-    dest: "/etc/elasticsearch/certs/{{ es_clustername }}.crt"
+    src: "{{ local_install_dir }}/certs/{{ er_rootca }}.crt"
+    dest: "/etc/elasticsearch/certs/{{ er_rootca }}.crt"
     owner: elasticsearch
     group: elasticsearch
   when: ca_provider == "easyrsa"
@@ -85,16 +85,16 @@
   tags:
     - ca
 
-- name: Copy private key
+- name: Copy private key to files
   delegate_to: localhost
   copy:
     src: "/tmp/{{ ansible_hostname }}/{{ ansible_hostname }}.key"
-    dest: "{{ local_install_dir}}/certs/{{ ansible_hostname }}.key"
+    dest: "{{ local_install_dir}}/certs/{{ es_clustername }}/{{ ansible_hostname }}.key"
   when: ca_provider == "easyrsa"
   tags:
     - ca
 
-- name: Copy CA file 
+- name: Copy key file to node
   copy:
     src: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ ansible_hostname }}.key"
     dest: "/etc/elasticsearch/certs/{{ ansible_hostname}}.key"
@@ -104,7 +104,7 @@
   tags:
     - ca
 
-- name: Copy CA file 
+- name: Copy csr file  to CA host
   delegate_to: node1
   copy:
     src: "/tmp/{{ ansible_hostname }}/{{ ansible_hostname }}.csr"
@@ -115,7 +115,7 @@
   tags:
     - ca
 
-- name: sign request
+- name: sign request on CA
   shell: 
     cmd: "{{ er_home}}/bin/easyrsa sign-req server {{ ansible_hostname}}"
     chdir: "{{ er_home}}/bin"
@@ -123,7 +123,7 @@
   tags:
     - ca
 
-- name: Fetch cert
+- name: Fetch cert from CA
   delegate_to: node1
   ansible.builtin.fetch:
     src: "{{ er_home}}/bin/pki/issued/{{ ansible_hostname }}.crt"
@@ -133,7 +133,7 @@
     - ca
 
 
-- name: Copy node cert file 
+- name: Copy node cert file to node
   copy:
     src: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ ansible_hostname }}.crt"
     dest: "/etc/elasticsearch/certs/{{ ansible_hostname}}.crt"
