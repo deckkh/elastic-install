@@ -14,7 +14,7 @@
 - name: Check for local CA
   delegate_to: localhost
   stat:
-    path: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+    path: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ es_clustername}}.p12"
   register: ca_p12
   when: ca_provider == "elastic"
   tags:
@@ -31,7 +31,7 @@
 - name: Fetch ca 
   ansible.builtin.fetch:
     src: "/tmp/{{ es_clustername }}.p12"
-    dest: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+    dest: "{{ local_install_dir }}/{{ es_clustername}}/certs/{{ es_clustername }}.p12"
     flat: true
   when: ca_provider == "elastic" and ca_p12.stat.exists == false 
   tags:
@@ -40,7 +40,7 @@
 
 - name: Copy CA file 
   copy:
-    src: "{{ local_install_dir }}/{{ es_clustername }}.p12"
+    src: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ es_clustername }}.p12"
     dest: "/etc/elasticsearch/certs/{{ es_clustername }}.p12"
     owner: elasticsearch
     group: elasticsearch

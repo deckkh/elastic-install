@@ -56,7 +56,7 @@
 
 - name: Copy root ca file 
   copy:
-    src: "{{ local_install_dir}}/{{ es_clustername}}.crt"
+    src: "{{ local_install_dir}}/{{ es_clustername}}/certs/{{ es_clustername}}.crt"
     dest: "/etc/metricbeat/certs/{{ es_clustername}}.crt"
   notify:
     - restart
