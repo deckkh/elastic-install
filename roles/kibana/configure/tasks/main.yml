@@ -49,7 +49,7 @@
 - name: Copy kibana key file 
   copy:
     src: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ kbn_hostname}}.key"
-    dest: "/etc/kibana/certs/kibana-{{ kbn_hostname}}.key"
+    dest: "/etc/kibana/certs/{{ kbn_hostname}}.key"
     owner: kibana
     group: kibana
   when: es_tls == true  and ca_provider== "easyrsa"
