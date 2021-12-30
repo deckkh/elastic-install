@@ -36,7 +36,7 @@
 
 - name: Copy kibana cert file 
   copy:
-    src: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ kbn_hostname}}.crt"
+    src: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ kbn_hostname}}.crt"
     dest: "/etc/kibana/certs/{{ kbn_hostname}}.crt"
     owner: kibana
     group: kibana
@@ -48,7 +48,7 @@
 
 - name: Copy kibana key file 
   copy:
-    src: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ kbn_hostname}}.key"
+    src: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ kbn_hostname}}.key"
     dest: "/etc/kibana/certs/{{ kbn_hostname}}.key"
     owner: kibana
     group: kibana
