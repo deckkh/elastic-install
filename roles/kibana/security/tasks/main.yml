@@ -7,9 +7,13 @@
   set_fact:
     pw: "{{ lookup('file', '{{ local_install_dir }}/{{ es_clustername }}-security') }}"
   when: es_security == true  
+  tags:
+    - security
 
 - debug: msg="the value of pw is {{ pw }}"
   when: es_security == true  
+  tags:
+    - security
 
 - name: elastic_pw
   delegate_to: localhost
@@ -17,9 +21,13 @@
 #    kibana: "{{ 'server1/database42'  | regex_search('server([0-9]+)/database([0-9]+)', '\\1', '\\2') }}"
     pw: "{{ pw | string   }}"
   when: es_security == true  
+  tags:
+    - security
 
 - debug: msg="the value of pw is {{ pw }}"
   when: es_security == true  
+  tags:
+    - security
 
 - name: elastic_pw
   delegate_to: localhost
@@ -27,6 +35,10 @@
 #    kibana: "{{ 'PASSWORD kibana_system = gndlttvbgjj3L3ncX1ti PASSWORD kibana = gndlttvbgjj3L3ncX1ti'  |  regex_search('kibana_system = ([a-zA-Z0-9]*)', '\\1') }}"
     kibana: "{{ pw  | regex_search('kibana_system = ([a-zA-Z0-9]*)', '\\1') }}"
   when: es_security == true  
+  tags:
+    - security
 
 - debug: msg="the value of kibana is {{ kibana }}"
   when: es_security == true  
+  tags:
+    - security
