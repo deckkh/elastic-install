@@ -42,3 +42,23 @@
   when: es_security == true  
   tags:
     - security
+
+- name: list  keystore
+  shell: /usr/share/kibana/bin/kibana-keystore list
+  register: keystore
+  when: es_security == true
+  tags:
+    - security
+
+- debug: var=keystore.stdout_lines
+  when: es_security == true
+  tags:
+    - security
+
+
+- name: Update xpack.security.transport.ssl.keystore.secure_password in keystore
+  shell: printf "{{es_kibana}}"| /usr/share/kibana/bin/kibana-keystore add xpack.security.transport.ssl.keystore.secure_password
+  when: es_security == true and '"xpack.security.transport.ssl.keystore.secure_password" not in keystore.stdout_lines'
+  tags:
+    - security
+
