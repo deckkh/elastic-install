@@ -77,7 +77,7 @@
     cmd:  bin/kibana-keystore add elasticsearch.password --stdin --force
     chdir: /usr/share/kibana
     stdin: "{{kibana}}"
-  when: es_security == true and '"elasticsearch.password" not in keystore.stdout_lines'
+  when: es_security == true and 'elasticsearch.password not in keystore.stdout_lines'
   tags:
     - security
 
