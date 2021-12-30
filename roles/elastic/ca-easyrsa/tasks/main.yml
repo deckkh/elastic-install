@@ -1,23 +1,6 @@
 ---
 # tasks file for ca-easyrsa
 
-- name: create certs directory 
-  delegate_to: localhost
-  file:
-    path: "{{ local_install_dir }}/certs"
-    state: directory
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
-
-- name: create certs directory for cluster
-  delegate_to: localhost
-  file:
-    path: "{{ local_install_dir }}/certs/{{ es_clustername }}"
-    state: directory
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
 
 
 - name: create certs directory 
@@ -33,7 +16,7 @@
 - name: Check for local CA
   delegate_to: localhost
   stat:
-    path: "{{ local_install_dir }}/certs/{{ es_clustername }}.crt"
+    path: "{{ local_install_dir }}/{{ es_clustername}}/"
   register: ca
   when: ca_provider == "easyrsa"
   tags:
