@@ -9,5 +9,6 @@
      - elastic/firewall
      - elastic/plugin
      - elastic/configure
+     - elastic/security
 
 
