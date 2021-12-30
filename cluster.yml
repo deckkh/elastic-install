@@ -2,6 +2,9 @@
 - name: ntpd
   import_playbook: ntpd.yml
 
+- name: easyrsa
+  import_playbook: easyrsa.yml
+
 - name: elastic
   import_playbook: elastic.yml
 
