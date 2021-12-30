@@ -55,8 +55,20 @@
   tags:
     - security
 
+- name: Check for pki dir
+  stat: path="/etc/kibana/kibana.keystore"
+  register: p
+  tags:
+    - security
 
-- name: Update xpack.security.transport.ssl.keystore.secure_password in keystore
+
+- name: Create keystore if not exist
+  shell: /usr/share/kibana/bin/kibana-keystore create
+  when: es_security == true and not p.stat.exists
+  tags:
+    - security
+
+- name: Update elasticsearch.password in keystore
   shell: echo "{{kibana}}"| /usr/share/kibana/bin/kibana-keystore add elasticsearch.password
   when: es_security == true and '"elasticsearch.password" not in keystore.stdout_lines'
   tags:
