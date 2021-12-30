@@ -57,7 +57,7 @@
 
 
 - name: Update xpack.security.transport.ssl.keystore.secure_password in keystore
-  shell: printf "{{kibana}}"| /usr/share/kibana/bin/kibana-keystore add elasticsearch.password
+  shell: echo "{{kibana}}"| /usr/share/kibana/bin/kibana-keystore add elasticsearch.password
   when: es_security == true and '"elasticsearch.password" not in keystore.stdout_lines'
   tags:
     - security
