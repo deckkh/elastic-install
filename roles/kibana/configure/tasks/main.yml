@@ -24,11 +24,11 @@
 
 - name: Copy CA file 
   copy:
-    src: "{{ local_install_dir }}/{{ es_clustername }}.crt"
-    dest: "/etc/kibana/certs/{{ es_clustername }}.crt"
+    src: "{{ local_install_dir }}/certs/{{ er_rootca }}.crt"
+    dest: "/etc/kibana/certs/{{ er_rootca }}.crt"
     owner: kibana
     group: kibana
-  when: es_tls == true  
+  when: es_tls == true  and ca_provider== "easyrsa"
   notify:
     - restart
   tags:
@@ -36,11 +36,11 @@
 
 - name: Copy kibana cert file 
   copy:
-    src: "{{ local_install_dir }}/{{ es_clustername }}-{{ kbn_hostname}}.pem"
-    dest: "/etc/kibana/certs/{{ es_clustername }}-{{ kbn_hostname}}.pem"
+    src: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ kbn_hostname}}.crt"
+    dest: "/etc/kibana/certs/{{ kbn_hostname}}.crt"
     owner: kibana
     group: kibana
-  when: es_tls == true  
+  when: es_tls == true  and ca_provider== "easyrsa"
   notify:
     - restart
   tags:
@@ -48,11 +48,11 @@
 
 - name: Copy kibana key file 
   copy:
-    src: "{{ local_install_dir }}/{{ es_clustername }}-{{ kbn_hostname}}.key"
-    dest: "/etc/kibana/certs/{{ es_clustername }}-{{ kbn_hostname}}.key"
+    src: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ kbn_hostname}}.key"
+    dest: "/etc/kibana/certs/kibana-{{ kbn_hostname}}.key"
     owner: kibana
     group: kibana
-  when: es_tls == true  
+  when: es_tls == true  and ca_provider== "easyrsa"
   notify:
     - restart
   tags:
