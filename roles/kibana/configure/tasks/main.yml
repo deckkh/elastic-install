@@ -1,33 +1,27 @@
 ---
 
-- name: Check for pki dir
-  stat: path="{{ local_install_dir}}/{{es_clustername}}/kibana-encryptedSavedObjects"
-  register: encryption_strings
-  tags:
-    - configure
 
 
 - name: encryption_string encryptedSavedObjects
   set_fact:
-    encryptedSavedObjects: "{{ lookup('password', '{{ local_install_dir}}/{{es_clustername}}/kibana-encryptedSavedObjects chars=ascii_lowercase,digits length=24') }}"  
+    kbn_xpack_encryptedSavedObjects_encryptionKey: "{{ lookup('password', '{{ local_install_dir}}/{{es_clustername}}/kibana-encryptedSavedObjects chars=ascii_lowercase,digits length=24') }}"  
   when: not encryption_strings.stat.exists
   tags:
     - configure
 
 - name: encryption_string reporting
   set_fact:
-    reporting: "{{ lookup('password', '{{ local_install_dir}}/{{es_clustername}}/kibana-reporting chars=ascii_lowercase,digits length=24') }}"  
+    kbn_xpack_reporting_encryptionKey: "{{ lookup('password', '{{ local_install_dir}}/{{es_clustername}}/kibana-reporting chars=ascii_lowercase,digits length=24') }}"  
   when: not encryption_strings.stat.exists
   tags:
     - configure
 
 - name: encryption_string security
   set_fact:
-    security: "{{ lookup('password', '{{ local_install_dir}}/{{es_clustername}}/kibana-security chars=ascii_lowercase,digits length=24') }}"  
+    kbn_xpack_security_encryptionKey: "{{ lookup('password', '{{ local_install_dir}}/{{es_clustername}}/kibana-security chars=ascii_lowercase,digits length=24') }}"  
   when: not encryption_strings.stat.exists
   tags:
     - configure
-
 
 # tasks file for configure
 - name: Configure kibana.yml
