@@ -6,6 +6,7 @@
   stat:
     path: "{{ local_install_dir }}/{{ es_clustername }}-security"
   register: security
+  when: es_security == true
   tags:
     - security
 
@@ -15,12 +16,12 @@
   register: ps
   args:
     chdir: "/usr/share/elasticsearch"
-  when: security.stat.exists == false
+  when: security.stat.exists == false and es_security == true
   tags:
     - security
 
 - debug: var=ps.stdout_lines
-  when: security.stat.exists == false
+  when: security.stat.exists == false and es_security == true
   tags:
     - security
 
@@ -28,7 +29,7 @@
   copy:
     content: "{{ ps.stdout_lines }}"
     dest: "/tmp/{{ es_clustername }}-security"
-  when: security.stat.exists == false
+  when: security.stat.exists == false and es_security == true
   tags:
     - security
 
@@ -37,7 +38,7 @@
     src: "/tmp/{{ es_clustername }}-security"
     dest: "{{ local_install_dir }}/{{ es_clustername }}-security"
     flat: true
-  when: security.stat.exists == false 
+  when: security.stat.exists == false and es_security == true
   tags:
     - security
 
@@ -45,5 +46,6 @@
   file:
     path: "/tmp/{{ es_clustername }}-security"
     state: absent
+  when: es_security == true  
   tags:
     - security 
