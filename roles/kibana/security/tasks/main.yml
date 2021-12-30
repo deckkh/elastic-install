@@ -44,7 +44,9 @@
     - security
 
 - name: list  keystore
-  shell: /usr/share/kibana/bin/kibana-keystore list
+  shell: 
+    cmd: bin/kibana-keystore list
+    chdir: /usr/share/kibana
   register: keystore
   when: es_security == true
   tags:
@@ -63,13 +65,17 @@
 
 
 - name: Create keystore if not exist
-  shell: /usr/share/kibana/bin/kibana-keystore create
+  shell: 
+    cmd: bin/kibana-keystore create
+    chdir: /usr/share/kibana
   when: es_security == true and not p.stat.exists
   tags:
     - security
 
 - name: Update elasticsearch.password in keystore
-  shell: echo "{{kibana}}"| /usr/share/kibana/bin/kibana-keystore add elasticsearch.password
+  shell: 
+    cmd: echo "{{kibana}}"| bin/kibana-keystore add elasticsearch.password
+    chdir: /usr/share/kibana
   when: es_security == true and '"elasticsearch.password" not in keystore.stdout_lines'
   tags:
     - security
