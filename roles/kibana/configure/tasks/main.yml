@@ -24,7 +24,7 @@
 
 - name: Copy CA file 
   copy:
-    src: "{{ local_install_dir }}/certs/{{ er_rootca }}.crt"
+    src: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ er_rootca }}.crt"
     dest: "/etc/kibana/certs/{{ er_rootca }}.crt"
     owner: kibana
     group: kibana
