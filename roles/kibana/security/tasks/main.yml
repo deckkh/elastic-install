@@ -74,8 +74,9 @@
 
 - name: Update elasticsearch.password in keystore
   shell: 
-    cmd: printf "{{kibana}}\n"| bin/kibana-keystore add elasticsearch.password
+    cmd:  bin/kibana-keystore add elasticsearch.password --stdin --force
     chdir: /usr/share/kibana
+    stdin: "{{kibana}}"
   when: es_security == true and '"elasticsearch.password" not in keystore.stdout_lines'
   tags:
     - security
