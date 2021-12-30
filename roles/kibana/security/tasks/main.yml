@@ -5,7 +5,7 @@
 - name: elastic_pw
   delegate_to: localhost
   set_fact:
-    pw: "{{ lookup('file', '{{ local_install_dir }}/{{ es_clustername }}-security') }}"
+    pw: "{{ lookup('file', '{{ local_install_dir }}/{{ es_clustername }}/security') }}"
   when: es_security == true  
   tags:
     - security

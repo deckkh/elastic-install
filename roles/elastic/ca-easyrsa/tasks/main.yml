@@ -16,7 +16,7 @@
 - name: Check for local CA
   delegate_to: localhost
   stat:
-    path: "{{ local_install_dir }}/{{ es_clustername}}/"
+    path: "{{ local_install_dir }}/{{ es_clustername}}/certs/{{ er_rootca}}.crt"
   register: ca
   when: ca_provider == "easyrsa"
   tags:
@@ -25,7 +25,7 @@
 
 - name: Copy root CA file 
   copy:
-    src: "{{ local_install_dir }}/certs/{{ er_rootca }}.crt"
+    src: "{{ local_install_dir }}/{{ es_clustername}}/certs/{{ er_rootca }}.crt"
     dest: "/etc/elasticsearch/certs/{{ er_rootca }}.crt"
     owner: elasticsearch
     group: elasticsearch
@@ -47,7 +47,7 @@
 - name: Fetch csr
   ansible.builtin.fetch:
     src: "/tmp/cert-{{ ansible_hostname }}.zip"
-    dest: "{{ local_install_dir }}/certs/{{ es_clustername }}/cert-{{ ansible_hostname }}.zip"
+    dest: "{{ local_install_dir }}/{{ es_clustername }}/certs/cert-{{ ansible_hostname }}.zip"
     flat: true
   tags:
     - ca
@@ -63,7 +63,7 @@
 - name: Extract node cert csr
   delegate_to: localhost
   unarchive:
-    src: "{{ local_install_dir}}/certs/{{ es_clustername }}/cert-{{ ansible_hostname }}.zip"
+    src: "{{ local_install_dir}}/{{ es_clustername }}/certs/cert-{{ ansible_hostname }}.zip"
     dest: "/tmp"
   tags:
     - ca
@@ -72,14 +72,14 @@
   delegate_to: localhost
   copy:
     src: "/tmp/{{ ansible_hostname }}/{{ ansible_hostname }}.key"
-    dest: "{{ local_install_dir}}/certs/{{ es_clustername }}/{{ ansible_hostname }}.key"
+    dest: "{{ local_install_dir}}/{{ es_clustername }}/certs/{{ ansible_hostname }}.key"
   when: ca_provider == "easyrsa"
   tags:
     - ca
 
 - name: Copy key file to node
   copy:
-    src: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ ansible_hostname }}.key"
+    src: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ ansible_hostname }}.key"
     dest: "/etc/elasticsearch/certs/{{ ansible_hostname}}.key"
     owner: "elasticsearch"
     group: "elasticsearch"
@@ -110,7 +110,7 @@
   delegate_to: node1
   ansible.builtin.fetch:
     src: "{{ er_home}}/bin/pki/issued/{{ ansible_hostname }}.crt"
-    dest: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ ansible_hostname }}.crt"
+    dest: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ ansible_hostname }}.crt"
     flat: true
   tags:
     - ca
@@ -118,7 +118,7 @@
 
 - name: Copy node cert file to node
   copy:
-    src: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ ansible_hostname }}.crt"
+    src: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ ansible_hostname }}.crt"
     dest: "/etc/elasticsearch/certs/{{ ansible_hostname}}.crt"
     owner: "elasticsearch"
     group: "elasticsearch"
@@ -137,7 +137,7 @@
 - name: Fetch kibana cert
   ansible.builtin.fetch:
     src: "/tmp/kibana-{{ kbn_hostname }}.zip"
-    dest: "{{ local_install_dir }}/certs/{{ es_clustername }}/kibana-{{ kbn_hostname}}.zip"
+    dest: "{{ local_install_dir }}/{{ es_clustername }}/certs/kibana-{{ kbn_hostname}}.zip"
     flat: true
   when:  ca_provider == "easyrsa" 
   tags:
@@ -155,7 +155,7 @@
 - name: Extract kibana cert csr
   delegate_to: localhost
   unarchive:
-    src: "{{ local_install_dir}}/certs/{{ es_clustername }}/kibana-{{ kbn_hostname }}.zip"
+    src: "{{ local_install_dir}}/{{ es_clustername }}/certs/kibana-{{ kbn_hostname }}.zip"
     dest: "/tmp"
   tags:
     - ca
@@ -164,7 +164,7 @@
   delegate_to: localhost
   copy:
     src: "/tmp/{{ kbn_hostname }}/{{ kbn_hostname }}.key"
-    dest: "{{ local_install_dir}}/certs/{{ es_clustername }}/{{ kbn_hostname }}.key"
+    dest: "{{ local_install_dir}}/{{ es_clustername }}/certs/{{ kbn_hostname }}.key"
   when: ca_provider == "easyrsa"
   tags:
     - ca
@@ -193,7 +193,7 @@
   delegate_to: node1
   ansible.builtin.fetch:
     src: "{{ er_home}}/bin/pki/issued/{{ kbn_hostname }}.crt"
-    dest: "{{ local_install_dir }}/certs/{{ es_clustername }}/{{ kbn_hostname }}.crt"
+    dest: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ kbn_hostname }}.crt"
     flat: true
   tags:
     - ca
@@ -218,7 +218,7 @@
 - name: Recursively remove node csr
   delegate_to: localhost
   file:
-    path: "{{ local_install_dir }}/certs/{{ es_clustername }}/kibana-{{ kbn_hostname}}.zip"
+    path: "{{ local_install_dir }}/{{ es_clustername }}/certs/kibana-{{ kbn_hostname}}.zip"
     state: absent
   tags:
     - ca
@@ -226,7 +226,7 @@
 - name: Recursively remove kibana csr
   delegate_to: localhost
   file:
-    path: "{{ local_install_dir }}/certs/{{ es_clustername }}/cert-{{ ansible_hostname}}.zip"
+    path: "{{ local_install_dir }}/{{ es_clustername }}/certs/cert-{{ ansible_hostname}}.zip"
     state: absent
   tags:
     - ca

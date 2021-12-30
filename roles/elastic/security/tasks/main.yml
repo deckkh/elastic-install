@@ -4,7 +4,7 @@
 - name: Check for security info
   delegate_to: localhost
   stat:
-    path: "{{ local_install_dir }}/{{ es_clustername }}-security"
+    path: "{{ local_install_dir }}/{{ es_clustername }}/security"
   register: security
   when: es_security == true
   tags:
@@ -45,7 +45,7 @@
 - name: Fetch security
   ansible.builtin.fetch:
     src: "/tmp/{{ es_clustername }}-security"
-    dest: "{{ local_install_dir }}/{{ es_clustername }}-security"
+    dest: "{{ local_install_dir }}/{{ es_clustername }}/security"
     flat: true
   when: security.stat.exists == false and es_security == true
   tags:
