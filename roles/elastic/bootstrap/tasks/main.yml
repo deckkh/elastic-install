@@ -22,3 +22,25 @@
   when: es_security == true  
   tags:
     - bootstrap
+
+- name : Find security/role/*.json
+  delegate_to: localhost
+  become: true
+  find:
+    paths: "{{ local_install_root }}/roles/elastic/files/_security/role"
+    file_type: file
+  register: roles
+
+- name : Find security/user/*.json
+  delegate_to: localhost
+  become: true
+  find:
+    paths: "{{ local_install_root }}/roles/elastic/files/_security/user"
+    file_type: file
+  register: users
+
+- debug: var=item.path
+  with_items: "{{ roles.files }}"
+
+- debug: var=item.path
+  with_items: "{{ users.files }}"  
