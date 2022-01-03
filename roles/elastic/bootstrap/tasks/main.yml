@@ -30,6 +30,21 @@
     file_type: file
   register: roles
 
+- debug: var=item.path
+  with_items: "{{ roles.files }}"
+
+- name: Create role 
+  uri:
+    url: "https://{ansible_hostname}:9200/_security/role"
+    user: "elastic"
+    password: "{{ elastic_pw}}"
+    method: PUT
+    body: "{{ lookup('file','{{ item.path}}') }}"
+    force_basic_auth: yes
+    status_code: 201
+    body_format: json
+  with_items: "{{ roles.files}}"
+
 - name : Find security/user/*.json
   delegate_to: localhost
   become: true
@@ -39,7 +54,16 @@
   register: users
 
 - debug: var=item.path
-  with_items: "{{ roles.files }}"
-
-- debug: var=item.path
   with_items: "{{ users.files }}"  
+
+- name: Create user
+  uri:
+    url: "https://{ansible_hostname}:9200/_security/user"
+    user: "elastic"
+    password: "{{ elastic_pw}}"
+    method: PUT
+    body: "{{ lookup('file','{{ item.path}}') }}"
+    force_basic_auth: yes
+    status_code: 201
+    body_format: json
+  with_items: "{{ users.files}}"
