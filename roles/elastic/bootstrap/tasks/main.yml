@@ -1,2 +1,24 @@
 ---
 # tasks file for bootstrap
+
+- name: elastic_pw
+  delegate_to: localhost
+  set_fact:
+    pw: "{{ lookup('file', '{{ local_install_dir }}/{{ es_clustername }}/security') }}"
+  when: es_security == true  
+  tags:
+    - bootstrap
+
+- name: elastic_pw
+  delegate_to: localhost
+  set_fact:
+#    kibana: "{{ 'PASSWORD kibana_system = gndlttvbgjj3L3ncX1ti PASSWORD kibana = gndlttvbgjj3L3ncX1ti'  |  regex_search('kibana_system = ([a-zA-Z0-9]*)', '\\1') }}"
+    elastic: "{{ pw |string | regex_search('kibana_system = ([a-zA-Z0-9]*)', '\\1') | first}}"
+  when: es_security == true  
+  tags:
+    - bootstrap
+
+- debug: msg="the value of elastic is {{ elastic }}"
+  when: es_security == true  
+  tags:
+    - bootstrap
