@@ -34,6 +34,7 @@
   with_items: "{{ roles.files }}"
 
 - name: Create role 
+  delegate_to: localhost
   uri:
     url: "https://{ansible_hostname}:9200/_security/role"
     user: "elastic"
@@ -57,6 +58,7 @@
   with_items: "{{ users.files }}"  
 
 - name: Create user
+  delegate_to: localhost
   uri:
     url: "https://{ansible_hostname}:9200/_security/user"
     user: "elastic"

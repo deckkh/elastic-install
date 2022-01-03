@@ -53,7 +53,13 @@
   tags:
     - easyrsa
 
-- hosts: kafka,zookeeper
+- hosts: kafka
+  roles:
+     - java/uninstall
+  tags:
+    - java
+
+- hosts: zookeeper
   roles:
      - java/uninstall
   tags:
