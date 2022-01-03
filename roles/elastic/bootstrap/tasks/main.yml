@@ -36,7 +36,7 @@
 - name: Create role 
   delegate_to: localhost
   uri:
-    url: "https://{ansible_hostname}:9200/_security/role"
+    url: "https://{{ansible_hostname}}:9200/_security/role"
     user: "elastic"
     password: "{{ elastic_pw}}"
     method: PUT
@@ -60,7 +60,7 @@
 - name: Create user
   delegate_to: localhost
   uri:
-    url: "https://{ansible_hostname}:9200/_security/user"
+    url: "https://{{ansible_hostname}}:9200/_security/user"
     user: "elastic"
     password: "{{ elastic_pw}}"
     method: PUT
