@@ -1,234 +1,222 @@
 ---
 # tasks file for ca-easyrsa
 
+-name: use easyrsa as ca provider
+ block:
+
+  - name: create certs directory 
+    file:
+      path: /etc/elasticsearch/certs
+      state: directory
+      owner: elasticsearch
+      group: elasticsearch
+    tags:
+      - ca
+
+  - name: Check for local CA
+    delegate_to: localhost
+    stat:
+      path: "{{ local_install_dir }}/{{ es_clustername}}/certs/{{ er_rootca}}.crt"
+    register: ca
+    tags:
+      - ca
 
 
-- name: create certs directory 
-  file:
-    path: /etc/elasticsearch/certs
-    state: directory
-    owner: elasticsearch
-    group: elasticsearch
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
-
-- name: Check for local CA
-  delegate_to: localhost
-  stat:
-    path: "{{ local_install_dir }}/{{ es_clustername}}/certs/{{ er_rootca}}.crt"
-  register: ca
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
-
-
-- name: Copy root CA file 
-  copy:
-    src: "{{ local_install_dir }}/{{ es_clustername}}/certs/{{ er_rootca }}.crt"
-    dest: "/etc/elasticsearch/certs/{{ er_rootca }}.crt"
-    owner: elasticsearch
-    group: elasticsearch
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
+  - name: Copy root CA file 
+    copy:
+      src: "{{ local_install_dir }}/{{ es_clustername}}/certs/{{ er_rootca }}.crt"
+      dest: "/etc/elasticsearch/certs/{{ er_rootca }}.crt"
+      owner: elasticsearch
+      group: elasticsearch
+    tags:
+      - ca
 
 
 
-- name: Create node  cert csr
-  ansible.builtin.command:
-    cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil csr --ip "{{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}" --out "/tmp/cert-{{ ansible_hostname }}.zip" 
-    creates: "/tmp/cert-{{ ansible_hostname }}.zip"
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
+  - name: Create node  cert csr
+    ansible.builtin.command:
+      cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil csr --ip "{{ ansible_eth0.ipv4.address }}"  --dns "{{ ansible_hostname}}" --name "{{ ansible_hostname }}" --out "/tmp/cert-{{ ansible_hostname }}.zip" 
+      creates: "/tmp/cert-{{ ansible_hostname }}.zip"
+    tags:
+      - ca
 
 
-- name: Fetch csr
-  ansible.builtin.fetch:
-    src: "/tmp/cert-{{ ansible_hostname }}.zip"
-    dest: "{{ local_install_dir }}/{{ es_clustername }}/certs/cert-{{ ansible_hostname }}.zip"
-    flat: true
-  tags:
-    - ca
+  - name: Fetch csr
+    ansible.builtin.fetch:
+      src: "/tmp/cert-{{ ansible_hostname }}.zip"
+      dest: "{{ local_install_dir }}/{{ es_clustername }}/certs/cert-{{ ansible_hostname }}.zip"
+      flat: true
+    tags:
+      - ca
 
-- name: Recursively remove node csr
-  file:
-    path: "/tmp/cert-{{ ansible_hostname }}.zip"
-    state: absent
-  tags:
-    - ca
-
-
-- name: Extract node cert csr
-  delegate_to: localhost
-  unarchive:
-    src: "{{ local_install_dir}}/{{ es_clustername }}/certs/cert-{{ ansible_hostname }}.zip"
-    dest: "/tmp"
-  tags:
-    - ca
-
-- name: Copy private key to files
-  delegate_to: localhost
-  copy:
-    src: "/tmp/{{ ansible_hostname }}/{{ ansible_hostname }}.key"
-    dest: "{{ local_install_dir}}/{{ es_clustername }}/certs/{{ ansible_hostname }}.key"
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
-
-- name: Copy key file to node
-  copy:
-    src: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ ansible_hostname }}.key"
-    dest: "/etc/elasticsearch/certs/{{ ansible_hostname}}.key"
-    owner: "elasticsearch"
-    group: "elasticsearch"
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
-
-- name: Copy csr file  to CA host
-  delegate_to: node1
-  copy:
-    src: "/tmp/{{ ansible_hostname }}/{{ ansible_hostname }}.csr"
-    dest: "{{ er_home}}/bin/pki/reqs/{{ ansible_hostname }}.req"
-    owner: "{{ er_user}}"
-    group: "{{ er_group}}"
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
-
-- name: sign request on CA
-  shell: 
-    cmd: "{{ er_home}}/bin/easyrsa sign-req server {{ ansible_hostname}}"
-    chdir: "{{ er_home}}/bin"
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
-
-- name: Fetch cert from CA
-  delegate_to: node1
-  ansible.builtin.fetch:
-    src: "{{ er_home}}/bin/pki/issued/{{ ansible_hostname }}.crt"
-    dest: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ ansible_hostname }}.crt"
-    flat: true
-  tags:
-    - ca
+  - name: Recursively remove node csr
+    file:
+      path: "/tmp/cert-{{ ansible_hostname }}.zip"
+      state: absent
+    tags:
+      - ca
 
 
-- name: Copy node cert file to node
-  copy:
-    src: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ ansible_hostname }}.crt"
-    dest: "/etc/elasticsearch/certs/{{ ansible_hostname}}.crt"
-    owner: "elasticsearch"
-    group: "elasticsearch"
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
+  - name: Extract node cert csr
+    delegate_to: localhost
+    unarchive:
+      src: "{{ local_install_dir}}/{{ es_clustername }}/certs/cert-{{ ansible_hostname }}.zip"
+      dest: "/tmp"
+    tags:
+      - ca
 
-- name: Create kibana  cert
-  ansible.builtin.command:
-     cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil csr   --dns "{{ kbn_hostname }}" --name "{{ kbn_hostname}}" --out "/tmp/kibana-{{kbn_hostname }}.zip"
-     creates: "/tmp/kibana-{{ kbn_hostname }}.zip"
-  when: ca_provider == "easyrsa" 
-  tags:
-    - ca
+  - name: Copy private key to files
+    delegate_to: localhost
+    copy:
+      src: "/tmp/{{ ansible_hostname }}/{{ ansible_hostname }}.key"
+      dest: "{{ local_install_dir}}/{{ es_clustername }}/certs/{{ ansible_hostname }}.key"
+    tags:
+      - ca
 
-- name: Fetch kibana cert
-  ansible.builtin.fetch:
-    src: "/tmp/kibana-{{ kbn_hostname }}.zip"
-    dest: "{{ local_install_dir }}/{{ es_clustername }}/certs/kibana-{{ kbn_hostname}}.zip"
-    flat: true
-  when:  ca_provider == "easyrsa" 
-  tags:
-    - ca
+  - name: Copy key file to node
+    copy:
+      src: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ ansible_hostname }}.key"
+      dest: "/etc/elasticsearch/certs/{{ ansible_hostname}}.key"
+      owner: "elasticsearch"
+      group: "elasticsearch"
+    tags:
+      - ca
 
+  - name: Copy csr file  to CA host
+    delegate_to: node1
+    copy:
+      src: "/tmp/{{ ansible_hostname }}/{{ ansible_hostname }}.csr"
+      dest: "{{ er_home}}/bin/pki/reqs/{{ ansible_hostname }}.req"
+      owner: "{{ er_user}}"
+      group: "{{ er_group}}"
+    tags:
+      - ca
 
-- name: Recursively remove kibana csr
-  file:
-    path: "/tmp/kibana-{{ kbn_hostname }}.zip"
-    state: absent
-  tags:
-    - ca
+  - name: sign request on CA
+    shell: 
+      cmd: "{{ er_home}}/bin/easyrsa sign-req server {{ ansible_hostname}}"
+      chdir: "{{ er_home}}/bin"
+    tags:
+      - ca
 
-
-- name: Extract kibana cert csr
-  delegate_to: localhost
-  unarchive:
-    src: "{{ local_install_dir}}/{{ es_clustername }}/certs/kibana-{{ kbn_hostname }}.zip"
-    dest: "/tmp"
-  tags:
-    - ca
-
-- name: Copy kibana key file
-  delegate_to: localhost
-  copy:
-    src: "/tmp/{{ kbn_hostname }}/{{ kbn_hostname }}.key"
-    dest: "{{ local_install_dir}}/{{ es_clustername }}/certs/{{ kbn_hostname }}.key"
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
+  - name: Fetch cert from CA
+    delegate_to: node1
+    ansible.builtin.fetch:
+      src: "{{ er_home}}/bin/pki/issued/{{ ansible_hostname }}.crt"
+      dest: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ ansible_hostname }}.crt"
+      flat: true
+    tags:
+      - ca
 
 
-- name: Copy kibana csr file
-  delegate_to: node1
-  copy:
-    src: "/tmp/{{ kbn_hostname }}/{{ kbn_hostname }}.csr"
-    dest: "{{ er_home}}/bin/pki/reqs/{{ kbn_hostname }}.req"
-    owner: "{{ er_user}}"
-    group: "{{ er_group}}"
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
+  - name: Copy node cert file to node
+    copy:
+      src: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ ansible_hostname }}.crt"
+      dest: "/etc/elasticsearch/certs/{{ ansible_hostname}}.crt"
+      owner: "elasticsearch"
+      group: "elasticsearch"
+    tags:
+      - ca
 
-- name: sign kibana request
-  shell: 
-    cmd: "{{ er_home}}/bin/easyrsa sign-req server {{ kbn_hostname}}"
-    chdir: "{{ er_home}}/bin"
-  when: ca_provider == "easyrsa"
-  tags:
-    - ca
+  - name: Create kibana  cert
+    ansible.builtin.command:
+      cmd: /usr/share/elasticsearch/bin/elasticsearch-certutil csr   --dns "{{ kbn_hostname }}" --name "{{ kbn_hostname}}" --out "/tmp/kibana-{{kbn_hostname }}.zip"
+      creates: "/tmp/kibana-{{ kbn_hostname }}.zip"
+    tags:
+      - ca
 
-- name: Fetch issued kibana cert
-  delegate_to: node1
-  ansible.builtin.fetch:
-    src: "{{ er_home}}/bin/pki/issued/{{ kbn_hostname }}.crt"
-    dest: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ kbn_hostname }}.crt"
-    flat: true
-  tags:
-    - ca
-
-- name: Recursively remove node csr
-  delegate_to: localhost
-  file:
-    path: "/tmp/{{ ansible_hostname }}"
-    state: absent
-  tags:
-    - ca
-
-- name: Recursively remove kibana csr
-  delegate_to: localhost
-  file:
-    path: "/tmp/{{ kbn_hostname }}"
-    state: absent
-  tags:
-    - ca
+  - name: Fetch kibana cert
+    ansible.builtin.fetch:
+      src: "/tmp/kibana-{{ kbn_hostname }}.zip"
+      dest: "{{ local_install_dir }}/{{ es_clustername }}/certs/kibana-{{ kbn_hostname}}.zip"
+      flat: true
+    tags:
+      - ca
 
 
-- name: Recursively remove node csr
-  delegate_to: localhost
-  file:
-    path: "{{ local_install_dir }}/{{ es_clustername }}/certs/kibana-{{ kbn_hostname}}.zip"
-    state: absent
-  tags:
-    - ca
+  - name: Recursively remove kibana csr
+    file:
+      path: "/tmp/kibana-{{ kbn_hostname }}.zip"
+      state: absent
+    tags:
+      - ca
 
-- name: Recursively remove kibana csr
-  delegate_to: localhost
-  file:
-    path: "{{ local_install_dir }}/{{ es_clustername }}/certs/cert-{{ ansible_hostname}}.zip"
-    state: absent
-  tags:
-    - ca
 
+  - name: Extract kibana cert csr
+    delegate_to: localhost
+    unarchive:
+      src: "{{ local_install_dir}}/{{ es_clustername }}/certs/kibana-{{ kbn_hostname }}.zip"
+      dest: "/tmp"
+    tags:
+      - ca
+
+  - name: Copy kibana key file
+    delegate_to: localhost
+    copy:
+      src: "/tmp/{{ kbn_hostname }}/{{ kbn_hostname }}.key"
+      dest: "{{ local_install_dir}}/{{ es_clustername }}/certs/{{ kbn_hostname }}.key"
+    tags:
+      - ca
+
+
+  - name: Copy kibana csr file
+    delegate_to: node1
+    copy:
+      src: "/tmp/{{ kbn_hostname }}/{{ kbn_hostname }}.csr"
+      dest: "{{ er_home}}/bin/pki/reqs/{{ kbn_hostname }}.req"
+      owner: "{{ er_user}}"
+      group: "{{ er_group}}"
+    tags:
+      - ca
+
+  - name: sign kibana request
+    shell: 
+      cmd: "{{ er_home}}/bin/easyrsa sign-req server {{ kbn_hostname}}"
+      chdir: "{{ er_home}}/bin"
+    tags:
+      - ca
+
+  - name: Fetch issued kibana cert
+    delegate_to: node1
+    ansible.builtin.fetch:
+      src: "{{ er_home}}/bin/pki/issued/{{ kbn_hostname }}.crt"
+      dest: "{{ local_install_dir }}/{{ es_clustername }}/certs/{{ kbn_hostname }}.crt"
+      flat: true
+    tags:
+      - ca
+
+  - name: Recursively remove node csr
+    delegate_to: localhost
+    file:
+      path: "/tmp/{{ ansible_hostname }}"
+      state: absent
+    tags:
+      - ca
+
+  - name: Recursively remove kibana csr
+    delegate_to: localhost
+    file:
+      path: "/tmp/{{ kbn_hostname }}"
+      state: absent
+    tags:
+      - ca
+
+
+  - name: Recursively remove node csr
+    delegate_to: localhost
+    file:
+      path: "{{ local_install_dir }}/{{ es_clustername }}/certs/kibana-{{ kbn_hostname}}.zip"
+      state: absent
+    tags:
+      - ca
+
+  - name: Recursively remove kibana csr
+    delegate_to: localhost
+    file:
+      path: "{{ local_install_dir }}/{{ es_clustername }}/certs/cert-{{ ansible_hostname}}.zip"
+      state: absent
+    tags:
+      - ca
+
+when: ca_provider == "easyrsa"
 
