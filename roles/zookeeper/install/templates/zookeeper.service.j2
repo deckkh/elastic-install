@@ -11,6 +11,8 @@ Group={{ zk_group }}
 
 Environment=zk_HOME={{ zk_home }}
 Environment=zk_CONF={{ zk_conf }}
+Environment=LOG_DIR={{ zk_log_dir }}
+
 
 
 ExecStart=/bin/sh -c '{{ zk_home}}/bin/bin/zookeeper-server-start.sh {{zk_conf}}/zookeeper.properties'

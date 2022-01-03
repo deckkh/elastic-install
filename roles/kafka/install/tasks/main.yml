@@ -46,6 +46,15 @@
   tags:
     - install
 
+- name: create kafka log dir directory
+  file:
+    path: "{{ ka_log_dir}}"
+    state: directory
+    owner: "{{ ka_user}}"
+    group: "{{ ka_group}}"
+  tags:
+    - install
+
 - name: Check for kafka dir
   stat: path="{{ ka_home}}/kafka_{{ scala_version}}-{{ kafka_version }}"
   register: kafka_dir

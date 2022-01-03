@@ -11,6 +11,7 @@ Group={{ ka_group }}
 
 Environment=ka_HOME={{ ka_home }}
 Environment=ka_CONF={{ ka_conf }}
+Environment=LOG_DIR={{ ka_log_dir }}
 
 
 ExecStart=/bin/sh -c '{{ ka_home}}/bin/bin/kafka-server-start.sh {{ka_conf}}/server.properties'

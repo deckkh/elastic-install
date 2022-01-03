@@ -46,6 +46,15 @@
   tags:
     - install
 
+- name: create zookeeper log dir directory
+  file:
+    path: "{{ zk_log_dir}}"
+    state: directory
+    owner: "{{ zk_user}}"
+    group: "{{ zk_group}}"
+  tags:
+    - install
+
 - name: Check for kafka dir
   stat: path="{{ zk_home}}/kafka_{{ scala_version}}-{{ zookeeper_version }}"
   register: kafka_dir
