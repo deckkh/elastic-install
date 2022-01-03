@@ -63,3 +63,11 @@
     state: absent    
   tags:
     - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "{{ ka_log_dir }}"
+    state: absent    
+  tags:
+    - uninstall  
+

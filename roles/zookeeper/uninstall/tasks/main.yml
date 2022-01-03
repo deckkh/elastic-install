@@ -63,3 +63,10 @@
     state: absent    
   tags:
     - uninstall  
+
+- name: Recursively remove directory
+  file:
+    path: "{{ zk_log_dir }}"
+    state: absent    
+  tags:
+    - uninstall  
