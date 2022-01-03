@@ -26,7 +26,7 @@
   delegate_to: localhost
   become: true
   find:
-    paths: "{{ local_install_root }}/roles/elastic/files/_security/role"
+    paths: "{{ local_install_root }}/roles/elastic/bootstrap/files/_security/role"
     file_type: file
   register: roles
 
@@ -34,7 +34,7 @@
   delegate_to: localhost
   become: true
   find:
-    paths: "{{ local_install_root }}/roles/elastic/files/_security/user"
+    paths: "{{ local_install_root }}/roles/elastic/bootstrap/files/_security/user"
     file_type: file
   register: users
 
