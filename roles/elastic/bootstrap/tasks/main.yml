@@ -47,7 +47,6 @@
       force_basic_auth: yes
       status_code: 201
       body_format: json
-      ca_path: "{{ local_install_dir}}/{{ es_clustername}}/certs/{{ er_rootca}}.crt"
     with_items: "{{ roles.files}}"
 
   - name : Find security/user/*.json
@@ -72,7 +71,6 @@
       force_basic_auth: yes
       status_code: 201
       body_format: json
-      ca_path: "{{ local_install_dir}}/{{ es_clustername}}/certs/{{ er_rootca}}.crt"
     with_items: "{{ users.files}}"
 
   when: es_bootstrap == true
