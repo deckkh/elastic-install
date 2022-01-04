@@ -50,6 +50,7 @@
     - configure
 
 - name: Make sure the folder exists 
+  delegate_to: localhost
   file:
     path: /etc/pki/ca-trust/source/anchors
     state: directory
@@ -57,6 +58,7 @@
     - configure
 
 - name: Copy PEM into folder 
+  delegate_to: localhost
   copy:
     src: "{{ local_install_dir }}/{{ es_clustername}}/certs/{{ er_rootca }}.crt"
     dest: "/etc/pki/ca-trust/source/anchors/{{ er_rootca }}.crt"
@@ -66,8 +68,9 @@
     - configure
 
 - name: Update CA Trust 
+  delegate_to: localhost
   command: update-ca-trust
-  when: result | changed
+  when: not p.stat.exists
   tags:
     - configure
 
