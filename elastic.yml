@@ -10,5 +10,6 @@
      - elastic/plugin
      - elastic/configure
      - elastic/security
+     - elastic/bootstrap
 
 

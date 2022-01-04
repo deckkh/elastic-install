@@ -6,5 +6,6 @@
      - kibana/firewall
      - kibana/configure
      - kibana/security
+     - kibana/bootstrap
 
 

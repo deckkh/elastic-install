@@ -1,2 +1,52 @@
 ---
 # tasks file for bootstrap
+
+- name: bootstrap various template users and roles
+  block:
+
+  - name: elastic_pw
+    delegate_to: localhost
+    set_fact:
+      pw: "{{ lookup('file', '{{ local_install_dir }}/{{ es_clustername }}/security') }}"
+    when: es_security == true  
+    tags:
+      - bootstrap
+
+  - name: elastic_pw
+    delegate_to: localhost
+    set_fact:
+      elastic_pw: "{{ pw |string | regex_search('elastic = ([a-zA-Z0-9]*)', '\\1') | first}}"
+    when: es_security == true  
+    tags:
+      - bootstrap
+
+  - debug: msg="the value of elastic is {{ elastic_pw }}"
+    when: es_security == true  
+    tags:
+      - bootstrap
+
+  - name : Find space/*.json
+    delegate_to: localhost
+    become: true
+    find:
+      paths: "{{ local_install_root }}/roles/kibana/bootstrap/files/space"
+      file_type: file
+    register: spaces
+
+  - debug: var=item.path
+    with_items: "{{ spaces.files }}"
+
+  - name: Create space
+    delegate_to: localhost
+    uri:
+      url: "https://{{ansible_hostname}}:443/api/spaces/space"
+      user: "elastic"
+      password: "{{ elastic_pw}}"
+      method: PUT
+      body: "{{ lookup('file','{{ item.path}}') }}"
+      force_basic_auth: yes
+      status_code: 200
+      body_format: json
+    with_items: "{{ spaces.files}}"
+
+  when: es_bootstrap == true
