@@ -13,7 +13,7 @@
       - bootstrap
 
 
-  - name: Wait for port 443 to become open on the host, don't start checking for 10 seconds
+  - name: Wait for port to become open on the host, don't start checking for 10 seconds
     wait_for:
       port: "{{kbn_private_port}}"
       delay: 10
@@ -63,8 +63,10 @@
       body_format: json
       headers:
         kbn-xsrf: "kibana" 
+    register: result    
     retries: 30
-    delay: 30        
+    delay: 30
+    until: result.status == 200        
     with_items: "{{ spaces.files}}"
 
   when: es_bootstrap == true
