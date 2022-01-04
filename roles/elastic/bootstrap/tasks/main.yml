@@ -97,4 +97,28 @@
       body_format: json
     with_items: "{{ templates.files}}"
 
+  - name : Find cluster/settings/*.json
+    delegate_to: localhost
+    become: true
+    find:
+      paths: "{{ local_install_root }}/roles/elastic/bootstrap/files/_cluster/settings"
+      file_type: file
+    register: settings
+
+  - debug: var=item.path
+    with_items: "{{ settings.files }}"  
+
+  - name: "Put cluster setting {{ item.path }}"
+    delegate_to: localhost
+    uri:
+      url: "https://{{ansible_hostname}}:9200/_cluster/settings"
+      user: "elastic"
+      password: "{{ elastic_pw}}"
+      method: PUT
+      body: "{{ lookup('file','{{ item.path}}') }}"
+      force_basic_auth: yes
+      status_code: 200
+      body_format: json
+    with_items: "{{ settings.files}}"
+
   when: es_bootstrap == true
