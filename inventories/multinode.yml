@@ -1,24 +1,52 @@
 all: # keys must be unique, i.e. only one 'hosts' per group
+    vars:
+        es_tls: true
+        es_security: true
+        es_single_node: true
+        kbn_hostname: "kibana"
+        es_clustername: multinode
+        mb_ingest: node1
+        ka_zk_hosts: "node1:2181"
+        ca_provider: "easyrsa"
+        es_bootstrap: true
     children:   # key order does not matter, indentation does
+        easyrsa:
+            hosts:
+                node1:
+        minio:
+            hosts:
+                minio1:
+        zookeeper:
+            hosts:
+                kafka1:
+                  zk_id: 1
+        kafka:
+            hosts:
+                kafka1:
+                  ka_broker_id: 1
         elastic:
             children:
             vars:
-                es_clustername: multinode
-                es_elasticsearch_yml: "multinode.elasticsearch.yml.j2"
+                es_elasticsearch_yml: "multinode/elasticsearch.yml.j2"
                 es_discovery_seed_hosts : ['node1']
                 es_cluster_initial_master_nodes: ['node1']
             hosts:
                 node1:
-                  es_node_roles: ['master' ]
+                    es_node_roles: ['master' ]
                 node2:
-                  es_node_roles: ['data','ingest' ]
+                    es_node_roles: ['data' ]
         kibana:
             vars:
-                kbn_kibana_yml: "multinode.kibana.yml.j2"
-                kbn_elasticsearch_hosts: ["http://node1:9200"]
+                kbn_kibana_yml: "multinode/kibana.yml.j2"
+                kbn_elasticsearch_hosts: ["https://node1:9200"]
+                kbn_server_publicBaseUrl : "https://{{kbn_hostname}}"
+                # use utility kibana_encryption_keys to generate new values, change these
+                kbn_xpack_encryptedSavedObjects_encryptionKey: "eb1660a77119d9210982e9eafcc96134"
+                kbn_xpack_reporting_encryptionKey:  "19d3f68aacb396e2b2a4106693d0ff41"   
+                kbn_xpack_security_encryptionKey: "329b0faa9aa3da870d1d3b4e984eac42"
             children:
             hosts:
-                kibana:
+                node1:
         logstash:
             children:
             hosts:
