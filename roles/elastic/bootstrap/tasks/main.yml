@@ -45,7 +45,7 @@
       method: PUT
       body: "{{ lookup('file','{{ item.path}}') }}"
       force_basic_auth: yes
-      status_code: 201
+      status_code: 200
       body_format: json
     with_items: "{{ roles.files}}"
 
@@ -69,7 +69,7 @@
       method: PUT
       body: "{{ lookup('file','{{ item.path}}') }}"
       force_basic_auth: yes
-      status_code: 201
+      status_code: 200
       body_format: json
     with_items: "{{ users.files}}"
 
