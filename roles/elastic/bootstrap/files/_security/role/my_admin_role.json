@@ -3,11 +3,7 @@
     "indices": [
       {
         "names": [ "index1", "index2" ],
-        "privileges": ["all"],
-        "field_security" : { 
-          "grant" : [ "title", "body" ]
-        },
-        "query": "{\"match\": {\"title\": \"foo\"}}" 
+        "privileges": ["all"]
       }
     ],
     "applications": [
