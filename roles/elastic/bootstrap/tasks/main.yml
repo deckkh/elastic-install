@@ -63,7 +63,7 @@
   - name: Create user
     delegate_to: localhost
     uri:
-      url: "https://{{ansible_hostname}}:9200/_security/user/{{ item.path | regex_search('(\\w]+)\\.json$', '\\1') | first}}"
+      url: "https://{{ansible_hostname}}:9200/_security/user/{{ item.path | regex_search('([\\w]+)\\.json$', '\\1') | first}}"
       user: "elastic"
       password: "{{ elastic_pw}}"
       method: PUT
