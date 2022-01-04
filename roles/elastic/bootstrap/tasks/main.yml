@@ -73,4 +73,28 @@
       body_format: json
     with_items: "{{ users.files}}"
 
+- name : Find template/*.json
+    delegate_to: localhost
+    become: true
+    find:
+      paths: "{{ local_install_root }}/roles/elastic/bootstrap/files/_template"
+      file_type: file
+    register: templates
+
+  - debug: var=item.path
+    with_items: "{{ templates.files }}"  
+
+  - name: Create user
+    delegate_to: localhost
+    uri:
+      url: "https://{{ansible_hostname}}:9200/_template/{{ item.path | regex_search('([\\w]+)\\.json$', '\\1') | first}}"
+      user: "elastic"
+      password: "{{ elastic_pw}}"
+      method: PUT
+      body: "{{ lookup('file','{{ item.path}}') }}"
+      force_basic_auth: yes
+      status_code: 200
+      body_format: json
+    with_items: "{{ templates.files}}"
+
   when: es_bootstrap == true
