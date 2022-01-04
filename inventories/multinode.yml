@@ -15,7 +15,7 @@ all: # keys must be unique, i.e. only one 'hosts' per group
                 node1:
         minio:
             hosts:
-                minio1:
+                minio:
         zookeeper:
             hosts:
                 kafka1:
@@ -46,7 +46,7 @@ all: # keys must be unique, i.e. only one 'hosts' per group
                 kbn_xpack_security_encryptionKey: "329b0faa9aa3da870d1d3b4e984eac42"
             children:
             hosts:
-                node1:
+                kibana:
         logstash:
             children:
             hosts:
