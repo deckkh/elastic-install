@@ -4,6 +4,15 @@
 - name: bootstrap various template users and roles
   block:
 
+
+  - name: Start service kibana, if not started
+    service:
+      name: kibana
+      state: started    
+    tags:
+      - bootstrap
+
+
   - name: elastic_pw
     delegate_to: localhost
     set_fact:
