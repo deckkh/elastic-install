@@ -42,7 +42,7 @@
       url: "https://{{kbn_hostname}}:443/api/spaces/space"
       user: "elastic"
       password: "{{ elastic_pw}}"
-      method: PUT
+      method: POST
       body: "{{ lookup('file','{{ item.path}}') }}"
       force_basic_auth: yes
       status_code: 200
