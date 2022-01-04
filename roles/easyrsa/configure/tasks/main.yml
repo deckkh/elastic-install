@@ -63,14 +63,12 @@
     src: "{{ local_install_dir }}/{{ es_clustername}}/certs/{{ er_rootca }}.crt"
     dest: "/etc/pki/ca-trust/source/anchors/{{ er_rootca }}.crt"
   register: result
-  when: not p.stat.exists
   tags:
     - configure
 
 - name: Update CA Trust 
   delegate_to: localhost
   command: update-ca-trust
-  when: not p.stat.exists
   tags:
     - configure
 
