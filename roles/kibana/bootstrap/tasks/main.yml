@@ -39,7 +39,7 @@
   - name: Create space
     delegate_to: localhost
     uri:
-      url: "https://{{ansible_hostname}}:443/api/spaces/space"
+      url: "https://{{kbn_hostname}}:443/api/spaces/space"
       user: "elastic"
       password: "{{ elastic_pw}}"
       method: PUT
