@@ -48,7 +48,7 @@
       status_code: 200
       body_format: json
       headers:
-        kbn-xrsf: "kibana" 
+        kbn-xsrf: "kibana" 
     with_items: "{{ spaces.files}}"
 
   when: es_bootstrap == true
