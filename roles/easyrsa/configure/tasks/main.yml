@@ -45,5 +45,29 @@
     src: "{{ er_home}}/bin/pki/ca.crt"
     dest: "{{ local_install_dir }}/{{ es_clustername}}/certs/{{ er_rootca }}.crt"
     flat: true
+  when: not p.stat.exists
   tags:
     - configure
+
+- name: Make sure the folder exists 
+  file:
+    path: /etc/pki/ca-trust/source/anchors
+    state: directory
+  tags:
+    - configure
+
+- name: Copy PEM into folder 
+  copy:
+    src: "{{ local_install_dir }}/{{ es_clustername}}/certs/{{ er_rootca }}.crt"
+    dest: "/etc/pki/ca-trust/source/anchors/{{ er_rootca }}.crt"
+  register: result
+  when: not p.stat.exists
+  tags:
+    - configure
+
+- name: Update CA Trust 
+  command: update-ca-trust
+  when: result | changed
+  tags:
+    - configure
+
