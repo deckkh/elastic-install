@@ -1,0 +1,14 @@
+all: # keys must be unique, i.e. only one 'hosts' per group
+    vars:
+      ka_zk_hosts: "kafka1:2181,kafka2:2181,kafka3:2181"
+    children:   # key order does not matter, indentation does
+        pacemaker:
+          vars:
+            ka_zk_hosts: "kafka1:2181,kafka2:2181,kafka3:2181"
+          hosts:
+             pacemaker1:
+               ka_broker_id: 1
+               ka_config_file: "kafka-cluster/server.properties.j2"
+             pacemaker2:
+               ka_broker_id: 2
+               ka_config_file: "kafka-cluster/server.properties.j2"
