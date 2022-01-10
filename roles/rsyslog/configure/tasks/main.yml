@@ -1,2 +1,10 @@
 ---
 # tasks file for configure
+- name: Configure rsyslog.conf
+  template:
+    src: "{{ rs_syslog_conf }}"
+    dest: "/etc/rsyslog.conf"
+  notify:
+    - restart
+  tags:
+    - configure  

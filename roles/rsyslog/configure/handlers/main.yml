@@ -1,2 +1,6 @@
 ---
-# handlers file for configure
+# handlers file for install
+- name: restart
+  service:
+    name: "rsyslog"
+    state: "restarted"
