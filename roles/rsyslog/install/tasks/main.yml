@@ -8,7 +8,7 @@
 
 - name: stop service 
   service: 
-    name: logstash
+    name: rsyslog
     state: stopped 
   when: ansible_facts.services['rsyslog.service'] is defined    
   tags:

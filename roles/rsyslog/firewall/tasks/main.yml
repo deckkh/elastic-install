@@ -1,2 +1,19 @@
 ---
 # tasks file for firewall
+
+- firewalld:
+    port: "{{ rs_tcp_port}}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+  tags:
+    - firewall  
+
+- firewalld:
+    port: "{{ rs_udp_port}}/udp"
+    permanent: true
+    state: enabled
+    immediate: true
+  tags:
+    - firewall  
+
