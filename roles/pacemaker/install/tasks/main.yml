@@ -1,2 +1,12 @@
 ---
 # tasks file for install
+
+- name: Install package(s).
+  yum:
+     name: "{{ item }}"
+     state: present        
+  items:
+    - pcs
+    - fence-agents-all   
+  tags:
+    - install
