@@ -1,0 +1,9 @@
+---
+- hosts: pacemaker
+  roles:
+     - pacemaker/requirements
+     - pacemaker/install
+     - pacemaker/firewall
+     - pacemaker/configure
+
+
