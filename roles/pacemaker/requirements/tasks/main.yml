@@ -7,3 +7,15 @@
      state: present        
   tags:
     - requirements
+
+- name: enable highavailability repository
+  ini_file:
+    dest: '/etc/yum.repos.d/CentOS-Linux-HighAvailability.repo'
+    section: 'ha'
+    option: 'enabled'
+    value: '1'
+    create: 'no'
+    mode: '0644'
+  tags:
+    - requirements
+  
