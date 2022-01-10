@@ -1,2 +1,9 @@
 ---
 # tasks file for requirements
+
+- name: Install package.
+  yum:
+     name: "epel-release"
+     state: present        
+  tags:
+    - requirements
