@@ -10,7 +10,7 @@
 
 - name: enable highavailability repository
   ini_file:
-    dest: '/etc/yum.repos.d/CentOS-Linux-HighAvailability.repo'
+    dest: '/etc/yum.repos.d/CentOS-Stream-HighAvailability.repo'
     section: 'ha'
     option: 'enabled'
     value: '1'
