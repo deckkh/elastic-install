@@ -1,0 +1,7 @@
+all: # keys must be unique, i.e. only one 'hosts' per group
+    children:   # key order does not matter, indentation does
+        rsyslog:
+          children:
+          hosts:
+            rsyslog1:
+

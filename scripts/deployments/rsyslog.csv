@@ -1,0 +1,2 @@
+name,memory,switch,template,disks,cpus,
+rsyslog1,2,nat-switch,centos8-template,10,1,
