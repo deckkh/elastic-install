@@ -9,7 +9,8 @@
 
 - name: run ssh-keyscan 
   delegate_to: localhost
-  shell:  "ssh-keyscan -t ssh-rsa  {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address']  }} >> {{MY_KNOWN_HOSTS}}"
+  shell:  "ssh-keyscan -t ssh-rsa  {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address']  
+  }} >> {{MY_KNOWN_HOSTS}}"
   tags:
     - configure
 
