@@ -7,13 +7,13 @@
   tags:
     - configure
 
-- name: run ssh-keyscan 
-  delegate_to: only unique
+- name: only unique
+  delegate_to: localhost
   shell:  "sort {{MY_KNOWN_HOSTS}} | uniq > {{MY_KNOWN_HOSTS}}.uniq"
   tags:
     - configure
 
-- name: run ssh-keyscan 
+- name: refresh 
   delegate_to: localhost
   shell:  "mv {{MY_KNOWN_HOSTS}}{.uniq,}"
   tags:
