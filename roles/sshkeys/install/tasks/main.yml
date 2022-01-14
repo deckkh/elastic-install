@@ -10,12 +10,12 @@
   tags: 
     - install  
 
-- debug: msg="the value of elastic is {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address']  }}"
+- debug: msg="the value of ip is {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address']  }}"
   tags:
     - install
 
 
-- name: Make sure ssh key for host is removed
+- name: Make sure ssh key for ip addr is removed
   delegate_to: localhost
   ansible.builtin.lineinfile:
     path: "{{ MY_KNOWN_HOSTS}}"
