@@ -1,6 +1,16 @@
 ---
 # tasks file for install
 
+- name: Make sure group wheel is not in the sudoers configuration
+  delegate_to: localhost
+  ansible.builtin.lineinfile:
+    path: "{{ MY_KNOWN_HOSTS}}"
+    state: absent
+    regexp: '^{{ ansible_hostname}}'
+  tags: 
+    - install  
+
+
 - name: remove existing ssh_host keys
   file: 
     path: "{{ item }}"
