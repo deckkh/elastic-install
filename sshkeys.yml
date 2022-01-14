@@ -1,6 +1,5 @@
 ---
 - hosts: all
-  gather_facts: no
   vars:
     MY_KNOWN_HOSTS: "~/.ssh/known_hosts"
   roles:
