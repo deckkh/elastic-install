@@ -10,7 +10,7 @@
   tags: 
     - install  
 
-- debug: msg="the value of elastic is {{ hostvars[inventory_hostname]['ansible_default_ipv4']  }}"
+- debug: msg="the value of elastic is {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address']  }}"
   tags:
     - install
 
@@ -20,7 +20,7 @@
   ansible.builtin.lineinfile:
     path: "{{ MY_KNOWN_HOSTS}}"
     state: absent
-    regexp: '^{{ hostvars[inventory_hostname][ansible_default_ipv4][address] }}'
+    regexp: "^{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
   tags: 
     - install  
 
