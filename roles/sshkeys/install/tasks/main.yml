@@ -10,6 +10,11 @@
   tags: 
     - install  
 
+- debug: msg="the value of elastic is {{ {{ hostvars[inventory_hostname][ansible_default_ipv4] }} }}"
+  tags:
+    - install
+
+
 - name: Make sure ssh key for host is removed
   delegate_to: localhost
   ansible.builtin.lineinfile:
