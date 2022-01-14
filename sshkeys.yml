@@ -3,6 +3,7 @@
   vars:
     MY_KNOWN_HOSTS: "~/.ssh/known_hosts"
   roles:
+     - sshkeys/install
      - sshkeys/configure
 
 
