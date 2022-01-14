@@ -10,7 +10,7 @@
   tags: 
     - install  
 
-- debug: msg="the value of elastic is {{ hostvars[inventory_hostname][ansible_default_ipv4]  }}"
+- debug: msg="the value of elastic is {{ hostvars[inventory_hostname]  }}"
   tags:
     - install
 
