@@ -6,4 +6,7 @@ The scope of this repo is to provide a fully working Elasticsearch cluster out o
 Deployed originally on Hyper-v , but not required.
 
 Installation is based on Centos-8 stream images.
-- [Features](/docs/features) 
+
+- [Getting started](/docs/getting-started.md) 
+- [Structure](/docs/structure.md) 
+- [Features](/docs/features.md) 
