@@ -1,0 +1,6 @@
+rs_conf: "/etc/rsyslog"
+rs_log_dir: "/var/log/rsyslog"
+rs_tcp_port: "514"
+rs_udp_port: "514"
+rs_data_path: "{{ mount_logical_volume}}/rsyslog"
+rs_syslog_conf: "rsyslog.conf.j2"

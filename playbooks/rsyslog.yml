@@ -1,0 +1,10 @@
+---
+- hosts: rsyslog
+  roles:
+     - rsyslog/requirements
+     - disk/configure
+     - rsyslog/install
+     - rsyslog/firewall
+     - rsyslog/configure
+
+

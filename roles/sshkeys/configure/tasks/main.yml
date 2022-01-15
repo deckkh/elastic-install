@@ -1,0 +1,27 @@
+---
+# tasks file for configure
+
+- name: run ssh-keyscan 
+  delegate_to: localhost
+  shell:  "ssh-keyscan -t ssh-rsa  {{ ansible_hostname}} >> {{MY_KNOWN_HOSTS}}"
+  tags:
+    - configure
+
+- name: run ssh-keyscan 
+  delegate_to: localhost
+  shell:  "ssh-keyscan -t ssh-rsa  {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address']  
+  }} >> {{MY_KNOWN_HOSTS}}"
+  tags:
+    - configure
+
+- name: only unique
+  delegate_to: localhost
+  shell:  "sort {{MY_KNOWN_HOSTS}} | uniq > {{MY_KNOWN_HOSTS}}.uniq"
+  tags:
+    - configure
+
+- name: refresh 
+  delegate_to: localhost
+  shell:  "mv {{MY_KNOWN_HOSTS}}{.uniq,}"
+  tags:
+    - configure        

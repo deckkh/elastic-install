@@ -1,0 +1,51 @@
+---
+# tasks file for install
+
+- name: Make sure ssh key for host is removed
+  delegate_to: localhost
+  ansible.builtin.lineinfile:
+    path: "{{ MY_KNOWN_HOSTS}}"
+    state: absent
+    regexp: '^{{ ansible_hostname}}'
+  tags: 
+    - install  
+
+- debug: msg="the value of ip is {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address']  }}"
+  tags:
+    - install
+
+
+- name: Make sure ssh key for ip addr is removed
+  delegate_to: localhost
+  ansible.builtin.lineinfile:
+    path: "{{ MY_KNOWN_HOSTS}}"
+    state: absent
+    regexp: "^{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+  tags: 
+    - install  
+
+- name: remove existing ssh_host keys
+  file: 
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "/etc/ssh/ssh_host_rsa_key"
+    - "/etc/ssh/ssh_host_dsa_key"
+    - "/etc/ssh/ssh_host_ecdsa_key"
+  tags: 
+    - install  
+
+- name: Generate /etc/ssh/ RSA host key
+  command : ssh-keygen -q -t rsa -f /etc/ssh/ssh_host_rsa_key -C "" -N ""
+  tags: 
+    - install  
+
+- name: Generate /etc/ssh/ DSA host key
+  command : ssh-keygen -q -t dsa -f /etc/ssh/ssh_host_dsa_key -C "" -N ""
+  tags: 
+    - install  
+
+- name: Generate /etc/ssh/ ECDSA host key
+  command : ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -C "" -N ""
+  tags: 
+    - install  

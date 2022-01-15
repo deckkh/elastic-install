@@ -1,4 +1,5 @@
 ---
+# tasks file for configure
 
 
 
@@ -20,7 +21,6 @@
   tags:
     - configure
 
-# tasks file for configure
 - name: Configure kibana.yml
   template:
     src: "{{ kbn_kibana_yml }}"
