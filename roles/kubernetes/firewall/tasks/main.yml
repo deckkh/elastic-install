@@ -40,7 +40,7 @@
 
 - name: Add the br_netfilter module
   modprobe:
-    name: br_netfiler
+    name: br_netfilter
     state: present    
   when: ("k8_role_master == true" or k8_role_worker == true)
   tags:
