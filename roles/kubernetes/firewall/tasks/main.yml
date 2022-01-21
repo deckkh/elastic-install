@@ -20,6 +20,7 @@
     port: "{{ item }}/tcp"
     permanent: yes
     state: enabled
+    immediate: true
   with_items: '{{ k8s_master_ports }}'
   when: "k8_role_master == true"
   tags:
@@ -30,8 +31,10 @@
     port: "{{ item }}/tcp"
     permanent: yes
     state: enabled
+    immediate: true
   with_items: '{{ k8s_worker_ports }}'
-  when: (k8_role_node == true or k8_role_worker == true)
+  when: (k8_role_node == true or k8_role_worker ==
+   true)
   tags:
     - install
 
