@@ -38,6 +38,11 @@
   tags:
     - install
 
+- name: Add the br_netfilter module
+  modprobe:
+    name: br_netfiler
+    state: present    
+
 - name: bridge-nf-call-iptables
   shell: 
     cmd: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
