@@ -1,6 +1,5 @@
 ---
 # tasks file for requirements
----
 - name: Add kubernetes repository
   ansible.builtin.template:
     src: 'kubernetes.repo.j2'
