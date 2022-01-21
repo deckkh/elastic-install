@@ -8,6 +8,6 @@ all: # keys must be unique, i.e. only one 'hosts' per group
             kubernetes1:
               k8_role_master: true
             kubernetes2:
-              k8_role_node: true
+              k8_role_worker: true
             kubernetes3:
               k8_role_worker: true
