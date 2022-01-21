@@ -8,9 +8,9 @@ all: # keys must be unique, i.e. only one 'hosts' per group
             kubernetes1:
               zk_id: 1
               zk_config_file: "kafka-cluster/zookeeper.properties.j2"
-            kubernetes1:
+            kubernetes2:
               zk_id: 2
               zk_config_file: "kafka-cluster/zookeeper.properties.j2"
-            kubernetes1:
+            kubernetes3:
               zk_id: 3
               zk_config_file: "kafka-cluster/zookeeper.properties.j2"
