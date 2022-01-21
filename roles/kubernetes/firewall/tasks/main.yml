@@ -21,7 +21,7 @@
     permanent: yes
     state: enabled
   with_items: '{{ k8s_master_ports }}'
-  when: "k8_role_master is true"
+  when: "k8_role_master == true"
   tags:
     - install
 
@@ -31,7 +31,7 @@
     permanent: yes
     state: enabled
   with_items: '{{ k8s_worker_ports }}'
-  when: (k8_role_node is true or k8_role_worker is true)
+  when: (k8_role_node == true or k8_role_worker == true)
   tags:
     - install
 
