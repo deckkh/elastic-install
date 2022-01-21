@@ -46,6 +46,14 @@
   tags:
     - install  
 
+- name: Enable docker service
+  ansible.builtin.service:
+    name: docker
+    enabled: yes
+  tags:
+    - install  
+
+
 - name: Install kubernetes packages
   yum:
     name: [kubelet,kubeadm,kubectl]

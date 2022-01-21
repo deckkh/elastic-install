@@ -13,5 +13,7 @@ k8s_master_ports:
 
 # Worker nodes firewall ports
 k8s_worker_ports:
+    - 6783
     - 10250
+    - 10255
     - 30000-32767
