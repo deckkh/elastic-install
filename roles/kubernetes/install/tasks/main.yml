@@ -1,11 +1,31 @@
 ---
+
+
+- name: Disable SWAP since kubernetes can't work with swap enabled (1/2)
+  shell: |
+    swapoff -a
+  tags:
+    - install  
+
+- name: Disable SWAP in fstab since kubernetes can't work with swap enabled (2/2)
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
+  tags:
+    - install  
+
 # tasks file for install
 - name: Install kubernetes packages
   yum:
     name: [kubelet,kubeadm,kubectl]
     disable_excludes: kubernetes
+  tags:
+    - install  
 
 - name: Enable kubelet service
   ansible.builtin.service:
     name: kubelet
     enabled: yes
+  tags:
+    - install  
