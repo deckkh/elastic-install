@@ -1,0 +1,4 @@
+name,memory,switch,template,disks,cpus,
+kubernetes1,2,nat-switch,centos8-template,10,1,
+kubernetes2,2,nat-switch,centos8-template,10,1,
+kubernetes3,2,nat-switch,centos8-template,10,1,
