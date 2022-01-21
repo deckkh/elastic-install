@@ -1,2 +1,11 @@
 ---
-# handlers file for install
+# handlers file for configure
+- name: start docker
+  service:
+    name: "docker"
+    state: "started"
+
+- name: start kubelet
+  service:
+    name: "kubelet"
+    state: "started"

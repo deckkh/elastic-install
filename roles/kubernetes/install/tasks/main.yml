@@ -43,6 +43,7 @@
 - name: Install docker-ce
   yum:
     name: [docker-ce]
+  notify: start docker
   tags:
     - install  
 
@@ -50,6 +51,7 @@
   ansible.builtin.service:
     name: docker
     enabled: yes
+  notify: start docker
   tags:
     - install  
 
@@ -57,6 +59,7 @@
   yum:
     name: [kubelet,kubeadm,kubectl]
     disable_excludes: kubernetes
+  notify: start kubelet  
   tags:
     - install  
 
@@ -64,5 +67,6 @@
   ansible.builtin.service:
     name: kubelet
     enabled: yes
+  notify: start kubelet  
   tags:
     - install  
