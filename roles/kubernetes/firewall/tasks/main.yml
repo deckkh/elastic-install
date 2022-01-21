@@ -38,3 +38,10 @@
   tags:
     - install
 
+- name: bridge-nf-call-iptables
+  shell: 
+    cmd: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
+  tags:
+    - install
+
+

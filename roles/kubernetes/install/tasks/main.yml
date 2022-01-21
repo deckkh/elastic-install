@@ -22,7 +22,7 @@
   tags:
     - install  
 
-- name: Print the changes in Configurtion file 
+- name: Print the changes in Configuration file 
   command: grep SELINUX /etc/sysconfig/selinux
   register: sevalue
   tags:
@@ -52,7 +52,6 @@
     enabled: yes
   tags:
     - install  
-
 
 - name: Install kubernetes packages
   yum:
