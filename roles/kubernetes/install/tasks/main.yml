@@ -33,6 +33,19 @@
   tags:
     - install  
 
+
+- name: Install containerd 
+  yum:
+    name: [containerd]
+  tags:
+    - install  
+
+- name: Install docker-ce
+  yum:
+    name: [docker-ce]
+  tags:
+    - install  
+
 - name: Install kubernetes packages
   yum:
     name: [kubelet,kubeadm,kubectl]
