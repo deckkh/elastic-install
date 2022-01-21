@@ -42,13 +42,14 @@
   modprobe:
     name: br_netfiler
     state: present    
-  when: "k8_role_master == true"
+  when: ("k8_role_master == true" or k8_role_worker == true)
   tags:
     - install
 
 - name: bridge-nf-call-iptables
   shell: 
     cmd: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
+  when: ("k8_role_master == true" or k8_role_worker == true)
   tags:
     - install
 
