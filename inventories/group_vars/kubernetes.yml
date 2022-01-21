@@ -1,0 +1,3 @@
+k8_role_master: false
+k8_role_worker: false
+k8_role_node: false

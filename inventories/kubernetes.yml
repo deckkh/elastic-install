@@ -6,11 +6,8 @@ all: # keys must be unique, i.e. only one 'hosts' per group
           vars:
           hosts:
             kubernetes1:
-              zk_id: 1
-              zk_config_file: "kafka-cluster/zookeeper.properties.j2"
+              k8_role_master: true
             kubernetes2:
-              zk_id: 2
-              zk_config_file: "kafka-cluster/zookeeper.properties.j2"
+              k8_role_node: true
             kubernetes3:
-              zk_id: 3
-              zk_config_file: "kafka-cluster/zookeeper.properties.j2"
+              k8_role_worker: true
