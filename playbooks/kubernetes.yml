@@ -3,8 +3,8 @@
   roles:
      - kubernetes/requirements
      - disk/configure
-     - kubernetes/install
      - kubernetes/firewall
+     - kubernetes/install
      - kubernetes/configure
 
 

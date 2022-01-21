@@ -1,0 +1,7 @@
+---
+
+- name: ntpd
+  import_playbook: ntpd.yml
+
+- name: kubernetes
+  import_playbook: kubernetes.yml
