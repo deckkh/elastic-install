@@ -1,4 +1,5 @@
 ---
+# tasks file for install
 
 
 - name: Disable SWAP since kubernetes can't work with swap enabled (1/2)
@@ -15,7 +16,23 @@
   tags:
     - install  
 
-# tasks file for install
+- name: Disabling SELinux state
+  selinux:
+    state: disabled
+  tags:
+    - install  
+
+- name: Print the changes in Configurtion file 
+  command: grep SELINUX /etc/sysconfig/selinux
+  register: sevalue
+  tags:
+    - install  
+
+- debug:
+    var: sevalue.stdout_lines        
+  tags:
+    - install  
+
 - name: Install kubernetes packages
   yum:
     name: [kubelet,kubeadm,kubectl]
