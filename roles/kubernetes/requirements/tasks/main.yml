@@ -7,3 +7,10 @@
     dest: /etc/yum.repos.d/kubernetes.repo
   tags:
     - requirements    
+
+- name: Add docker-ce repository
+  ansible.builtin.template:
+    src: 'docker-ce.repo.j2'
+    dest: /etc/yum.repos.d/docker-ce.repo
+  tags:
+    - requirements        

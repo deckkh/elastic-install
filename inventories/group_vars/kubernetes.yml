@@ -4,19 +4,14 @@ k8_role_node: false
 
 # Master nodes firewall ports
 k8s_master_ports:
-    - 22
-    - 80
-    - 443
     - 6443
     - 2379-2380
     - 10250
     - 10251
     - 10252
+    - 10255
 
 # Worker nodes firewall ports
 k8s_worker_ports:
-    - 22
-    - 80
-    - 443
     - 10250
     - 30000-32767
