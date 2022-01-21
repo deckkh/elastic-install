@@ -16,7 +16,7 @@
     - install
 
 - name: Configure firewalld on master nodes
-  ansible.posix.firewalld:
+  firewalld:
     port: "{{ item }}/tcp"
     permanent: yes
     state: enabled
@@ -26,7 +26,7 @@
     - install
 
 - name: Configure firewalld on worker nodes
-  ansible.posix.firewalld:
+  firewalld:
     port: "{{ item }}/tcp"
     permanent: yes
     state: enabled
