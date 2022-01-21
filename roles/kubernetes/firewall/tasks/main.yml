@@ -42,6 +42,9 @@
   modprobe:
     name: br_netfiler
     state: present    
+  when: "k8_role_master == true"
+  tags:
+    - install
 
 - name: bridge-nf-call-iptables
   shell: 
