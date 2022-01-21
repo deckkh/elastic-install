@@ -1,0 +1,10 @@
+---
+- hosts: kubernetes
+  roles:
+     - kuberntes/requirements
+     - disk/configure
+     - kuberntes/install
+     - kuberntes/firewall
+     - kuberntes/configure
+
+
