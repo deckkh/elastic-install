@@ -51,7 +51,7 @@
   ansible.builtin.service:
     name: docker
     enabled: yes
-    started: yes
+    state: started
   notify: start docker
   tags:
     - install  
