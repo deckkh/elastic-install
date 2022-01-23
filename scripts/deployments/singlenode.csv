@@ -1,2 +1,2 @@
-name,memory,switch,template,disks,cpus,
-nodex,2,nat-switch,centos8-template,40;10,2,
+name,memory,switch,template,disks,cpus,minmemory
+nodex,2,nat-switch,centos8-template,40;10,2,0

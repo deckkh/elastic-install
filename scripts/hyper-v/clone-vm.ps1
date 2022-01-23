@@ -3,6 +3,8 @@ param
   [Parameter(Mandatory=$false)]
   [Int64]$memory=2*1024*1024*1024,
   [Parameter(Mandatory=$false)]
+  [Int64]$minmemory=0,
+  [Parameter(Mandatory=$false)]
   [String]$templatedisk="centos8-template",
   [Parameter(Mandatory=$false)]
   [String]$switchname="nat-switch",
@@ -26,7 +28,7 @@ $destdisk = "$($diskdir)\$($name).vhdx"
 $sourcedisk = "$($diskdir)\$($templatedisk).vhdx"
 
 
-#  .\clone-vm.ps1 -memory 2GB -name dummy -adddatadisk $true -disksize 20GB
+#  .\clone-vm.ps1 -memory 2GB -name dummy -adddatadisk $true -disksize 20GB -minmemory 2GB
 
 
 try {
@@ -41,6 +43,11 @@ try {
         if ($cpus -ne 1)
         {
             $vm |Set-VMProcessor -Count $cpus
+        }
+
+        if ($minmemory -ne 0)
+        {
+            $vm |Set-VMMemory -MinimumBytes $minmemory
         }
 
         Convert-VHD -Path $sourcedisk  -DestinationPath $destdisk
