@@ -70,3 +70,20 @@
   notify: start kubelet  
   tags:
     - install  
+
+- name: Configure kubeadm init
+  template:
+    src: "kubeadminit.yml.j2"
+    dest: "/tmp/kubeadminit.yml"
+  when: k8_role_master == true
+  tags:
+    - install
+
+- name: run kubeadm
+  shell: 
+    cmd: "kubeadm init --config /tmp/kubeadminit.yml"
+  register: kubeadminit
+  when: k8_role_master == true
+  tags:
+    - install
+
