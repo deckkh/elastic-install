@@ -1,6 +1,17 @@
 ---
 # tasks file for install
 
+- name: create kubernetes directory 
+  delegate_to: localhost
+  file:
+    path: "{{ item}}"
+    state: directory
+  with_items:
+    - "{{ local_install_dir}}/kubernetes"
+    - "{{ local_install_dir}}/kubernetes/{{ k8_cluster_name }}"
+  tags:
+    - install
+
 
 - name: Disable SWAP since kubernetes can't work with swap enabled (1/2)
   shell: 
@@ -99,7 +110,7 @@
 - name: Fetch kubeadminit
   ansible.builtin.fetch:
     src: "/tmp/kubeadminit"
-    dest: "{{ local_install_dir }}/kubeadminit"
+    dest: "{{ local_install_dir }}/kubernetes/{{ k8_cluster_name}}/kubeadminit"
     flat: true
   when: k8_role_master == true
   tags:
