@@ -95,7 +95,7 @@
   - name: join_command
     delegate_to: localhost
     set_fact:
-      join_cmd: "{{ join |string | regex_search('kubeadm join (.*)', '\\1') |first }}"
+      join_cmd: "{{ join |string | regex_search('kubeadm join ([0-9\\.\\:]*) --token ([a-z0-9\\.]*) .+sha256:([a-z0-9]*) , '\\1')  }}"
     tags:
       - configure
       - worker
@@ -105,12 +105,12 @@
       - configure
       - worker
 
-  - name: run kubeadm join
-    shell: 
-      cmd: "kubeadm join {{ join_cmd}}"
-    tags:
-      - configure
-      - worker
+  #  - name: run kubeadm join
+  #    shell: 
+  #      cmd: "kubeadm join 192.168.0.47:6443 --token nu06lu.xrsux0ss0ixtnms5 –discovery token-ca-cert-hash sha256:f996ea35r4353d342fdea2997a1cf8caeddafd6d4360d606dbc82314683478hjmf7"
+  #    tags:
+  #      - configure
+  #      - worker
 
 
   when: k8_role_worker == true
