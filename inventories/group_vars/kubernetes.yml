@@ -2,6 +2,7 @@ k8_role_master: false
 k8_role_worker: false
 k8_role_node: false
 k8_cluster_name: "mykubernetescluster"
+k8_podnet_flannel: true
 
 # Master nodes firewall ports
 k8s_master_ports:
