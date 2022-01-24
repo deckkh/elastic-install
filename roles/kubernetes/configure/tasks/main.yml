@@ -101,7 +101,7 @@
       - configure
       - worker
 
-  - debug: msg="the value of join is {{ join_cmd }}"
+  - debug: msg="the value of join is {{ join_cmd[0] }} {{ join_cmd[1] }}"
     tags:
       - configure
       - worker
