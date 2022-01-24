@@ -106,12 +106,12 @@
       - configure
       - worker
 
-   - name: run kubeadm join
-     shell: 
-       cmd: "kubeadm join {{ join_cmd[0]}} --token {{ join_cmd[1]}} --discovery-token-ca-cert-hash sha256:{{ join_cmd[2]}}"
-     tags:
-       - configure
-       - worker
+  - name: run kubeadm join
+    shell: 
+      cmd: "kubeadm join {{ join_cmd[0]}} --token {{ join_cmd[1]}} --discovery-token-ca-cert-hash sha256:{{ join_cmd[2]}}"
+    tags:
+      - configure
+      - worker
 
 
   when: k8_role_worker == true
