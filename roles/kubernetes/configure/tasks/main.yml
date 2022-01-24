@@ -1,2 +1,61 @@
 ---
 # tasks file for configure
+
+- name: kubeadm init
+  block:
+
+  - name: Configure kubeadm init
+    template:
+      src: "kubeadminit.yml.j2"
+      dest: "/tmp/kubeadminit.yml"
+    when: k8_role_master == true
+    tags:
+      - configure
+
+  - name: run kubeadm
+    shell: 
+      cmd: "kubeadm init --config /tmp/kubeadminit.yml"
+    register: kubeadminit
+    tags:
+      - configure
+
+  - name: save kubeadmini facts to host specific file
+    copy:
+      content: "{{ kubeadminit.stdout_lines }}"
+      dest: "/tmp/kubeadminit"
+    tags:
+      - configure
+
+  - name: Fetch kubeadminit
+    ansible.builtin.fetch:
+      src: "/tmp/kubeadminit"
+      dest: "{{ local_install_dir }}/kubernetes/{{ k8_cluster_name}}/kubeadminit"
+      flat: true
+    tags:
+      - configure
+
+  - name: remove kubeadminit
+    file:
+      path: "/tmp/kubeadminit"
+      state: absent
+    tags:
+      - configure
+
+  # home dir of a user ???
+  - name: create kubernetes directory 
+    file:
+      path: "/root/.kube"
+      state: directory
+    tags:
+      - configure
+
+  - name: Copy admin.conf into folder 
+    copy:
+      src: "/etc/kubernetes/admin.conf"
+      dest: "/root/.kube/config"
+      owner: root
+      group: root
+    tags:
+      - configure
+
+  when: k8_role_master == true
