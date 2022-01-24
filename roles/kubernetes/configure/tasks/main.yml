@@ -95,7 +95,7 @@
   - name: join_command
     delegate_to: localhost
     set_fact:
-      join_cmd: "{{ join |string | regex_search('kubeadm join ([0-9\\.\\:]*) --token ([a-z0-9\\.]*) ', '\\1') }}"
+      join_cmd: "{{ join |string | regex_search('kubeadm join ([0-9\\.\\:]*) --token ([a-z0-9\\.]*) ', '\\1\\2') }}"
       # join_cmd: "{{ join |string | regex_search('kubeadm join ([0-9\\.\\:]*) --token ([a-z0-9\\.]*) .+sha256:([a-z0-9]*) , '\\1')  }}"
     tags:
       - configure
