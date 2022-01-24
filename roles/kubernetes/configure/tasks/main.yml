@@ -78,6 +78,33 @@
     tags:
       - configure
 
-      
-
   when: k8_role_master == true
+
+
+- name: kubeadm join
+  block:
+
+  - name: join_param
+    delegate_to: localhost
+    set_fact:
+      join: "{{ lookup('file', '{{ local_install_dir }}/kubernetes/kubeadminit') }}"
+    tags:
+      - configure
+      - worker
+
+  - name: join_command
+    delegate_to: localhost
+    set_fact:
+      join_cmd: "{{ join |string | regex_search('kubeadm join (\\.*)', '\\1') | first}}"
+    tags:
+      - configure
+      - worker
+
+  - debug: msg="the value of join is {{ join_cmd }}"
+    tags:
+      - configure
+      - worker
+
+
+
+  when: k8_role_worker == true
