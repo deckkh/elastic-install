@@ -1,6 +1,18 @@
 ---
 # tasks file for configure
 
+
+- name: create kubernetes directory 
+  delegate_to: localhost
+  file:
+    path: "{{ item}}"
+    state: directory
+  with_items:
+    - "{{ local_install_dir}}/kubernetes"
+    - "{{ local_install_dir}}/kubernetes/{{ k8_cluster_name }}"
+  tags:
+    - configure
+
 - name: kubeadm init
   block:
 
@@ -51,6 +63,7 @@
 
   - name: Copy admin.conf into folder 
     copy:
+      remote_src: yes
       src: "/etc/kubernetes/admin.conf"
       dest: "/root/.kube/config"
       owner: root
