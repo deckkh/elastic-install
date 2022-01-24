@@ -105,6 +105,12 @@
       - configure
       - worker
 
+  - name: run kubeadm join
+    shell: 
+      cmd: "kubeadm join {{ join_cmd}}"
+    tags:
+      - configure
+      - worker
 
 
   when: k8_role_worker == true
