@@ -87,7 +87,7 @@
   - name: join_param
     delegate_to: localhost
     set_fact:
-      join: "{{ lookup('file', '{{ local_install_dir }}/kubernetes/kubeadminit') }}"
+      join: "{{ lookup('file', '{{ local_install_dir }}/kubernetes/{{ k8_cluster_name}}/kubeadminit') }}"
     tags:
       - configure
       - worker
