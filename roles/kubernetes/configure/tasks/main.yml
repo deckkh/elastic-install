@@ -78,6 +78,13 @@
     tags:
       - configure
 
+  - name: install weave
+    shell: 
+      cmd: "kubectl apply -f https://cloud.weave.works/k8s/net?k8s-version=Q2xpZW50IFZlcnNpb246IHZlcnNpb24uSW5mb3tNYWpvcjoiMSIsIE1pbm9yOiIyMyIsIEdpdFZlcnNpb246InYxLjIzLjIiLCBHaXRDb21taXQ6IjlkMTQyNDM0ZTNhZjM1MWE2MjhiZmZlZTM5MzllNjRjNjgxYWZhNGQiLCBHaXRUcmVlU3RhdGU6ImNsZWFuIiwgQnVpbGREYXRlOiIyMDIyLTAxLTE5VDE3OjM1OjQ2WiIsIEdvVmVyc2lvbjoiZ28xLjE3LjUiLCBDb21waWxlcjoiZ2MiLCBQbGF0Zm9ybToibGludXgvYW1kNjQifQpTZXJ2ZXIgVmVyc2lvbjogdmVyc2lvbi5JbmZve01ham9yOiIxIiwgTWlub3I6IjIzIiwgR2l0VmVyc2lvbjoidjEuMjMuMiIsIEdpdENvbW1pdDoiOWQxNDI0MzRlM2FmMzUxYTYyOGJmZmVlMzkzOWU2NGM2ODFhZmE0ZCIsIEdpdFRyZWVTdGF0ZToiY2xlYW4iLCBCdWlsZERhdGU6IjIwMjItMDEtMTlUMTc6Mjk6MTZaIiwgR29WZXJzaW9uOiJnbzEuMTcuNSIsIENvbXBpbGVyOiJnYyIsIFBsYXRmb3JtOiJsaW51eC9hbWQ2NCJ9Cg=="
+    when: k8_podnet_weave == true
+    tags:
+      - configure
+
   when: k8_role_master == true
 
 
