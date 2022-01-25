@@ -21,6 +21,7 @@
     permanent: yes
     immediate: true
   tags:
+    - install
     - masquerade
 
 - name: Configure firewalld on master nodes
