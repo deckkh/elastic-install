@@ -12,12 +12,16 @@
     name: firewalld
     state: started
     enabled: yes
-    masquerade: yes
   tags:
     - install
-    - masquerade
 
-    
+- firewalld:
+    masquerade: yes
+    state: enabled
+    permanent: yes
+    immediate: true
+  tags:
+    - masquerade
 
 - name: Configure firewalld on master nodes
   firewalld:
