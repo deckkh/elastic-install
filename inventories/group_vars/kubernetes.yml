@@ -19,3 +19,7 @@ k8s_worker_ports:
     - 10250
     - 10255
     - 30000-32767
+
+k8s_flannel_ports:
+    - 8285
+    - 8472

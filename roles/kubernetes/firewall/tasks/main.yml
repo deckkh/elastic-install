@@ -26,6 +26,18 @@
   tags:
     - install
 
+- name: Configure flannel firewalld on master nodes
+  firewalld:
+    port: "{{ item }}/udp"
+    permanent: yes
+    state: enabled
+    immediate: true
+  with_items: '{{ k8s_flannel_ports }}'
+  when: "k8_podnet_flannel == true"
+  tags:
+    - install
+    - flannel
+
 - name: Configure firewalld on worker nodes
   firewalld:
     port: "{{ item }}/tcp"
