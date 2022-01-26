@@ -53,7 +53,7 @@
 
   - name: copy bootstrap.sh
     template:
-      src: "bootstrap.sh.y2"
+      src: "bootstrap.sh.j2"
       dest: "{{ k8_bootstrap_dir }}/bootstrap.sh"
     tags:
       - bootstrap
