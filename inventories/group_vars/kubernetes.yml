@@ -4,6 +4,7 @@ k8_role_node: false
 k8_cluster_name: "mykubernetescluster"
 k8_podnet_flannel: true
 k8_podnet_weave: false
+k8_bootstrap_dir: "/opt/kubernetes/bootstrap"
 
 # Master nodes firewall ports
 k8s_master_ports:

@@ -6,5 +6,6 @@
      - kubernetes/firewall
      - kubernetes/install
      - kubernetes/configure
+     - kubernetes/bootstrap
 
 

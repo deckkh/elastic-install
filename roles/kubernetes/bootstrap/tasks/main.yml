@@ -1,2 +1,53 @@
 ---
 # tasks file for bootstrap
+
+
+
+- name: kubeadm init
+  block:
+
+  - name: Create pv.yaml
+    template:
+      src: "pv.yaml.j2"
+      dest: "{{ k8_bootstrap_dir }}/pv.yaml"
+    tags:
+      - bootstrap  
+
+  - name: Create pvc.yaml
+    template:
+      src: "pvc.yaml.j2"
+      dest: "{{ k8_bootstrap_dir }}/pvc.yaml"
+    tags:
+      - bootstrap  
+
+  - name: Create sc.yaml
+    template:
+      src: "sc.yaml.j2"
+      dest: "{{ k8_bootstrap_dir }}/sc.yaml"
+    tags:
+      - bootstrap  
+
+  - name: Create quickstart.yaml
+    template:
+      src: "quickstart.yaml.j2"
+      dest: "{{ k8_bootstrap_dir }}/quickstart.yaml"
+    tags:
+      - bootstrap  
+
+  - name: Create kibana.yaml
+    template:
+      src: "kibana.yaml.j2"
+      dest: "{{ k8_bootstrap_dir }}/kibana.yaml"
+    tags:
+      - bootstrap  
+
+  - name: copy bootstrap.sh
+    template:
+      src: "bootstrap.sh.y2"
+      dest: "{{ k8_bootstrap_dir }}/bootstrap.sh"
+    tags:
+      - bootstrap
+
+  when: k8_role_master == true
+
+

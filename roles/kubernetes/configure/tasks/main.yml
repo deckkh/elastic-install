@@ -85,49 +85,6 @@
     tags:
       - configure
 
-  - name: Create pv.yaml
-    template:
-      src: "pv.yaml.j2"
-      dest: "/opt/kubernetes/elastic-quickstart/pv.yaml"
-    tags:
-      - configure  
-
-  - name: Create pvc.yaml
-    template:
-      src: "pvc.yaml.j2"
-      dest: "/opt/kubernetes/elastic-quickstart/pvc.yaml"
-    tags:
-      - configure  
-
-  - name: Create sc.yaml
-    template:
-      src: "sc.yaml.j2"
-      dest: "/opt/kubernetes/elastic-quickstart/sc.yaml"
-    tags:
-      - configure  
-
-  - name: Create quickstart.yaml
-    template:
-      src: "quickstart.yaml.j2"
-      dest: "/opt/kubernetes/elastic-quickstart/quickstart.yaml"
-    tags:
-      - configure  
-
-  - name: Create kibana.yaml
-    template:
-      src: "kibana.yaml.j2"
-      dest: "/opt/kubernetes/elastic-quickstart/kibana.yaml"
-    tags:
-      - configure  
-
-  - name: copy bootstrap.sh
-      copy:
-        content: "bootstrap.sh"
-        dest: "/opt/kubernetes/elastic-quickstart/sc.yaml"
-      tags:
-        - configure
-
-
   when: k8_role_master == true
 
 
