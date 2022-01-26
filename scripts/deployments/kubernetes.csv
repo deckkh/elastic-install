@@ -1,4 +1,4 @@
 name,memory,switch,template,disks,cpus,minmemory
-kubernetes1,4,nat-switch,centos7-template,10,2,4
-kubernetes2,4,nat-switch,centos7-template,10,2,4
-kubernetes3,4,nat-switch,centos7-template,10,2,4
+kubernetes1,4,nat-switch,centos8-template,10,2,4
+kubernetes2,4,nat-switch,centos8-template,10,2,4
+kubernetes3,4,nat-switch,centos8-template,10,2,4
