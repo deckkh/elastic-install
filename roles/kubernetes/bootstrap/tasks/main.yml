@@ -6,6 +6,16 @@
 - name: kubeadm init
   block:
 
+
+  - name: create bootstrap directory 
+    file:
+      path: "{{ item}}"
+      state: directory
+    with_items:
+      - "{{ k8_bootstrap_dir }}"
+    tags:
+      - bootstrap
+
   - name: Create pv.yaml
     template:
       src: "pv.yaml.j2"
